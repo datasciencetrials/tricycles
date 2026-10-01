@@ -2,13 +2,13 @@
 # METHODOLOGY
 
 ## 3.1 Introduction
-This chapter outlines the research methods we used to figure out the actual Passenger Car Unit (PCU) values for tricycles in City_X City. Because City_X’s traffic is so chaotic and mixed, we couldn't just use traditional automated counting machines like pneumatic road tubes. When vehicles don't stay in their lanes, those tubes get run over diagonally or miss smaller vehicles entirely, leading to terrible data. Instead, we decided to use a more labor-intensive but accurate approach: combining high-definition video recording from above with a lot of manual counting by trained enumerators, and then validating that data using traffic simulation software.
+This chapter outlines the research methods we used to figure out the actual Passenger Car Unit (PCU) values for tricycles in Kampala City. Because Kampala’s traffic is so chaotic and mixed, we couldn't just use traditional automated counting machines like pneumatic road tubes. When vehicles don't stay in their lanes, those tubes get run over diagonally or miss smaller vehicles entirely, leading to terrible data. Instead, we decided to use a more labor-intensive but accurate approach: combining high-definition video recording from above with a lot of manual counting by trained enumerators, and then validating that data using traffic simulation software.
 
 ## 3.2 Study Area and Site Selection
-The study was strictly confined to City_X City, focusing on five specific intersections that are known for having high volumes of tricycles and terrible daily traffic jams.
+The study was strictly confined to Kampala City, focusing on five specific intersections that are known for having high volumes of tricycles and terrible daily traffic jams.
 
-![City_X Study Sites Map](../../visualizations/City_X_study_sites_map_static.png)
-*Figure 3.1: Map detailing the five high-density study locations across City_X.*
+![Kampala Study Sites Map](../../visualizations/Kampala_study_sites_map_static.png)
+*Figure 3.1: Map detailing the five high-density study locations across Kampala.*
 
 We chose these five locations for very specific reasons:
 1. **Wandegeya Junction:** This is a major hotspot near Makerere University. The conflict between pedestrians, boda-bodas, and tricycles here is intense.
@@ -20,7 +20,7 @@ We chose these five locations for very specific reasons:
 ## 3.3 Research Design and Sampling Strategy
 
 ### 3.3.1 Temporal Scope
-To make sure we captured the massive day-to-day changes in City_X traffic, we collected data continuously over a 20-day period. This timeframe was long enough to cover both rainy and dry days. We focused our observations on the two busiest times of the day:
+To make sure we captured the massive day-to-day changes in Kampala traffic, we collected data continuously over a 20-day period. This timeframe was long enough to cover both rainy and dry days. We focused our observations on the two busiest times of the day:
 - **Morning Peak:** 07:00 AM – 11:00 AM
 - **Evening Peak:** 04:00 PM – 10:00 PM (This allowed us to capture the severe traffic collapse that almost always happens around 6:30 PM).
 
@@ -28,10 +28,10 @@ To make sure we captured the massive day-to-day changes in City_X traffic, we co
 This study employs a comprehensive mixed-methods approach, rigorously combining both quantitative and qualitative testing to capture the full spectrum of tricycle operational friction. To achieve this, the research draws upon both Primary and Secondary data sources.
 
 ### 3.3.1 Primary Data (Quantitative and Qualitative)
-The primary data forms the bedrock of this study's original contribution to traffic engineering in City_X.
+The primary data forms the bedrock of this study's original contribution to traffic engineering in Kampala.
 
 **1. Quantitative Primary Data (Manual Classified Counts):**
-Due to the lack of automated pneumatic tube sensors in City_X, we conducted massive 20-day manual classified counts (MCC) across the five study intersections. The data was logged in precise 15-minute intervals from 06:00 to 22:00, resulting in over 6,400 distinct data rows. The vehicle classifications tracked were:
+Due to the lack of automated pneumatic tube sensors in Kampala, we conducted massive 20-day manual classified counts (MCC) across the five study intersections. The data was logged in precise 15-minute intervals from 06:00 to 22:00, resulting in over 6,400 distinct data rows. The vehicle classifications tracked were:
 - Passenger Cars
 - Boda-bodas (motorcycles)
 - Tricycles (Tuk-tuks)
@@ -45,7 +45,7 @@ Traffic engineering often ignores the human element. To capture the behavioral "
 ### 3.3.2 Secondary Data
 To establish a historical baseline and validate our primary observations, two critical secondary data sources were utilized:
 1. **Ministry of Works and Transport (Agency) Historical Traffic Logs (2021):** We extracted historical 2021 intersection volume data from the Agency archives. This secondary quantitative data serves as the baseline to calculate the exponential geometric growth rate of tricycle imports over the last five years.
-2. **Region_A National Meteorological Authority (UNMA) Rainfall Data:** Historical rainfall averages were cross-referenced with our primary count logs to validate the statistical significance of weather-induced capacity drops.
+2. **Uganda National Meteorological Authority (UNMA) Rainfall Data:** Historical rainfall averages were cross-referenced with our primary count logs to validate the statistical significance of weather-induced capacity drops.
 
 ## 3.4 Data Processing and Statistical Testing
 Once the primary and secondary data was collated, we applied robust statistical testing to ensure the validity of our findings. 
@@ -66,4 +66,4 @@ Because headways don't tell the whole story in mixed traffic, we also used MLR t
 To answer Objective 3, we stopped treating PCU as just a static number. We modeled it as a dynamic variable that changes based on the Volume-to-Capacity (V/C) ratio. We wrote Python scripts to calculate exactly how the tricycle PCU inflates as the intersection gets closer to total saturation ($V/C \geq 0.95$).
 
 ## 3.5 VISSIM Microsimulation Validation
-Finally, to prove our empirical findings were correct, we coded the new dynamic PCUs into PTV VISSIM software. By default, VISSIM uses German driving behaviors (the Wiedemann 74/99 models), which obviously don't apply to City_X. We had to manually calibrate parameters like "Standstill Distance" and "Lateral Clearance" to mimic how closely City_X tuk-tuks follow each other and how aggressively they weave. We then ran the simulation and compared the resulting queue lengths and delays against our actual video logs to confirm the new PCU values were accurate.
+Finally, to prove our empirical findings were correct, we coded the new dynamic PCUs into PTV VISSIM software. By default, VISSIM uses German driving behaviors (the Wiedemann 74/99 models), which obviously don't apply to Kampala. We had to manually calibrate parameters like "Standstill Distance" and "Lateral Clearance" to mimic how closely Kampala tuk-tuks follow each other and how aggressively they weave. We then ran the simulation and compared the resulting queue lengths and delays against our actual video logs to confirm the new PCU values were accurate.

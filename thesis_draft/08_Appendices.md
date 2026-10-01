@@ -4446,7 +4446,7 @@ The following tables contain the raw 15-minute aggregated vehicle counts and cal
 
 ## Appendix B: VISSIM Calibration Parameters
 
-### B.1 Modified Wiedemann 74 Car-Following Parameters for City_X
+### B.1 Modified Wiedemann 74 Car-Following Parameters for Kampala
 | Parameter | Default Value | Calibrated Value | Justification |
 | :--- | :--- | :--- | :--- |
 | CC0 | 0.89 | 0.40 | Aggressive gap acceptance adjustment |

@@ -2,15 +2,15 @@
 # DATA PRESENTATION, ANALYSIS, AND RESULTS
 
 ## 4.1 Introduction
-This chapter breaks down the empirical data we collected over the 20 days at City_X's major intersections. We processed all the raw counts and video footage using Python to extract dynamic Passenger Car Unit (PCU) values for tricycles, looking specifically at how they behave under different weather and traffic conditions. 
+This chapter breaks down the empirical data we collected over the 20 days at Kampala's major intersections. We processed all the raw counts and video footage using Python to extract dynamic Passenger Car Unit (PCU) values for tricycles, looking specifically at how they behave under different weather and traffic conditions. 
 
 ## 4.2 Overall Traffic Composition
 Before we could calculate any PCU values, we first needed to understand the baseline traffic mix at our study sites. Our manual counts quickly confirmed just how much informal transit dominates the roads. 
 
-![Region_A Traffic Composition](../../visualizations/Region_A_traffic_viz.png)
+![Uganda Traffic Composition](../../visualizations/Uganda_traffic_viz.png)
 *Figure 4.1: Traffic modal share across the five study intersections.*
 
-As you can see in Figure 4.1, passenger cars still make up the largest raw count. However, boda-bodas and tricycles combined take up a massive proportion of the traffic stream. Tricycles specifically held a steady 8–11% modal share across the sites. This proves that they are no longer just a fringe option; they are a core, permanent piece of City_X's transport system.
+As you can see in Figure 4.1, passenger cars still make up the largest raw count. However, boda-bodas and tricycles combined take up a massive proportion of the traffic stream. Tricycles specifically held a steady 8–11% modal share across the sites. This proves that they are no longer just a fringe option; they are a core, permanent piece of Kampala's transport system.
 
 ## 4.3 Static PCU Estimation Results
 Using both the Modified Headway Ratio and the Multiple Linear Regression (MLR) methods, we calculated baseline static PCU values for the tricycles. 
@@ -63,7 +63,7 @@ To verify that these locational differences are statistically significant, a One
 Because the p-value is practically zero ($p < 0.05$), we reject the null hypothesis. There is a statistically significant difference in tricycle volumes based on intersection geometry and location.
 
 ### 4.5.3 Probability Testing (Poisson GooDept_Nss-of-Fit)
-To test if City_X's tricycle traffic adheres to standard random arrival probability, we ran a Chi-Square GooDept_Nss-of-Fit test on the primary Wandegeya data against a theoretical Poisson distribution.
+To test if Kampala's tricycle traffic adheres to standard random arrival probability, we ran a Chi-Square GooDept_Nss-of-Fit test on the primary Wandegeya data against a theoretical Poisson distribution.
 - **P-Value:** $< 0.001$
 The test powerfully rejects the null hypothesis. The tricycle arrival distribution significantly deviates from a pure Poisson model, proving that tricycles arrive in "platoons" due to aggressive overtaking, fundamentally violating standard Western capacity modeling assumptions.
 
@@ -81,14 +81,14 @@ This secondary data comparison mathematically proves that tricycles have transfo
 ## 4.7 Qualitative Analysis: Thematic Driver Interviews
 While the quantitative data proves the capacity collapse, our Qualitative Tests (structured interviews with 50 operators) reveal the *behavioral* causes behind the soaring PCU values. Through rigorous thematic analysis, three core behavioral drivers emerged:
 
-1. **Pothole Swerving & Infrastructure Decay (92% occurrence):** Operators reported that the narrow wheelbase of the tricycle makes them highly susceptible to rolling over in City_X's deep potholes. *"If I hit the trench at Bwaise, the cargo flips. I must swerve into the fast lane, even if a car is there,"* stated Respondent 14. This qualitative finding perfectly explains the massive PCU inflation (1.05) observed in the quantitative T-Test during wet weather.
+1. **Pothole Swerving & Infrastructure Decay (92% occurrence):** Operators reported that the narrow wheelbase of the tricycle makes them highly susceptible to rolling over in Kampala's deep potholes. *"If I hit the trench at Bwaise, the cargo flips. I must swerve into the fast lane, even if a car is there,"* stated Respondent 14. This qualitative finding perfectly explains the massive PCU inflation (1.05) observed in the quantitative T-Test during wet weather.
 2. **Police Harassment and Junction Avoidance (78% occurrence):** Traffic police frequently target tricycles for unofficial taxation at major junctions like Wandegeya. To avoid extortion, drivers execute sudden, illegal U-turns or cut across traffic medians, creating severe "blocking friction" that stops all lanes simultaneously.
 3. **Fatigue-Induced Lane Straddling (65% occurrence):** Working 14-hour shifts in heavy heat without power steering leads to severe driver fatigue. Operators admit to passively straddling two lanes to prevent being squeezed out by aggressive matatus, which halves the effective capacity of a dual-carriageway.
 
 ## 4.8 VISSIM Microsimulation Validation
 Finally, we fed our new dynamic values into a PTV VISSIM simulation model of the Wandegeya Junction. 
 
-![Tricycle Weaving City_X](../../visualizations/tricycle_weaving_City_X.png)
+![Tricycle Weaving Kampala](../../visualizations/tricycle_weaving_Kampala.png)
 *Figure 4.3: VISSIM visual output demonstrating tricycle lane indiscipline.*
 
 When we replaced the software's default static PCU (which was around 0.5) with our empirical dynamic PCU curve (0.85 - 1.15), the simulation perfectly replicated the massive 150-meter queues we saw in real life. Even better, when we used the simulation to theoretically optimize the traffic light signals based on these *new* accurate PCUs, the saturation flow improved by 14.2%. This validates just how critical it is to use localized PCU parameters.

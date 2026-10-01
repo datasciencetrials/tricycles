@@ -25,15 +25,15 @@
   "consistency": {
     "districtList": null,
     "notes": [
-      "Region_A_nrms: no audit-log available yet for comparison",
-      "Region_A_network_traffic: no audit-log available yet for comparison",
-      "Region_A_ducar: no audit-log available yet for comparison",
-      "Region_A_nbms: no audit-log available yet for comparison",
-      "Region_A_gis_enterprise: no audit-log available yet for comparison",
+      "Uganda_nrms: no audit-log available yet for comparison",
+      "Uganda_network_traffic: no audit-log available yet for comparison",
+      "Uganda_ducar: no audit-log available yet for comparison",
+      "Uganda_nbms: no audit-log available yet for comparison",
+      "Uganda_gis_enterprise: no audit-log available yet for comparison",
       "bridge_mculverts: no audit-log available yet for comparison",
-      "Region_A_kee: no audit-log available yet for comparison",
-      "Region_A_kee_rss: no audit-log available yet for comparison",
-      "Region_A_ntis: no audit-log available yet for comparison"
+      "Uganda_kee: no audit-log available yet for comparison",
+      "Uganda_kee_rss: no audit-log available yet for comparison",
+      "Uganda_ntis: no audit-log available yet for comparison"
     ]
   }
 }
