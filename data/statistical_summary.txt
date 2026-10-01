@@ -1,0 +1,5 @@
+ANOVA P-Value: 1.8750e-273
+T-Test P-Value: 2.3113e-09
+Chi-Square P-Value: 0.0000e+00
+Wandegeya Mean: 116.04
+Natete Mean: 216.84
