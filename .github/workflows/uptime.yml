@@ -15,7 +15,7 @@ jobs:
       - name: Check site
         id: check
         run: |
-          STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://networkengineringmowt-ai.github.io/tricycles/)
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://datasciencetrials.github.io/tricycles/)
           echo "status=$STATUS" >> "$GITHUB_OUTPUT"
           if [ "$STATUS" != "200" ]; then
             echo "Site returned $STATUS"

@@ -3,7 +3,7 @@ import { Octokit } from '@octokit/rest';
 import fs from 'node:fs';
 import path from 'node:path';
 
-const OWNER = 'networkengineringmowt-ai';
+const OWNER = 'datasciencetrials';
 const ALL_REPOS = [
   'uganda_nrms', 'tricycles', 'uganda_npms', 'uganda_network_traffic',
   'uganda_ducar', 'uganda_nbms', 'uganda_gis_enterprise', 'bridge_mculverts',
