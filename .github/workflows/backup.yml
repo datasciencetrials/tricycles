@@ -1,10 +1,5 @@
 name: Backup on Deploy
-on:
-  push:
-    branches: [main]
-
-permissions:
-  contents: write
+on: [workflow_dispatch]
 
 jobs:
   backup:
@@ -21,3 +16,4 @@ jobs:
           BACKUP_BRANCH="backup/$(date +%Y-%m-%d-%H%M)"
           git checkout -b "$BACKUP_BRANCH"
           git push origin "$BACKUP_BRANCH"
+
