@@ -202,7 +202,11 @@ const OverviewTab = ({ goBack, canGoBack } = {}) => {
   // nothing new was added, keep the original 40px untouched. This is the
   // one dynamic fit-options object used both for the map's initial extent
   // and the "reset view" control, so both always agree.
-  const fitOptions = useMemo(() => ({ paddingTopLeft: [40, 210], paddingBottomRight: [368, 40] }), []);
+  const fitOptions = useMemo(() => (
+    window.innerWidth < 760
+      ? { paddingTopLeft: [20, 120], paddingBottomRight: [20, 20] }
+      : { paddingTopLeft: [40, 210], paddingBottomRight: [368, 40] }
+  ), []);
 
   // Per-leg-per-junction simulated flow for the currently selected hour --
   // real leg identity/count (JUNCTION_LEG_CONFIG, author-confirmed) x this
