@@ -7,7 +7,7 @@ This chapter breaks down the empirical data we collected over the 20 days at Kam
 ## 4.2 Overall Traffic Composition
 Before we could calculate any PCU values, we first needed to understand the baseline traffic mix at our study sites. Our manual counts quickly confirmed just how much informal transit dominates the roads. 
 
-![Uganda Traffic Composition](../../visualizations/Uganda_traffic_viz.png)
+![Uganda Traffic Composition](../../visualizations/uganda_traffic_viz.png)
 *Figure 4.1: Traffic modal share across the five study intersections.*
 
 As you can see in Figure 4.1, passenger cars still make up the largest raw count. However, boda-bodas and tricycles combined take up a massive proportion of the traffic stream. Tricycles specifically held a steady 8–11% modal share across the sites. This proves that they are no longer just a fringe option; they are a core, permanent piece of Kampala's transport system.
@@ -62,16 +62,16 @@ To verify that these locational differences are statistically significant, a One
 
 Because the p-value is practically zero ($p < 0.05$), we reject the null hypothesis. There is a statistically significant difference in tricycle volumes based on intersection geometry and location.
 
-### 4.5.3 Probability Testing (Poisson GooDept_Nss-of-Fit)
-To test if Kampala's tricycle traffic adheres to standard random arrival probability, we ran a Chi-Square GooDept_Nss-of-Fit test on the primary Wandegeya data against a theoretical Poisson distribution.
+### 4.5.3 Probability Testing (Poisson Goodness-of-Fit)
+To test if Kampala's tricycle traffic adheres to standard random arrival probability, we ran a Chi-Square Goodness-of-Fit test on the primary Wandegeya data against a theoretical Poisson distribution.
 - **P-Value:** $< 0.001$
 The test powerfully rejects the null hypothesis. The tricycle arrival distribution significantly deviates from a pure Poisson model, proving that tricycles arrive in "platoons" due to aggressive overtaking, fundamentally violating standard Western capacity modeling assumptions.
 
-## 4.6 Secondary Data Analysis: Agency Historical Baseline Comparison
-To prove the exponential growth of tricycle interference, we cross-referenced our 2026 Primary Data with Secondary Data sourced from the 2021 Ministry of Works and Transport (Agency) traffic logs for Kibuye Roundabout.
+## 4.6 Secondary Data Analysis: MoWT Historical Baseline Comparison
+To prove the exponential growth of tricycle interference, we cross-referenced our 2026 Primary Data with Secondary Data sourced from the 2021 Ministry of Works and Transport (MoWT) traffic logs for Kibuye Roundabout.
 
 **Table 4.3: Longitudinal Growth of Tricycle Volumes (Secondary vs Primary)**
-| Metric | Agency Secondary Data (2021) | Primary Field Data (2026) | Growth Rate |
+| Metric | MoWT Secondary Data (2021) | Primary Field Data (2026) | Growth Rate |
 | :--- | :--- | :--- | :--- |
 | Peak Hour Volume (Veh/Hr) | 215 | 700 | +225% |
 | Proportion of Total Fleet | 4.2% | 14.8% | +252% |
@@ -88,7 +88,7 @@ While the quantitative data proves the capacity collapse, our Qualitative Tests 
 ## 4.8 VISSIM Microsimulation Validation
 Finally, we fed our new dynamic values into a PTV VISSIM simulation model of the Wandegeya Junction. 
 
-![Tricycle Weaving Kampala](../../visualizations/tricycle_weaving_Kampala.png)
+![Tricycle Weaving Kampala](../../visualizations/tricycle_weaving_kampala.png)
 *Figure 4.3: VISSIM visual output demonstrating tricycle lane indiscipline.*
 
 When we replaced the software's default static PCU (which was around 0.5) with our empirical dynamic PCU curve (0.85 - 1.15), the simulation perfectly replicated the massive 150-meter queues we saw in real life. Even better, when we used the simulation to theoretically optimize the traffic light signals based on these *new* accurate PCUs, the saturation flow improved by 14.2%. This validates just how critical it is to use localized PCU parameters.

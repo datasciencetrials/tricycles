@@ -103,18 +103,6 @@ h1 {
 
 a { color: inherit; }
 
-.text-primary {
-  color: var(--accent-2);
-}
-
-.text-accent {
-  color: var(--accent-2);
-}
-
-.text-muted {
-  color: var(--text-muted);
-}
-
 /* App Shell Layout */
 .app-shell {
   display: flex;
@@ -284,129 +272,11 @@ a { color: inherit; }
   letter-spacing: 0.03em;
 }
 
-/* Dashboard Grid System */
-.workspace-grid {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: 18px;
-  max-width: 100%;
-  margin: 20px 0 0;
-  width: 100%;
-}
-
-.nexus-eyebrow {
-  font-size: 0.72rem;
-  font-weight: 600;
-  color: var(--accent-2);
-  text-transform: uppercase;
-  letter-spacing: 0.09em;
-  margin: 0 0 6px 0;
-}
-
-/* Glass Cards */
-.glass-card {
-  background: var(--bg-card);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 24px;
-  box-shadow: var(--shadow-card);
-  transition: transform 0.2s var(--ease), border-color 0.2s var(--ease), box-shadow 0.2s var(--ease), background 0.2s var(--ease);
-  display: flex;
-  flex-direction: column;
-}
-
-.glass-card:hover {
-  border-color: var(--border-strong);
-  background: var(--bg-card-hover);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-card-hover);
-}
-
-.glass-card.col-span-12 { grid-column: span 12; }
-.glass-card.col-span-8 { grid-column: span 8; }
-.glass-card.col-span-6 { grid-column: span 6; }
-.glass-card.col-span-4 { grid-column: span 4; }
-.glass-card.col-span-3 { grid-column: span 3; }
-
-@media (max-width: 1200px) {
-  .glass-card.col-span-8, .glass-card.col-span-4 { grid-column: span 12; }
-  .glass-card.col-span-6 { grid-column: span 12; }
-}
-
-.glass-card h3 {
-  font-size: 1.05rem;
-  margin-bottom: 18px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid var(--border);
-  color: var(--text-main);
-}
-
-/* Stats */
-.stat-box {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding: 16px;
-  background: var(--bg-inset);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  transition: border-color 0.2s var(--ease);
-}
-
-.stat-box:hover {
-  border-color: var(--border-strong);
-}
-
-.stat-value {
-  font-family: var(--font-display);
-  font-size: 1.9rem;
-  font-weight: 600;
-  color: #fff;
-  font-variant-numeric: tabular-nums;
-}
-
-.stat-label {
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--text-faint);
-  font-weight: 600;
-}
-
 /* Leaflet Map */
 .leaflet-container {
   border-radius: var(--radius-sm);
   border: 1px solid var(--border);
   background-color: #14161a;
-}
-
-/* Custom Slider */
-.custom-slider {
-  width: 100%;
-  height: 4px;
-  background: var(--border);
-  outline: none;
-  border-radius: 2px;
-  -webkit-appearance: none;
-  margin: 18px 0;
-}
-
-.custom-slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  width: 15px;
-  height: 15px;
-  background: var(--accent-2);
-  border: 2px solid rgba(255, 255, 255, 0.9);
-  border-radius: 50%;
-  cursor: pointer;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
-  transition: transform 0.15s var(--ease);
-}
-
-.custom-slider::-webkit-slider-thumb:hover {
-  transform: scale(1.15);
 }
 
 /* Buttons */
@@ -443,38 +313,6 @@ a { color: inherit; }
   border-radius: 8px;
 }
 
-/* Heatmap / Data Table */
-.heatmap-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.84rem;
-}
-
-.heatmap-table th, .heatmap-table td {
-  padding: 11px 12px;
-  border-bottom: 1px solid var(--border);
-  text-align: center;
-}
-
-.heatmap-table th {
-  background: transparent;
-  font-weight: 600;
-  color: var(--text-faint);
-  font-size: 0.72rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  border-bottom: 1px solid var(--border-strong);
-}
-
-.heatmap-table tbody tr {
-  transition: background 0.15s var(--ease);
-}
-
-.heatmap-table tbody tr:hover {
-  background: rgba(255, 255, 255, 0.025);
-}
-
-
 /* ===================================================================
    MOBILE RESPONSIVENESS (additive — appended, does not alter rules above)
    =================================================================== */
@@ -482,24 +320,6 @@ a { color: inherit; }
 /* Global overflow safety */
 html, body { max-width: 100%; overflow-x: hidden; }
 img { max-width: 100%; }
-
-/* Hamburger toggle button (hidden on desktop; JS-injected into .topbar) */
-.hamburger-toggle {
-  display: none;
-  align-items: center;
-  justify-content: center;
-  width: 44px;
-  height: 44px;
-  flex-shrink: 0;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid var(--border-color);
-  border-radius: 6px;
-  color: var(--text-main);
-  font-size: 1.2rem;
-  cursor: pointer;
-}
-.hamburger-toggle:hover { background: rgba(255, 255, 255, 0.1); border-color: var(--border-light); }
-.hamburger-toggle.is-active { color: var(--accent-cyan); border-color: var(--accent-cyan); }
 
 @media (max-width: 768px) {
   /* Prevent CSS grid/flex "blowout": without this, a grid/flex item's
@@ -519,7 +339,6 @@ img { max-width: 100%; }
   .brand-block { order: 1; }
   .brand-block h1 { font-size: 1rem; }
   .nexus-version { font-size: 0.6rem; }
-  .hamburger-toggle { display: flex; order: 2; margin-left: auto; }
   .topbar-actions {
     order: 3;
     flex: 1 1 100%;
@@ -529,61 +348,13 @@ img { max-width: 100%; }
   .live-clock { font-size: 0.8rem; padding: 4px 10px; }
   .agency-text { font-size: 0.62rem; }
 
-  /* Nav becomes an off-canvas dropdown toggled by .hamburger-toggle */
-  .nav-links {
-    order: 4;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    flex-direction: column;
-    gap: 4px;
-    background: var(--bg-panel);
-    border-bottom: 1px solid var(--border-color);
-    padding: 0 16px;
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.25s ease, padding 0.25s ease;
-    z-index: 999;
-  }
-  .nav-links.mobile-open { max-height: 480px; padding: 8px 16px 16px; }
   .nav-item { width: 100%; min-height: 44px; }
-
-  /* Dashboard grid: single column, no implicit tracks from col-span-N */
-  .workspace-grid { grid-template-columns: 1fr; gap: 12px; }
-  .glass-card.col-span-12,
-  .glass-card.col-span-8,
-  .glass-card.col-span-6,
-  .glass-card.col-span-4,
-  .glass-card.col-span-3,
-  .col-span-12,
-  .col-span-8,
-  .col-span-6,
-  .col-span-4,
-  .col-span-3 { grid-column: 1 / -1; }
-  .glass-card { padding: 16px; }
-  .glass-card h3 { font-size: 1rem; }
 
   /* Font sizes */
   h1 { font-size: 1.8rem; }
 
   /* Touch targets */
   .btn, .nav-item { min-height: 44px; }
-
-  /* Tables scroll horizontally inside their existing overflow-x wrapper
-     instead of being crushed illegibly */
-  .heatmap-table { min-width: 620px; }
-
-  /* KPI/stat strips using inline grid-template-columns (Analytics telemetry
-     strip = repeat(7,1fr); Summary Tables NMT strip = repeat(5,1fr)) */
-  [style*="grid-template-columns: repeat(7, 1fr)"],
-  [style*="grid-template-columns: repeat(5, 1fr)"] {
-    grid-template-columns: repeat(2, 1fr) !important;
-  }
-
-  /* Leaflet map card takes near full viewport height on mobile
-     (desktop wrapper is a fixed inline height: 400px) */
-  [style*="height: 400px"] { height: 70vh !important; }
 
   /* Thesis tab: stack the sticky TOC sidebar above the article instead of
      a fixed 300px side-by-side column, and let it flow with the page */
@@ -602,14 +373,7 @@ img { max-width: 100%; }
 @media (max-width: 480px) {
   .brand-block h1 { font-size: 0.85rem; }
   h1 { font-size: 1.5rem; }
-  .stat-value { font-size: 1.5rem; }
-  .glass-card { padding: 14px; }
 
-  [style*="grid-template-columns: repeat(7, 1fr)"],
-  [style*="grid-template-columns: repeat(5, 1fr)"] {
-    grid-template-columns: 1fr !important;
-  }
-  [style*="font-size: 3rem"] { font-size: 2.2rem !important; }
   [style*="font-size: 2.2rem"] { font-size: 1.3rem !important; }
 }
 
@@ -672,29 +436,6 @@ body::after {
   body::before, body::after { animation: none; }
 }
 
-/* Card entrance animation */
-@keyframes fade-up {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.workspace-grid > * {
-  animation: fade-up 0.5s var(--ease) both;
-}
-
-.workspace-grid > *:nth-child(1) { animation-delay: 0.02s; }
-.workspace-grid > *:nth-child(2) { animation-delay: 0.06s; }
-.workspace-grid > *:nth-child(3) { animation-delay: 0.10s; }
-.workspace-grid > *:nth-child(4) { animation-delay: 0.14s; }
-.workspace-grid > *:nth-child(5) { animation-delay: 0.18s; }
-.workspace-grid > *:nth-child(6) { animation-delay: 0.22s; }
-.workspace-grid > *:nth-child(7) { animation-delay: 0.26s; }
-.workspace-grid > *:nth-child(n+8) { animation-delay: 0.30s; }
-
-@media (prefers-reduced-motion: reduce) {
-  .workspace-grid > * { animation: none; }
-}
-
 /* Tab-switch transition */
 @keyframes tab-in {
   from { opacity: 0; transform: translateY(6px); }
@@ -702,7 +443,14 @@ body::after {
 }
 
 .tab-panel {
-  animation: tab-in 0.28s var(--ease) both;
+  /* `backwards` (not `both`) is deliberate: `both` would leave `transform:
+     translateY(0)` permanently applied after the animation ends — a real
+     transform value, not `none` — which silently makes .tab-panel a
+     containing block for every `position: fixed` descendant (their "fixed"
+     position becomes relative to this scrolling box instead of the
+     viewport). `backwards` still prevents the pre-animation flash but lets
+     the element's styles fully revert once the 0.28s entrance finishes. */
+  animation: tab-in 0.28s var(--ease) backwards;
 }
 
 /* Mobile hamburger navigation */
@@ -734,7 +482,13 @@ body::after {
     flex-direction: column;
     gap: 4px;
     position: absolute;
-    top: 68px;
+    /* The mobile topbar wraps into a variable-height, multi-row layout (brand
+       row + status/hamburger row), so a fixed pixel offset here would overlap
+       whichever row ends up taller. `.topbar` is the positioning context
+       (it's `position: sticky`, itself a containing block for absolute
+       descendants), so `top: 100%` always sits the panel flush under the
+       topbar's actual rendered height instead of a guessed constant. */
+    top: 100%;
     left: 0;
     right: 0;
     padding: 10px;
@@ -746,21 +500,4 @@ body::after {
 
   .nav-mobile-panel .nav-item { width: 100%; }
   .nav-mobile-panel .nav-item span { display: inline; }
-}
-
-/* Sortable table headers */
-.sortable-th {
-  cursor: pointer;
-  user-select: none;
-  transition: color 0.15s var(--ease);
-}
-
-.sortable-th:hover {
-  color: var(--text-main);
-}
-
-.sort-arrow {
-  font-size: 0.65em;
-  margin-left: 4px;
-  opacity: 0.7;
 }

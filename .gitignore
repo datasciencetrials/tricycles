@@ -2,4 +2,3 @@ __pycache__/
 *.zip
 .venv/
 env/
-.vercel

@@ -5,7 +5,7 @@
 The results we presented in Chapter Four really challenge the way traffic capacity has traditionally been analyzed in Uganda. This chapter discusses what these findings actually mean for the city. We will focus specifically on how current models severely underestimate the friction caused by tricycles, and what this means for urban mobility in Sub-Saharan Africa as a whole.
 
 ## 5.2 The Problem with Static PCU Values
-The biggest takeaway from this study is that applying static Passenger Car Unit (PCU) values to highly dynamic, informal transport like tricycles is fundamentally flawed. Historically, the Ministry of Works and Transport (Agency) and international consultants have just imported static PCU values from the US Highway Capacity Manual or loosely adapted them from Indian studies (JICA, 2010; Agency, 2010). 
+The biggest takeaway from this study is that applying static Passenger Car Unit (PCU) values to highly dynamic, informal transport like tricycles is fundamentally flawed. Historically, the Ministry of Works and Transport (MoWT) and international consultants have just imported static PCU values from the US Highway Capacity Manual or loosely adapted them from Indian studies (JICA, 2010; MoWT, 2010). 
 
 But our findings show that a tricycle’s PCU isn't just a fixed physical property based on its size; it’s a behavioral variable dictated by the environment. The fact that the tricycle PCU spikes from 0.75 in free-flowing traffic to 1.15 during peak congestion ($V/C \geq 0.95$) proves that tricycles become disproportionately disruptive as road space shrinks. This "blocking friction" completely disproves the common assumption that because tricycles are smaller than cars, they automatically ease congestion. 
 

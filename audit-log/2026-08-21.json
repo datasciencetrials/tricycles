@@ -1,7 +1,7 @@
 {
   "date": "2026-08-21",
   "repo": "tricycles",
-  "url": "https://networkengineringAgency-ai.github.io/tricycles/",
+  "url": "https://networkengineringmowt-ai.github.io/tricycles/",
   "technical": {
     "httpStatus": 200,
     "loadFailed": false,
@@ -19,7 +19,7 @@
   "consistency": {
     "districtList": null,
     "notes": [
-      "Uganda_npms: no audit-log available yet for comparison"
+      "uganda_npms: no audit-log available yet for comparison"
     ]
   }
 }

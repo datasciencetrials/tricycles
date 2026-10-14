@@ -1,15 +1,15 @@
-# Kampala INTERNATIONAL UNIVERSITY
+# KAMPALA INTERNATIONAL UNIVERSITY
 ## DIRECTORATE OF HIGHER DEGREES AND RESEARCH
 ## SCHOOL OF ENGINEERING AND APPLIED SCIENCES
 ## DEPARTMENT OF CIVIL ENGINEERING
 
-**ANALYSIS OF TRICYCLE PASSENGER CAR UNIT VALUES FOR ENHANCED TRAFFIC FLOW IN Kampala CITY Uganda**
+**ANALYSIS OF TRICYCLE PASSENGER CAR UNIT VALUES FOR ENHANCED TRAFFIC FLOW IN KAMPALA CITY UGANDA**
 
 **By**
-**SSERUNJOGI DataScientist3**
+**SSERUNJOGI AMBROSE**
 **2022-08-12043**
 
-A RESEARCH THESIS PRESENTED TO THE SCHOOL OF ENGINEERING AND APPLIED SCIENCES IN PARTIAL FULFILLMENT FOR THE AWARD OF A MASTER OF SCIENCE DEGREE IN CIVIL ENGINEERING (TRANSPORTATION ENGINEERING) OF Kampala INTERNATIONAL UNIVERSITY.
+A RESEARCH THESIS PRESENTED TO THE SCHOOL OF ENGINEERING AND APPLIED SCIENCES IN PARTIAL FULFILLMENT FOR THE AWARD OF A MASTER OF SCIENCE DEGREE IN CIVIL ENGINEERING (TRANSPORTATION ENGINEERING) OF KAMPALA INTERNATIONAL UNIVERSITY.
 
 **AUGUST 2026**
 
@@ -17,7 +17,7 @@ A RESEARCH THESIS PRESENTED TO THE SCHOOL OF ENGINEERING AND APPLIED SCIENCES IN
 \newpage
 
 # DECLARATION
-I, Sserunjogi DataScientist3, declare that this thesis titled "Analysis of Tricycle Passenger Car Unit Values for Enhanced Traffic Flow in Kampala City Uganda" is my original work and has not been presented for a degree in any other university or institution of higher learning.
+I, Sserunjogi Ambrose, declare that this thesis titled "Analysis of Tricycle Passenger Car Unit Values for Enhanced Traffic Flow in Kampala City Uganda" is my original work and has not been presented for a degree in any other university or institution of higher learning.
 
 Signed: __________________________
 Date: ___________________________
@@ -46,7 +46,7 @@ Findings provide Kampala-specific PCU ranges for tricycles under various congest
 \newpage
 
 # ACKNOWLEDGEMENTS
-This work would not have been possible without the invaluable support and guidance of numerous individuals and institutions. I extend my profound gratitude to my supervisor for their unwavering mentorship and constructive feedback throughout the research process. I am also deeply thankful to the Kampala Capital City Authority (KCCA) and the Ministry of Works and Transport (Agency) for providing necessary administrative support. Finally, to the enumerators who braved the chaotic traffic of Kibuye and Bwaise to collect field data, and to my family for their endless patience—thank you.
+This work would not have been possible without the invaluable support and guidance of numerous individuals and institutions. I extend my profound gratitude to my supervisor for their unwavering mentorship and constructive feedback throughout the research process. I am also deeply thankful to the Kampala Capital City Authority (KCCA) and the Ministry of Works and Transport (MoWT) for providing necessary administrative support. Finally, to the enumerators who braved the chaotic traffic of Kibuye and Bwaise to collect field data, and to my family for their endless patience—thank you.
 
 ---
 \newpage
@@ -87,7 +87,7 @@ Because Kampala’s transport system is changing so fast—and with electric tuk
 ## 1.2 Problem Statement
 Tricycles have quickly become a major part of public transport in Kampala. They offer a cheap and flexible way to get around, especially for the "first and last mile" of a journey in busy residential areas (Baertsch, 2020; Okiza et al., 2024). Transport surveys show that tricycles now make up about 7 to 10% of the traffic on key roads, and this number is going up because they are cheap to run and can handle Kampala's potholes better than some cars (KCCA, 2023).
 
-Despite how common they are, the current methods used in Uganda to analyze road capacity basically ignore them. The Ministry of Works and Transport (Agency) guidelines classify vehicles into standard groups like cars, heavy buses, and motorcycles, but they don't have specific, field-tested PCU values for tricycles (Agency, 2010; Okiza et al., 2024).
+Despite how common they are, the current methods used in Uganda to analyze road capacity basically ignore them. The Ministry of Works and Transport (MoWT) guidelines classify vehicles into standard groups like cars, heavy buses, and motorcycles, but they don't have specific, field-tested PCU values for tricycles (MoWT, 2010; Okiza et al., 2024).
 
 Since PCU values are required to turn mixed traffic into standard units for capacity models (Ahmed, 2020), missing this data creates a big problem for traffic engineers in Kampala. Without local PCU values for tricycles, engineers have to either use foreign estimates or just guess a number somewhere between a motorcycle and a car. These guesses don't account for local habits, like how aggressively Kampala tuk-tuk drivers weave through traffic, or how they interact with the huge number of boda-bodas on the road.
 
@@ -214,7 +214,7 @@ This chapter outlines the research methods we used to figure out the actual Pass
 ## 3.2 Study Area and Site Selection
 The study was strictly confined to Kampala City, focusing on five specific intersections that are known for having high volumes of tricycles and terrible daily traffic jams.
 
-![Kampala Study Sites Map](../../visualizations/Kampala_study_sites_map_static.png)
+![Kampala Study Sites Map](../../visualizations/kampala_study_sites_map_static.png)
 *Figure 3.1: Map detailing the five high-density study locations across Kampala.*
 
 We chose these five locations for very specific reasons:
@@ -251,14 +251,14 @@ Traffic engineering often ignores the human element. To capture the behavioral "
 
 ### 3.3.2 Secondary Data
 To establish a historical baseline and validate our primary observations, two critical secondary data sources were utilized:
-1. **Ministry of Works and Transport (Agency) Historical Traffic Logs (2021):** We extracted historical 2021 intersection volume data from the Agency archives. This secondary quantitative data serves as the baseline to calculate the exponential geometric growth rate of tricycle imports over the last five years.
+1. **Ministry of Works and Transport (MoWT) Historical Traffic Logs (2021):** We extracted historical 2021 intersection volume data from the MoWT archives. This secondary quantitative data serves as the baseline to calculate the exponential geometric growth rate of tricycle imports over the last five years.
 2. **Uganda National Meteorological Authority (UNMA) Rainfall Data:** Historical rainfall averages were cross-referenced with our primary count logs to validate the statistical significance of weather-induced capacity drops.
 
 ## 3.4 Data Processing and Statistical Testing
 Once the primary and secondary data was collated, we applied robust statistical testing to ensure the validity of our findings. 
 - **Descriptive Statistics:** Calculation of Means, Standard Deviations, and Variances to establish baseline intersection capacities.
 - **Inferential Statistics:** One-Way ANOVA tests were utilized to prove variance across geographical locations, and Independent T-Tests were used to prove environmental impact (wet vs. dry).
-- **Probability Testing (GooDept_Nss-of-Fit):** A Chi-Square test was applied to tricycle arrival rates to determine if they follow a standard Poisson distribution or if they operate in aggressive non-random clusters (platoons). 
+- **Probability Testing (Goodness-of-Fit):** A Chi-Square test was applied to tricycle arrival rates to determine if they follow a standard Poisson distribution or if they operate in aggressive non-random clusters (platoons). 
 
 ### 3.4.1 Modified Headway Ratio Method
 Our data extractors watched the 60fps footage frame-by-frame to find "clean headway pairs" during times when the traffic was actually flowing. A "clean pair" happens when a tricycle directly follows a passenger car (or vice versa) without swerving out of the lane.
@@ -287,7 +287,7 @@ This chapter breaks down the empirical data we collected over the 20 days at Kam
 ## 4.2 Overall Traffic Composition
 Before we could calculate any PCU values, we first needed to understand the baseline traffic mix at our study sites. Our manual counts quickly confirmed just how much informal transit dominates the roads. 
 
-![Uganda Traffic Composition](../../visualizations/Uganda_traffic_viz.png)
+![Uganda Traffic Composition](../../visualizations/uganda_traffic_viz.png)
 *Figure 4.1: Traffic modal share across the five study intersections.*
 
 As you can see in Figure 4.1, passenger cars still make up the largest raw count. However, boda-bodas and tricycles combined take up a massive proportion of the traffic stream. Tricycles specifically held a steady 8–11% modal share across the sites. This proves that they are no longer just a fringe option; they are a core, permanent piece of Kampala's transport system.
@@ -342,16 +342,16 @@ To verify that these locational differences are statistically significant, a One
 
 Because the p-value is practically zero ($p < 0.05$), we reject the null hypothesis. There is a statistically significant difference in tricycle volumes based on intersection geometry and location.
 
-### 4.5.3 Probability Testing (Poisson GooDept_Nss-of-Fit)
-To test if Kampala's tricycle traffic adheres to standard random arrival probability, we ran a Chi-Square GooDept_Nss-of-Fit test on the primary Wandegeya data against a theoretical Poisson distribution.
+### 4.5.3 Probability Testing (Poisson Goodness-of-Fit)
+To test if Kampala's tricycle traffic adheres to standard random arrival probability, we ran a Chi-Square Goodness-of-Fit test on the primary Wandegeya data against a theoretical Poisson distribution.
 - **P-Value:** $< 0.001$
 The test powerfully rejects the null hypothesis. The tricycle arrival distribution significantly deviates from a pure Poisson model, proving that tricycles arrive in "platoons" due to aggressive overtaking, fundamentally violating standard Western capacity modeling assumptions.
 
-## 4.6 Secondary Data Analysis: Agency Historical Baseline Comparison
-To prove the exponential growth of tricycle interference, we cross-referenced our 2026 Primary Data with Secondary Data sourced from the 2021 Ministry of Works and Transport (Agency) traffic logs for Kibuye Roundabout.
+## 4.6 Secondary Data Analysis: MoWT Historical Baseline Comparison
+To prove the exponential growth of tricycle interference, we cross-referenced our 2026 Primary Data with Secondary Data sourced from the 2021 Ministry of Works and Transport (MoWT) traffic logs for Kibuye Roundabout.
 
 **Table 4.3: Longitudinal Growth of Tricycle Volumes (Secondary vs Primary)**
-| Metric | Agency Secondary Data (2021) | Primary Field Data (2026) | Growth Rate |
+| Metric | MoWT Secondary Data (2021) | Primary Field Data (2026) | Growth Rate |
 | :--- | :--- | :--- | :--- |
 | Peak Hour Volume (Veh/Hr) | 215 | 700 | +225% |
 | Proportion of Total Fleet | 4.2% | 14.8% | +252% |
@@ -368,7 +368,7 @@ While the quantitative data proves the capacity collapse, our Qualitative Tests 
 ## 4.8 VISSIM Microsimulation Validation
 Finally, we fed our new dynamic values into a PTV VISSIM simulation model of the Wandegeya Junction. 
 
-![Tricycle Weaving Kampala](../../visualizations/tricycle_weaving_Kampala.png)
+![Tricycle Weaving Kampala](../../visualizations/tricycle_weaving_kampala.png)
 *Figure 4.3: VISSIM visual output demonstrating tricycle lane indiscipline.*
 
 When we replaced the software's default static PCU (which was around 0.5) with our empirical dynamic PCU curve (0.85 - 1.15), the simulation perfectly replicated the massive 150-meter queues we saw in real life. Even better, when we used the simulation to theoretically optimize the traffic light signals based on these *new* accurate PCUs, the saturation flow improved by 14.2%. This validates just how critical it is to use localized PCU parameters.
@@ -383,7 +383,7 @@ When we replaced the software's default static PCU (which was around 0.5) with o
 The results we presented in Chapter Four really challenge the way traffic capacity has traditionally been analyzed in Uganda. This chapter discusses what these findings actually mean for the city. We will focus specifically on how current models severely underestimate the friction caused by tricycles, and what this means for urban mobility in Sub-Saharan Africa as a whole.
 
 ## 5.2 The Problem with Static PCU Values
-The biggest takeaway from this study is that applying static Passenger Car Unit (PCU) values to highly dynamic, informal transport like tricycles is fundamentally flawed. Historically, the Ministry of Works and Transport (Agency) and international consultants have just imported static PCU values from the US Highway Capacity Manual or loosely adapted them from Indian studies (JICA, 2010; Agency, 2010). 
+The biggest takeaway from this study is that applying static Passenger Car Unit (PCU) values to highly dynamic, informal transport like tricycles is fundamentally flawed. Historically, the Ministry of Works and Transport (MoWT) and international consultants have just imported static PCU values from the US Highway Capacity Manual or loosely adapted them from Indian studies (JICA, 2010; MoWT, 2010). 
 
 But our findings show that a tricycle’s PCU isn't just a fixed physical property based on its size; it’s a behavioral variable dictated by the environment. The fact that the tricycle PCU spikes from 0.75 in free-flowing traffic to 1.15 during peak congestion ($V/C \geq 0.95$) proves that tricycles become disproportionately disruptive as road space shrinks. This "blocking friction" completely disproves the common assumption that because tricycles are smaller than cars, they automatically ease congestion. 
 
@@ -414,8 +414,8 @@ Based on our empirical analysis of how tricycles operate across Kampala's major 
 
 ## 6.2 Recommendations
 
-### 6.2.1 To the Ministry of Works and Transport (Agency)
-- **Update the Road Design Manual:** The Agency needs to immediately update the national geometric design manuals. They must formally recognize tricycles as a distinct vehicle class and adopt a dynamic PCU range of 0.85 (off-peak) to 1.15 (peak) for all future capacity planning.
+### 6.2.1 To the Ministry of Works and Transport (MoWT)
+- **Update the Road Design Manual:** The MoWT needs to immediately update the national geometric design manuals. They must formally recognize tricycles as a distinct vehicle class and adopt a dynamic PCU range of 0.85 (off-peak) to 1.15 (peak) for all future capacity planning.
 - **Build Dedicated Staging Areas:** Unlike motorcycles, tricycles take up a lot of space when loading passengers. Future road designs must incorporate designated, recessed tricycle staging zones (lay-bys) to stop the mid-lane loading that currently shatters intersection capacity.
 
 ### 6.2.2 To the Kampala Capital City Authority (KCCA)
@@ -463,7 +463,7 @@ Khisty, C. J., & Lall, B. K. (2016). *Transportation Engineering: An Introductio
 
 Lera, M., & Kuleno, B. (2020). *Estimating Passenger Car Units at Signalized Intersections*. International Journal of Traffic and Transportation Engineering, 9(3), 112-120.
 
-Ministry of Works and Transport (Agency), Uganda. (2010). *Road Design Manual Vol 1: Geometric Design*. Kampala.
+Ministry of Works and Transport (MoWT), Uganda. (2010). *Road Design Manual Vol 1: Geometric Design*. Kampala.
 
 Okiza, P., et al. (2024). *Analyzing the Modal Shift: The Rise of Tuk-Tuks on Kampala's Arterials*. African Transport Journal, 12(4), 88-105.
 

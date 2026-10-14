@@ -1,0 +1,29 @@
+{
+  "date": "2026-09-10",
+  "repo": "tricycles",
+  "url": "https://networkengineringmowt-ai.github.io/tricycles/",
+  "technical": {
+    "httpStatus": 200,
+    "loadFailed": false,
+    "pageRendered": true,
+    "bodyTextLength": 2139,
+    "consoleErrors": [],
+    "brokenImages": [],
+    "hashLinksFound": [],
+    "chartElementCount": 2
+  },
+  "accuracy": {
+    "extractedFigures": [
+      {
+        "value": 1,
+        "raw": "1 km",
+        "context": "CU 1.31\nBwaise\nPCU 1.29\nNatete\nPCU 1.31"
+      }
+    ],
+    "discrepancies": []
+  },
+  "consistency": {
+    "districtList": null,
+    "notes": []
+  }
+}

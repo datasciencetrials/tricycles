@@ -11,8 +11,8 @@ Based on our empirical analysis of how tricycles operate across Kampala's major 
 
 ## 6.2 Recommendations
 
-### 6.2.1 To the Ministry of Works and Transport (Agency)
-- **Update the Road Design Manual:** The Agency needs to immediately update the national geometric design manuals. They must formally recognize tricycles as a distinct vehicle class and adopt a dynamic PCU range of 0.85 (off-peak) to 1.15 (peak) for all future capacity planning.
+### 6.2.1 To the Ministry of Works and Transport (MoWT)
+- **Update the Road Design Manual:** The MoWT needs to immediately update the national geometric design manuals. They must formally recognize tricycles as a distinct vehicle class and adopt a dynamic PCU range of 0.85 (off-peak) to 1.15 (peak) for all future capacity planning.
 - **Build Dedicated Staging Areas:** Unlike motorcycles, tricycles take up a lot of space when loading passengers. Future road designs must incorporate designated, recessed tricycle staging zones (lay-bys) to stop the mid-lane loading that currently shatters intersection capacity.
 
 ### 6.2.2 To the Kampala Capital City Authority (KCCA)

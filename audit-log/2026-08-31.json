@@ -1,0 +1,25 @@
+{
+  "date": "2026-08-31",
+  "repo": "tricycles",
+  "url": "https://networkengineringmowt-ai.github.io/tricycles/",
+  "technical": {
+    "httpStatus": 200,
+    "loadFailed": false,
+    "pageRendered": true,
+    "bodyTextLength": 541,
+    "consoleErrors": [],
+    "brokenImages": [],
+    "hashLinksFound": [],
+    "chartElementCount": 1
+  },
+  "accuracy": {
+    "extractedFigures": [],
+    "discrepancies": []
+  },
+  "consistency": {
+    "districtList": null,
+    "notes": [
+      "uganda_npms: no audit-log available yet for comparison"
+    ]
+  }
+}

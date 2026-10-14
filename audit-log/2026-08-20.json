@@ -1,7 +1,7 @@
 {
   "date": "2026-08-20",
   "repo": "tricycles",
-  "url": "https://networkengineringAgency-ai.github.io/tricycles/",
+  "url": "https://networkengineringmowt-ai.github.io/tricycles/",
   "technical": {
     "httpStatus": 200,
     "loadFailed": false,
@@ -16,7 +16,7 @@
     "amber": "fail",
     "darkBackground": "fail",
     "nav": "pass",
-    "AgencyBranding": "fail"
+    "mowtBranding": "fail"
   },
   "accuracy": {
     "extractedFigures": [],
@@ -25,15 +25,15 @@
   "consistency": {
     "districtList": null,
     "notes": [
-      "Uganda_nrms: no audit-log available yet for comparison",
-      "Uganda_network_traffic: no audit-log available yet for comparison",
-      "Uganda_ducar: no audit-log available yet for comparison",
-      "Uganda_nbms: no audit-log available yet for comparison",
-      "Uganda_gis_enterprise: no audit-log available yet for comparison",
+      "uganda_nrms: no audit-log available yet for comparison",
+      "uganda_network_traffic: no audit-log available yet for comparison",
+      "uganda_ducar: no audit-log available yet for comparison",
+      "uganda_nbms: no audit-log available yet for comparison",
+      "uganda_gis_enterprise: no audit-log available yet for comparison",
       "bridge_mculverts: no audit-log available yet for comparison",
-      "Uganda_kee: no audit-log available yet for comparison",
-      "Uganda_kee_rss: no audit-log available yet for comparison",
-      "Uganda_ntis: no audit-log available yet for comparison"
+      "uganda_kee: no audit-log available yet for comparison",
+      "uganda_kee_rss: no audit-log available yet for comparison",
+      "uganda_ntis: no audit-log available yet for comparison"
     ]
   }
 }

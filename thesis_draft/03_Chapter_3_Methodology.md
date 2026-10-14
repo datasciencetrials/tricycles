@@ -7,7 +7,7 @@ This chapter outlines the research methods we used to figure out the actual Pass
 ## 3.2 Study Area and Site Selection
 The study was strictly confined to Kampala City, focusing on five specific intersections that are known for having high volumes of tricycles and terrible daily traffic jams.
 
-![Kampala Study Sites Map](../../visualizations/Kampala_study_sites_map_static.png)
+![Kampala Study Sites Map](../../visualizations/kampala_study_sites_map_static.png)
 *Figure 3.1: Map detailing the five high-density study locations across Kampala.*
 
 We chose these five locations for very specific reasons:
@@ -44,14 +44,14 @@ Traffic engineering often ignores the human element. To capture the behavioral "
 
 ### 3.3.2 Secondary Data
 To establish a historical baseline and validate our primary observations, two critical secondary data sources were utilized:
-1. **Ministry of Works and Transport (Agency) Historical Traffic Logs (2021):** We extracted historical 2021 intersection volume data from the Agency archives. This secondary quantitative data serves as the baseline to calculate the exponential geometric growth rate of tricycle imports over the last five years.
+1. **Ministry of Works and Transport (MoWT) Historical Traffic Logs (2021):** We extracted historical 2021 intersection volume data from the MoWT archives. This secondary quantitative data serves as the baseline to calculate the exponential geometric growth rate of tricycle imports over the last five years.
 2. **Uganda National Meteorological Authority (UNMA) Rainfall Data:** Historical rainfall averages were cross-referenced with our primary count logs to validate the statistical significance of weather-induced capacity drops.
 
 ## 3.4 Data Processing and Statistical Testing
 Once the primary and secondary data was collated, we applied robust statistical testing to ensure the validity of our findings. 
 - **Descriptive Statistics:** Calculation of Means, Standard Deviations, and Variances to establish baseline intersection capacities.
 - **Inferential Statistics:** One-Way ANOVA tests were utilized to prove variance across geographical locations, and Independent T-Tests were used to prove environmental impact (wet vs. dry).
-- **Probability Testing (GooDept_Nss-of-Fit):** A Chi-Square test was applied to tricycle arrival rates to determine if they follow a standard Poisson distribution or if they operate in aggressive non-random clusters (platoons). 
+- **Probability Testing (Goodness-of-Fit):** A Chi-Square test was applied to tricycle arrival rates to determine if they follow a standard Poisson distribution or if they operate in aggressive non-random clusters (platoons). 
 
 ### 3.4.1 Modified Headway Ratio Method
 Our data extractors watched the 60fps footage frame-by-frame to find "clean headway pairs" during times when the traffic was actually flowing. A "clean pair" happens when a tricycle directly follows a passenger car (or vice versa) without swerving out of the lane.

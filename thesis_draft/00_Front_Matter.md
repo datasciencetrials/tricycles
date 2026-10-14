@@ -1,15 +1,15 @@
-# Kampala INTERNATIONAL UNIVERSITY
+# KAMPALA INTERNATIONAL UNIVERSITY
 ## DIRECTORATE OF HIGHER DEGREES AND RESEARCH
 ## SCHOOL OF ENGINEERING AND APPLIED SCIENCES
 ## DEPARTMENT OF CIVIL ENGINEERING
 
-**ANALYSIS OF TRICYCLE PASSENGER CAR UNIT VALUES FOR ENHANCED TRAFFIC FLOW IN Kampala CITY Uganda**
+**ANALYSIS OF TRICYCLE PASSENGER CAR UNIT VALUES FOR ENHANCED TRAFFIC FLOW IN KAMPALA CITY UGANDA**
 
 **By**
-**SSERUNJOGI DataScientist3**
+**SSERUNJOGI AMBROSE**
 **2022-08-12043**
 
-A RESEARCH THESIS PRESENTED TO THE SCHOOL OF ENGINEERING AND APPLIED SCIENCES IN PARTIAL FULFILLMENT FOR THE AWARD OF A MASTER OF SCIENCE DEGREE IN CIVIL ENGINEERING (TRANSPORTATION ENGINEERING) OF Kampala INTERNATIONAL UNIVERSITY.
+A RESEARCH THESIS PRESENTED TO THE SCHOOL OF ENGINEERING AND APPLIED SCIENCES IN PARTIAL FULFILLMENT FOR THE AWARD OF A MASTER OF SCIENCE DEGREE IN CIVIL ENGINEERING (TRANSPORTATION ENGINEERING) OF KAMPALA INTERNATIONAL UNIVERSITY.
 
 **AUGUST 2026**
 
@@ -17,7 +17,7 @@ A RESEARCH THESIS PRESENTED TO THE SCHOOL OF ENGINEERING AND APPLIED SCIENCES IN
 \newpage
 
 # DECLARATION
-I, Sserunjogi DataScientist3, declare that this thesis titled "Analysis of Tricycle Passenger Car Unit Values for Enhanced Traffic Flow in Kampala City Uganda" is my original work and has not been presented for a degree in any other university or institution of higher learning.
+I, Sserunjogi Ambrose, declare that this thesis titled "Analysis of Tricycle Passenger Car Unit Values for Enhanced Traffic Flow in Kampala City Uganda" is my original work and has not been presented for a degree in any other university or institution of higher learning.
 
 Signed: __________________________
 Date: ___________________________
@@ -46,7 +46,7 @@ Findings provide Kampala-specific PCU ranges for tricycles under various congest
 \newpage
 
 # ACKNOWLEDGEMENTS
-This work would not have been possible without the invaluable support and guidance of numerous individuals and institutions. I extend my profound gratitude to my supervisor for their unwavering mentorship and constructive feedback throughout the research process. I am also deeply thankful to the Kampala Capital City Authority (KCCA) and the Ministry of Works and Transport (Agency) for providing necessary administrative support. Finally, to the enumerators who braved the chaotic traffic of Kibuye and Bwaise to collect field data, and to my family for their endless patience—thank you.
+This work would not have been possible without the invaluable support and guidance of numerous individuals and institutions. I extend my profound gratitude to my supervisor for their unwavering mentorship and constructive feedback throughout the research process. I am also deeply thankful to the Kampala Capital City Authority (KCCA) and the Ministry of Works and Transport (MoWT) for providing necessary administrative support. Finally, to the enumerators who braved the chaotic traffic of Kibuye and Bwaise to collect field data, and to my family for their endless patience—thank you.
 
 ---
 \newpage

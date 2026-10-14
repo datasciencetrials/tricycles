@@ -32,7 +32,7 @@ Khisty, C. J., & Lall, B. K. (2016). *Transportation Engineering: An Introductio
 
 Lera, M., & Kuleno, B. (2020). *Estimating Passenger Car Units at Signalized Intersections*. International Journal of Traffic and Transportation Engineering, 9(3), 112-120.
 
-Ministry of Works and Transport (Agency), Uganda. (2010). *Road Design Manual Vol 1: Geometric Design*. Kampala.
+Ministry of Works and Transport (MoWT), Uganda. (2010). *Road Design Manual Vol 1: Geometric Design*. Kampala.
 
 Okiza, P., et al. (2024). *Analyzing the Modal Shift: The Rise of Tuk-Tuks on Kampala's Arterials*. African Transport Journal, 12(4), 88-105.
 

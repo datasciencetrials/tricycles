@@ -1,0 +1,29 @@
+{
+  "date": "2026-09-04",
+  "repo": "tricycles",
+  "url": "https://networkengineringmowt-ai.github.io/tricycles/",
+  "technical": {
+    "httpStatus": 200,
+    "loadFailed": false,
+    "pageRendered": true,
+    "bodyTextLength": 2335,
+    "consoleErrors": [],
+    "brokenImages": [],
+    "hashLinksFound": [],
+    "chartElementCount": 4
+  },
+  "accuracy": {
+    "extractedFigures": [
+      {
+        "value": 1,
+        "raw": "1 km",
+        "context": "ndegeya\nKibuye\nBakuli\nBwaise\nNatete\n+\n−"
+      }
+    ],
+    "discrepancies": []
+  },
+  "consistency": {
+    "districtList": null,
+    "notes": []
+  }
+}

@@ -2473,7 +2473,7 @@
         {
           "Section_ID": "A00121",
           "Link_ID": "A001N2_Link01",
-          "Link_Name": "Jinja - KaKira Junction(Dual section)",
+          "Link_Name": "Jinja - Kakira Junction(Dual section)",
           "Station": "Jinja",
           "Region": "Eastern",
           "Surface_Type": "Bituminous",
@@ -2641,7 +2641,7 @@
         {
           "Section_ID": "A00122",
           "Link_ID": "A001_Link06",
-          "Link_Name": "KaKira junction - Iganga",
+          "Link_Name": "Kakira junction - Iganga",
           "Station": "Jinja",
           "Region": "Eastern",
           "Surface_Type": "Bituminous",
@@ -3169,7 +3169,7 @@
         {
           "Section_ID": "C79703",
           "Link_ID": "C797_Link02",
-          "Link_Name": "KaKira - Namasiga",
+          "Link_Name": "Kakira - Namasiga",
           "Station": "Jinja",
           "Region": "Eastern",
           "Surface_Type": "Unsealed",
@@ -3433,7 +3433,7 @@
         {
           "Section_ID": "C22103",
           "Link_ID": "C221_Link02",
-          "Link_Name": "Lusakalwamese - BiKira",
+          "Link_Name": "Lusakalwamese - Bikira",
           "Station": "Masaka",
           "Region": "Central",
           "Surface_Type": "Unsealed",
@@ -4657,7 +4657,7 @@
         {
           "Section_ID": "C36501",
           "Link_ID": "C365_Link01",
-          "Link_Name": "NyaKiraguju - Ruzinga (Bugamba) Chitwe",
+          "Link_Name": "Nyakiraguju - Ruzinga (Bugamba) Chitwe",
           "Station": "Mbarara",
           "Region": "Southern",
           "Surface_Type": "Unsealed",
@@ -6124,7 +6124,7 @@
         {
           "Section_ID": "A00121",
           "Link_ID": "A001N2_Link01",
-          "Link_Name": "Jinja - KaKira Junction(Dual section)",
+          "Link_Name": "Jinja - Kakira Junction(Dual section)",
           "Station": "Jinja",
           "Region": "Eastern",
           "Surface_Type": "Bituminous",
@@ -6172,7 +6172,7 @@
         {
           "Section_ID": "A00122",
           "Link_ID": "A001_Link06",
-          "Link_Name": "KaKira junction - Iganga",
+          "Link_Name": "Kakira junction - Iganga",
           "Station": "Jinja",
           "Region": "Eastern",
           "Surface_Type": "Bituminous",
@@ -7108,7 +7108,7 @@
         {
           "Section_ID": "C79703",
           "Link_ID": "C797_Link02",
-          "Link_Name": "KaKira - Namasiga",
+          "Link_Name": "Kakira - Namasiga",
           "Station": "Jinja",
           "Region": "Eastern",
           "Surface_Type": "Unsealed",
@@ -9436,7 +9436,7 @@
         {
           "Section_ID": "C36501",
           "Link_ID": "C365_Link01",
-          "Link_Name": "NyaKiraguju - Ruzinga (Bugamba) Chitwe",
+          "Link_Name": "Nyakiraguju - Ruzinga (Bugamba) Chitwe",
           "Station": "Mbarara",
           "Region": "Southern",
           "Surface_Type": "Unsealed",
@@ -12775,7 +12775,7 @@
         {
           "Section_ID": "A00121",
           "Link_ID": "A001N2_Link01",
-          "Link_Name": "Jinja - KaKira Junction(Dual section)",
+          "Link_Name": "Jinja - Kakira Junction(Dual section)",
           "Station": "Jinja",
           "Region": "Eastern",
           "Surface_Type": "Bituminous",
@@ -12919,7 +12919,7 @@
         {
           "Section_ID": "A00122",
           "Link_ID": "A001_Link06",
-          "Link_Name": "KaKira junction - Iganga",
+          "Link_Name": "Kakira junction - Iganga",
           "Station": "Jinja",
           "Region": "Eastern",
           "Surface_Type": "Bituminous",
@@ -13423,7 +13423,7 @@
         {
           "Section_ID": "C79703",
           "Link_ID": "C797_Link02",
-          "Link_Name": "KaKira - Namasiga",
+          "Link_Name": "Kakira - Namasiga",
           "Station": "Jinja",
           "Region": "Eastern",
           "Surface_Type": "Unsealed",
@@ -15223,7 +15223,7 @@
         {
           "Section_ID": "C36501",
           "Link_ID": "C365_Link01",
-          "Link_Name": "NyaKiraguju - Ruzinga (Bugamba) Chitwe",
+          "Link_Name": "Nyakiraguju - Ruzinga (Bugamba) Chitwe",
           "Station": "Mbarara",
           "Region": "Southern",
           "Surface_Type": "Unsealed",
@@ -15775,7 +15775,7 @@
         {
           "Section_ID": "C22103",
           "Link_ID": "C221_Link02",
-          "Link_Name": "Lusakalwamese - BiKira",
+          "Link_Name": "Lusakalwamese - Bikira",
           "Station": "Masaka",
           "Region": "Central",
           "Surface_Type": "Unsealed",
@@ -19578,7 +19578,7 @@
         {
           "Section_ID": "A00121",
           "Link_ID": "A001N2_Link01",
-          "Link_Name": "Jinja - KaKira Junction(Dual section)",
+          "Link_Name": "Jinja - Kakira Junction(Dual section)",
           "Station": "Jinja",
           "Region": "Eastern",
           "Surface_Type": "Bituminous",
@@ -19746,7 +19746,7 @@
         {
           "Section_ID": "A00122",
           "Link_ID": "A001_Link06",
-          "Link_Name": "KaKira junction - Iganga",
+          "Link_Name": "Kakira junction - Iganga",
           "Station": "Jinja",
           "Region": "Eastern",
           "Surface_Type": "Bituminous",
@@ -20322,7 +20322,7 @@
         {
           "Section_ID": "C79703",
           "Link_ID": "C797_Link02",
-          "Link_Name": "KaKira - Namasiga",
+          "Link_Name": "Kakira - Namasiga",
           "Station": "Jinja",
           "Region": "Eastern",
           "Surface_Type": "Unsealed",
@@ -20586,7 +20586,7 @@
         {
           "Section_ID": "C22103",
           "Link_ID": "C221_Link02",
-          "Link_Name": "Lusakalwamese - BiKira",
+          "Link_Name": "Lusakalwamese - Bikira",
           "Station": "Masaka",
           "Region": "Central",
           "Surface_Type": "Unsealed",
@@ -21930,7 +21930,7 @@
         {
           "Section_ID": "C36501",
           "Link_ID": "C365_Link01",
-          "Link_Name": "NyaKiraguju - Ruzinga (Bugamba) Chitwe",
+          "Link_Name": "Nyakiraguju - Ruzinga (Bugamba) Chitwe",
           "Station": "Mbarara",
           "Region": "Southern",
           "Surface_Type": "Unsealed",
@@ -23644,7 +23644,7 @@
       },
       {
         "Link_ID": "A001_Link05",
-        "Link_Name": "Jinja - KaKira Junction",
+        "Link_Name": "Jinja - Kakira Junction",
         "Region": "Eastern",
         "Motorised_Traffic": 45341.63,
         "Vehicle_Km": 196146985.04
