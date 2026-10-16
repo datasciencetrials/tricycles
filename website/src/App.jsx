@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import Layout from './components/Layout';
-import OverviewTab from './components/OverviewTab';
 import InfographicDashboard from './components/InfographicDashboard';
-import SummaryTables from './components/SummaryTables';
-import ThesisTab from './components/ThesisTab';
+import SourceVerifiedTables from './components/SourceVerifiedTables';
+import EvidenceStatus from './components/EvidenceStatus';
 import './index.css';
 
 function App() {
@@ -37,15 +36,15 @@ function App() {
   const renderContent = () => {
     switch (activeTab) {
       case 'overview':
-        return <OverviewTab goBack={goBack} canGoBack={canGoBack} />;
+        return <InfographicDashboard goBack={goBack} canGoBack={canGoBack} />;
       case 'summary':
-        return <SummaryTables goBack={goBack} canGoBack={canGoBack} />;
+        return <SourceVerifiedTables goBack={goBack} canGoBack={canGoBack} />;
       case 'analytics':
         return <InfographicDashboard goBack={goBack} canGoBack={canGoBack} />;
       case 'thesis':
-        return <ThesisTab goBack={goBack} canGoBack={canGoBack} />;
+        return <EvidenceStatus goBack={goBack} canGoBack={canGoBack} />;
       default:
-        return <OverviewTab goBack={goBack} canGoBack={canGoBack} />;
+        return <InfographicDashboard goBack={goBack} canGoBack={canGoBack} />;
     }
   };
 
