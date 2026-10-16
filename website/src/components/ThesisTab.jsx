@@ -248,6 +248,8 @@ const ThesisTab = ({ goBack, canGoBack } = {}) => {
         .thesis-light {
           position: relative;
           width: 100vw;
+          box-sizing: border-box;
+          overflow-x: clip;
           left: 50%;
           right: 50%;
           margin-left: -50vw;
@@ -260,6 +262,8 @@ const ThesisTab = ({ goBack, canGoBack } = {}) => {
           gap: 24px;
           align-items: flex-start;
           width: 100%;
+          min-width: 0;
+          box-sizing: border-box;
           margin: 0 auto;
           font-family: -apple-system, BlinkMacSystemFont, 'Inter', system-ui, sans-serif;
           color: #1d1d1f;
@@ -272,6 +276,16 @@ const ThesisTab = ({ goBack, canGoBack } = {}) => {
           box-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 16px 40px -16px rgba(0,0,0,0.12);
           display: flex;
           flex-direction: column;
+        }
+        .thesis-body-card {
+          min-width: 0;
+          max-width: calc(100% - 324px);
+          box-sizing: border-box;
+        }
+        .thesis-content {
+          min-width: 0;
+          max-width: 100%;
+          overflow-wrap: anywhere;
         }
         .thesis-card h3 {
           font-size: 1.05rem;
@@ -346,13 +360,13 @@ const ThesisTab = ({ goBack, canGoBack } = {}) => {
           opacity: 0.55;
         }
         .thesis-content a { color: ${C.blue}; font-weight: 600; }
-        .thesis-content table { color: #1d1d1f; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+        .thesis-content table { color: #1d1d1f; display: block; max-width: 100%; overflow-x: auto; border-radius: 12px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
         .thesis-content table thead tr { background: linear-gradient(90deg, rgba(0,113,227,0.08), rgba(64,200,224,0.08)) !important; }
         .thesis-content table th { font-weight: 700; text-transform: uppercase; font-size: 0.72rem; letter-spacing: 0.05em; color: ${C.sub}; }
         .thesis-content table tbody tr { transition: background 0.15s; }
         .thesis-content table tbody tr:nth-child(even) { background: rgba(0,0,0,0.015); }
         .thesis-content table tbody tr:hover { background: rgba(0,113,227,0.06); }
-        .thesis-content pre { scrollbar-width: thin; scrollbar-color: rgba(0,0,0,0.3) transparent; }
+        .thesis-content pre { max-width: 100%; box-sizing: border-box; overflow-x: auto; scrollbar-width: thin; scrollbar-color: rgba(0,0,0,0.3) transparent; }
         .thesis-content pre::-webkit-scrollbar { height: 8px; }
         .thesis-content pre::-webkit-scrollbar-track { background: transparent; }
         .thesis-content pre::-webkit-scrollbar-thumb { background-color: rgba(0,0,0,0.3); border-radius: 6px; }
@@ -427,7 +441,7 @@ const ThesisTab = ({ goBack, canGoBack } = {}) => {
             overflow-y: visible !important;
           }
           .thesis-toc-scrollbar-track { display: none !important; }
-          .thesis-body-card { padding: 20px !important; width: 100% !important; box-sizing: border-box; }
+          .thesis-body-card { padding: 20px !important; width: 100% !important; max-width: 100% !important; box-sizing: border-box; }
           .thesis-doc-title { font-size: 1.5rem !important; margin-bottom: 24px !important; }
           .thesis-content table { display: block; overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; max-width: 100%; scrollbar-width: thin; scrollbar-color: rgba(0,0,0,0.3) transparent; }
           .thesis-content table::-webkit-scrollbar { height: 8px; }
