@@ -65,13 +65,13 @@ export default function SourceVerifiedTables({ goBack, canGoBack } = {}) {
       <header className="verified-hero">
         <div className="verified-pill">Source verified</div>
         <h1>Traffic Summary Tables</h1>
-        <p>Complete results for the four sites supported by the governed source files. Natete is not included because no source observations are present.</p>
+        <p>Complete results for all five study sites supported by the governed source files.</p>
       </header>
       {!stats ? <p>Computing source-reconciled statistics...</p> : <>
         <div className="verified-note"><strong>Evidence boundary:</strong> these tables do not report headway, capacity, V/C ratio, weather significance, weekday or weekend comparisons, or monthly trends because those fields are not present in the governed source data.</div>
         <section className="verified-card">
           <h2>Observed traffic and dynamic PCU by site</h2>
-          <p>Counts come from 984 classified movement records. Dynamic PCU values use the disclosed demand-pressure model and are explicitly modelled.</p>
+          <p>Counts come from {stats.rawMovementCount.toLocaleString('en-GB')} classified movement records. Dynamic PCU values use the disclosed demand-pressure model and are explicitly modelled.</p>
           <div className="verified-scroll"><table className="verified-table">
             <thead><tr><th>Study site</th><th>Junction type</th><th>Motorised vehicles</th><th>Passenger tricycles</th><th>Cargo tricycles</th><th>Total tricycles</th><th>Share</th><th>Passenger PCU, modelled</th><th>Cargo PCU, modelled</th><th>Combined PCU, modelled</th></tr></thead>
             <tbody>{REAL_SITES.map((site) => { const r = stats.resultsBySite[site]; const p = stats.dynamicPcuBySite[site]; return <tr key={site}><td>{site}</td><td>{r.junctionType}</td><td>{fmt(r.motorizedVehicles)}</td><td>{fmt(r.passengerTri)}</td><td>{fmt(r.cargoTri)}</td><td>{fmt(r.totalTri)}</td><td>{fmt(r.tricycleShare * 100, 1)}%</td><td>{fmt(p.passengerDynamicPCU, 3)}</td><td>{fmt(p.cargoDynamicPCU, 3)}</td><td>{fmt(p.combinedDynamicPCU, 3)}</td></tr>; })}</tbody>

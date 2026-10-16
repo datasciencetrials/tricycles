@@ -36,7 +36,7 @@ const tooltipTheme = {
 };
 const legendTheme = { labels: { color: chartSub, boxWidth: 10, boxHeight: 10, padding: 14, font: { size: 11, weight: '600' }, usePointStyle: true, pointStyle: 'circle' } };
 const INCIDENT_COLORS = [C.red, C.orange, C.blue, C.indigo, C.teal, C.purple, C.pink, C.green, C.yellow, '#8e8e93'];
-const SITE_COLORS = { Kibuye: C.blue, Wandegeya: C.indigo, Bakuli: C.teal, Bwaise: C.orange };
+const SITE_COLORS = { Kibuye: C.blue, Wandegeya: C.indigo, Bakuli: C.teal, Bwaise: C.orange, Natete: C.purple };
 const COMP_CLASSES = ['Motorcycles', 'PassengerTricycle', 'CargoTricycle', 'CarsTaxi', 'OtherMotorized'];
 const COMP_LABELS = { Motorcycles: 'Motorcycles', PassengerTricycle: 'Passenger Tricycles', CargoTricycle: 'Cargo Tricycles', CarsTaxi: 'Cars / Taxis', OtherMotorized: 'Other Motorized' };
 const COMP_COLORS = { Motorcycles: C.indigo, PassengerTricycle: C.green, CargoTricycle: C.orange, CarsTaxi: C.blue, OtherMotorized: C.faint };
@@ -245,7 +245,7 @@ const InfographicDashboard = ({ goBack, canGoBack } = {}) => {
   // to show only the 12 real surveyed hours (07:00-18:00).
   const [showOvernightModel, setShowOvernightModel] = useState(true);
 
-  // Which site's 24-hour profile to chart -- 'All Sites' (mean across the 4
+  // Which site's 24-hour profile to chart -- 'All Sites' (mean across the 5
   // real junctions) or one real site, using the matching precomputed profile
   // from trafficStats.js (both grains use the same real-hours + disclosed-
   // overnight-model construction).
@@ -380,7 +380,7 @@ const InfographicDashboard = ({ goBack, canGoBack } = {}) => {
         <>
         {/* KPI STRIP */}
         <div className="a-kpi-grid">
-          <KpiCard icon="fa-database" color={C.blue} label="Real Movement Records" value={stats.rawMovementCount.toLocaleString()} sub={`4 sites · ${stats.siteHourCount} site-hour aggregates`} />
+          <KpiCard icon="fa-database" color={C.blue} label="Real Movement Records" value={stats.rawMovementCount.toLocaleString()} sub={`${REAL_SITES.length} sites · ${stats.siteHourCount} site-hour aggregates`} />
           <KpiCard icon="fa-gauge-high" color={C.teal} label="Combined Dynamic PCU" value={stats.combinedDynamicPCUOverall.toFixed(3)} sub="Static x demand-pressure model" />
           <KpiCard icon="fa-route" color={C.purple} label="Combined Tricycle Share" value={`${((stats.allSitesTotalTri / stats.allSitesMotorized) * 100).toFixed(1)}%`} sub="of surveyed motorized flow" />
           <KpiCard icon="fa-chart-simple" color={C.indigo} label="Tricycle Volume by Site" value={`F = ${stats.tricycleSiteAnova.F.toFixed(2)}`} sub={`One-way ANOVA · ${pFmt(stats.tricycleSiteAnova.p)}`} />
@@ -397,7 +397,7 @@ const InfographicDashboard = ({ goBack, canGoBack } = {}) => {
           <div className="a-card s-12">
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '12px' }}>
               <SectionHeader eyebrow="24-Hour Traffic Volume Profile" title={`Hourly Traffic Pattern — ${hourlyProfileSite === 'All Sites' ? 'All Sites (Mean)' : hourlyProfileSite}`} color={hourlyProfileSite === 'All Sites' ? C.blue : SITE_COLORS[hourlyProfileSite]}
-                sub={hourlyProfileSite === 'All Sites' ? 'Mean hourly value per surveyed junction, averaged across the 2 survey days and across the 4 sites' : `Mean hourly value at ${hourlyProfileSite}, averaged across the 2 survey days`} />
+                sub={hourlyProfileSite === 'All Sites' ? `Mean hourly value per surveyed junction across ${REAL_SITES.length} sites and the available survey dates` : `Mean hourly value at ${hourlyProfileSite} across the available survey dates`} />
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'flex-end' }}>
                 <div className="a-toggle-row" role="group" aria-label="Study site">
                   {['All Sites', ...REAL_SITES].map((s) => (
@@ -474,7 +474,7 @@ const InfographicDashboard = ({ goBack, canGoBack } = {}) => {
               />
             </div>
             <p className="a-footnote">
-              Solid markers and solid line = real measured hourly means, 07:00–18:00 ({hourlyProfileSite === 'All Sites' ? '96 real site-hour rows across all 4 sites' : '24 real hourly rows at this site'}). Dashed, lighter line = 19:00–06:00, when no vehicle was ever counted{hourlyProfileSite === 'All Sites' ? ' at any of the 4 sites' : ' at this site'}: a disclosed, purely mathematical connector between the real 18:00 and 07:00 values (a cosine-shaped dip reaching {(ASSUMPTIONS.overnightTroughRatio * 100).toFixed(0)}% of the straight trend line at its midpoint, an editable assumption) -- never a measured or literature-sourced result. Toggle above to switch site or view the measured window alone.
+              Solid markers and solid line = real measured hourly means, 07:00 to 18:00 ({hourlyProfileSite === 'All Sites' ? `${stats.siteHourCount} real site-hour rows across all ${REAL_SITES.length} sites` : `${stats.dynamicPcuBySite[hourlyProfileSite].recordCount} real hourly rows at this site`}). Dashed, lighter line = 19:00 to 06:00, when no vehicle was counted{hourlyProfileSite === 'All Sites' ? ` at any of the ${REAL_SITES.length} sites` : ' at this site'}: a disclosed, purely mathematical connector between the real 18:00 and 07:00 values (a cosine-shaped dip reaching {(ASSUMPTIONS.overnightTroughRatio * 100).toFixed(0)}% of the straight trend line at its midpoint, an editable assumption), never a measured or literature-sourced result. Toggle above to switch site or view the measured window alone.
             </p>
           </div>
         </div>
@@ -483,7 +483,7 @@ const InfographicDashboard = ({ goBack, canGoBack } = {}) => {
         <div className="a-grid">
           <div className="a-card s-6">
             <SectionHeader eyebrow="Real Vehicle-Class Counts" title="Fleet Composition by Junction" color={C.blue}
-              sub="Share of surveyed motorized flow, from the 96 real site-hour aggregates" />
+              sub={`Share of surveyed motorized flow, from ${stats.siteHourCount} real site-hour aggregates`} />
             <div className="a-chart-box">
               <Bar
                 data={{
@@ -552,7 +552,7 @@ const InfographicDashboard = ({ goBack, canGoBack } = {}) => {
                 }}
               />
             </div>
-            <p className="a-footnote">Tricycle-count-weighted mean of 24 real hourly rows per site. Dynamic PCU = Static PCU x [1 + 0.4 x (Demand Pressure − 0.5)].</p>
+            <p className="a-footnote">Tricycle-count-weighted mean of the available real hourly rows at each site. Dynamic PCU = Static PCU x [1 + 0.4 x (Demand Pressure - 0.5)].</p>
           </div>
 
           <div className="a-card s-4">
@@ -649,8 +649,8 @@ const InfographicDashboard = ({ goBack, canGoBack } = {}) => {
         {/* ROW: Tricycle volume by site -- ANOVA + Kruskal-Wallis */}
         <div className="a-grid">
           <div className="a-card s-12">
-            <SectionHeader eyebrow="Section E · Real Movement Records (n = 984)" title="Tricycle Volume per Record, by Site" color={C.indigo}
-              sub="Tricycle Total (passenger + cargo) per raw classified hourly movement record, across the 4 real sites" />
+            <SectionHeader eyebrow={`Section E · Real Movement Records (n = ${stats.rawMovementCount.toLocaleString('en-GB')})`} title="Tricycle Volume per Record, by Site" color={C.indigo}
+              sub={`Tricycle Total (passenger + cargo) per raw classified hourly movement record, across all ${REAL_SITES.length} study sites`} />
             <div className="a-stat-grid">
               <div className="a-stat-box"><div className="a-stat-label">One-way ANOVA</div><div className="a-stat-value">F({stats.tricycleSiteAnova.df1},{stats.tricycleSiteAnova.df2}) = {stats.tricycleSiteAnova.F.toFixed(3)}</div><div className="a-footnote">{pFmt(stats.tricycleSiteAnova.p)}</div></div>
               <div className="a-stat-box"><div className="a-stat-label">Kruskal-Wallis (robustness check)</div><div className="a-stat-value">H({stats.tricycleSiteKruskalWallis.df}) = {stats.tricycleSiteKruskalWallis.H.toFixed(3)}</div><div className="a-footnote">{pFmt(stats.tricycleSiteKruskalWallis.p)}</div></div>
@@ -667,7 +667,7 @@ const InfographicDashboard = ({ goBack, canGoBack } = {}) => {
         {/* ROW: Tricycle volume by period -- ANOVA + Kruskal-Wallis */}
         <div className="a-grid">
           <div className="a-card s-12">
-            <SectionHeader eyebrow="Section E · Real Movement Records (n = 984)" title="Tricycle Volume per Record, by Time Period" color={C.orange}
+            <SectionHeader eyebrow={`Section E · Real Movement Records (n = ${stats.rawMovementCount.toLocaleString('en-GB')})`} title="Tricycle Volume per Record, by Time Period" color={C.orange}
               sub="The 3 real recorded time periods -- the honest replacement for a 2-group peak/off-peak split" />
             <div className="a-stat-grid">
               <div className="a-stat-box"><div className="a-stat-label">One-way ANOVA</div><div className="a-stat-value">F({stats.tricyclePeriodAnova.df1},{stats.tricyclePeriodAnova.df2}) = {stats.tricyclePeriodAnova.F.toFixed(3)}</div><div className="a-footnote">{pFmt(stats.tricyclePeriodAnova.p)}</div></div>
@@ -685,7 +685,7 @@ const InfographicDashboard = ({ goBack, canGoBack } = {}) => {
         {/* ROW: Flow<->Tricycle correlation + Kibuye Poisson fit */}
         <div className="a-grid">
           <div className="a-card s-6">
-            <SectionHeader eyebrow="Pearson Correlation · 96 real site-hour rows" title="Motorized Flow vs. Tricycle Total" color={C.green}
+            <SectionHeader eyebrow={`Pearson Correlation · ${stats.siteHourCount} real site-hour rows`} title="Motorized Flow vs. Tricycle Total" color={C.green}
               sub={`r = ${stats.flowTricycleCorrelation.r.toFixed(3)} (${stats.flowTricycleCorrelation.r2Pct.toFixed(1)}% of variance), ${pFmt(stats.flowTricycleCorrelation.p)}, n = ${stats.flowTricycleCorrelation.n} · ${eqFmt(stats.flowTricycleCorrelation.slope, stats.flowTricycleCorrelation.intercept)}`} />
             <div className="a-chart-box">
               <Scatter
@@ -734,7 +734,7 @@ const InfographicDashboard = ({ goBack, canGoBack } = {}) => {
         {/* ROW: Incidents */}
         <div className="a-grid">
           <div className="a-card s-6">
-            <SectionHeader eyebrow="Real Incident Log · n = 841" title="Incident Type by Severity" color={C.red} />
+            <SectionHeader eyebrow={`Real Incident Log · n = ${stats.incidentN}`} title="Incident Type by Severity" color={C.red} />
             <SearchableSelect
               label="Filter to one incident type"
               color={C.red}
