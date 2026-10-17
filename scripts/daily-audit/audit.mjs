@@ -3,14 +3,14 @@ import { Octokit } from '@octokit/rest';
 import fs from 'node:fs';
 import path from 'node:path';
 
-const OWNER = 'networkengineringmowt-ai';
+const [OWNER = 'datasciencetrials', REPOSITORY = 'tricycles'] = (process.env.GITHUB_REPOSITORY || 'datasciencetrials/tricycles').split('/');
 const ALL_REPOS = [
   'uganda_nrms', 'tricycles', 'uganda_npms', 'uganda_network_traffic',
   'uganda_ducar', 'uganda_nbms', 'uganda_gis_enterprise', 'bridge_mculverts',
   'kee', 'uganda_kee', 'uganda_kee_rss', 'uganda_ntis',
 ];
 
-const SELF = (process.env.GITHUB_REPOSITORY || '').split('/')[1];
+const SELF = REPOSITORY;
 const TOKEN = process.env.GITHUB_TOKEN;
 const SIBLINGS = ALL_REPOS.filter((r) => r !== SELF);
 const URL = `https://${OWNER}.github.io/${SELF}/`;
@@ -223,7 +223,16 @@ async function main() {
 
   const dir = 'audit-log';
   fs.mkdirSync(dir, { recursive: true });
-  fs.writeFileSync(path.join(dir, `${TODAY}.json`), JSON.stringify(report, null, 2));
+  const reportPath = path.join(dir, `${TODAY}.json`);
+  let existingReport = {};
+  if (fs.existsSync(reportPath)) {
+    try {
+      existingReport = JSON.parse(fs.readFileSync(reportPath, 'utf8'));
+    } catch {
+      existingReport = {};
+    }
+  }
+  fs.writeFileSync(reportPath, JSON.stringify({ ...existingReport, ...report }, null, 2));
 
   const problems = [
     ...self.majorTechnicalIssues,
