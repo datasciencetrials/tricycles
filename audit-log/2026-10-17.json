@@ -2,7 +2,7 @@
   "site": "Tricycle PCU Research Platform",
   "url": "https://datasciencetrials.github.io/tricycles/",
   "audit_date": "2026-10-17",
-  "repair": "Restored two omitted Natete site-hour groups and regenerated the complete analytical population from governed raw movements.",
+  "repair": "Restored two omitted Natete site-hour groups, regenerated the complete analytical population from governed raw movements, and replaced approximate inferential p-values with exact distribution tails plus the required Kruskal-Wallis tie correction.",
   "source_validation": {
     "raw_movement_rows": 1272,
     "site_hour_rows": 120,
@@ -25,8 +25,8 @@
   "build_validation": {
     "vite_build": "passed",
     "modules_transformed": 30,
-    "production_bundle": "assets/index-cmljFhSV.js",
-    "production_bundle_sha256": "32b3005e2487dca965d63fc835008a6ce676aedf70f99d1a078562068ed0c81a",
+    "production_bundle": "assets/index-BZ6A827V.js",
+    "production_bundle_sha256": "8dbbc097b2d3443366e02a4e9469e71b8de5c36b467526187319763af4011205",
     "oxlint": "tool process exited unexpectedly on this host; Vite compiled all JSX and JavaScript successfully"
   },
   "thesis_breakdown_reconciliation": {
@@ -42,6 +42,16 @@
     "top_n_used": false,
     "modelled_pcu_kept_separate": true,
     "table_captions_rendered": 19
+  },
+  "inferential_statistics_validation": {
+    "reference": "Independent SciPy calculation from the governed CSV population",
+    "maximum_absolute_difference": 3.1913360842847907e-13,
+    "site_anova": { "F": 13.922685683663591, "df1": 4, "df2": 1267, "p": 4.047616112895068e-11 },
+    "site_kruskal_wallis": { "H": 197.62019951193258, "df": 4, "p": 1.2203753006790893e-41, "tie_corrected": true },
+    "period_anova": { "F": 1.2470686871367533, "df1": 2, "df2": 1269, "p": 0.28769776580817297 },
+    "period_kruskal_wallis": { "H": 4.265744272579416, "df": 2, "p": 0.11849646663357244, "tie_corrected": true },
+    "flow_tricycle_pearson": { "r": -0.11547396597877323, "df": 118, "p": 0.20914508837122348 },
+    "incident_chi_square": { "chi2": 13.715177928395182, "df": 18, "p": 0.7474606676667798 }
   },
   "browser_validation": {
     "engine": "Google Chrome via Puppeteer",

@@ -115,20 +115,101 @@ function describe(arr) {
   };
 }
 
-function erf(x) {
-  const sign = x < 0 ? -1 : 1;
-  x = Math.abs(x);
-  const a1 = 0.254829592, a2 = -0.284496736, a3 = 1.421413741, a4 = -1.453152027, a5 = 1.061405429, p = 0.3275911;
-  const t = 1 / (1 + p * x);
-  const y = 1 - (((((a5 * t + a4) * t) + a3) * t + a2) * t + a1) * t * Math.exp(-x * x);
-  return sign * y;
+// Numerical Recipes style special functions used for exact distribution
+// tails. Inferential results must not use normal or Wilson-Hilferty
+// approximations because those can materially misstate small p-values.
+function logGamma(z) {
+  const coefficients = [
+    676.5203681218851, -1259.1392167224028, 771.3234287776531,
+    -176.6150291621406, 12.507343278686905, -0.13857109526572012,
+    9.984369578019572e-6, 1.5056327351493116e-7,
+  ];
+  if (z < 0.5) return Math.log(Math.PI) - Math.log(Math.sin(Math.PI * z)) - logGamma(1 - z);
+  let x = 0.9999999999998099;
+  const shifted = z - 1;
+  coefficients.forEach((coefficient, i) => { x += coefficient / (shifted + i + 1); });
+  const t = shifted + coefficients.length - 0.5;
+  return 0.5 * Math.log(2 * Math.PI) + (shifted + 0.5) * Math.log(t) - t + Math.log(x);
 }
-const normalCdf = (z) => 0.5 * (1 + erf(z / Math.sqrt(2)));
-const pFromZ = (z) => 2 * (1 - normalCdf(Math.abs(z)));
-function pFromChiSquare(chi2, df) {
-  const z = (Math.pow(chi2 / df, 1 / 3) - (1 - 2 / (9 * df))) / Math.sqrt(2 / (9 * df));
-  return 1 - normalCdf(z);
+
+function betaContinuedFraction(a, b, x) {
+  const maxIterations = 200;
+  const epsilon = 3e-14;
+  const floor = 1e-300;
+  const qab = a + b, qap = a + 1, qam = a - 1;
+  let c = 1;
+  let d = 1 - (qab * x) / qap;
+  if (Math.abs(d) < floor) d = floor;
+  d = 1 / d;
+  let h = d;
+  for (let m = 1; m <= maxIterations; m += 1) {
+    const m2 = 2 * m;
+    let aa = (m * (b - m) * x) / ((qam + m2) * (a + m2));
+    d = 1 + aa * d;
+    if (Math.abs(d) < floor) d = floor;
+    c = 1 + aa / c;
+    if (Math.abs(c) < floor) c = floor;
+    d = 1 / d;
+    h *= d * c;
+    aa = -((a + m) * (qab + m) * x) / ((a + m2) * (qap + m2));
+    d = 1 + aa * d;
+    if (Math.abs(d) < floor) d = floor;
+    c = 1 + aa / c;
+    if (Math.abs(c) < floor) c = floor;
+    d = 1 / d;
+    const delta = d * c;
+    h *= delta;
+    if (Math.abs(delta - 1) < epsilon) break;
+  }
+  return h;
 }
+
+function regularizedBeta(x, a, b) {
+  if (x <= 0) return 0;
+  if (x >= 1) return 1;
+  const front = Math.exp(logGamma(a + b) - logGamma(a) - logGamma(b) + a * Math.log(x) + b * Math.log1p(-x));
+  if (x < (a + 1) / (a + b + 2)) return front * betaContinuedFraction(a, b, x) / a;
+  return 1 - front * betaContinuedFraction(b, a, 1 - x) / b;
+}
+
+function regularizedGammaQ(a, x) {
+  if (x <= 0) return 1;
+  const epsilon = 3e-14;
+  const maxIterations = 200;
+  if (x < a + 1) {
+    let term = 1 / a;
+    let series = term;
+    for (let n = 1; n <= maxIterations; n += 1) {
+      term *= x / (a + n);
+      series += term;
+      if (Math.abs(term) < Math.abs(series) * epsilon) break;
+    }
+    const p = series * Math.exp(-x + a * Math.log(x) - logGamma(a));
+    return Math.max(0, Math.min(1, 1 - p));
+  }
+  const floor = 1e-300;
+  let b = x + 1 - a;
+  let c = 1 / floor;
+  let d = 1 / b;
+  let h = d;
+  for (let i = 1; i <= maxIterations; i += 1) {
+    const an = -i * (i - a);
+    b += 2;
+    d = an * d + b;
+    if (Math.abs(d) < floor) d = floor;
+    c = b + an / c;
+    if (Math.abs(c) < floor) c = floor;
+    d = 1 / d;
+    const delta = d * c;
+    h *= delta;
+    if (Math.abs(delta - 1) < epsilon) break;
+  }
+  return Math.max(0, Math.min(1, Math.exp(-x + a * Math.log(x) - logGamma(a)) * h));
+}
+
+const pFromChiSquare = (chi2, df) => regularizedGammaQ(df / 2, chi2 / 2);
+const pFromF = (f, df1, df2) => regularizedBeta(df2 / (df2 + df1 * f), df2 / 2, df1 / 2);
+const pFromStudentT = (t, df) => regularizedBeta(df / (df + t * t), df / 2, 0.5);
 
 function oneWayAnova(groups) {
   const all = groups.flat();
@@ -139,7 +220,7 @@ function oneWayAnova(groups) {
   const df1 = k - 1, df2 = n - k;
   const msBetween = ssBetween / df1, msWithin = ssWithin / df2;
   const F = msBetween / msWithin;
-  const p = pFromChiSquare(F * df1, df1);
+  const p = pFromF(F, df1, df2);
   return { F, df1, df2, p };
 }
 
@@ -154,7 +235,7 @@ function pearson(x, y) {
   const t = r * Math.sqrt((n - 2) / (1 - r * r));
   const slope = cov / sxx;
   const intercept = my - slope * mx;
-  return { r, r2Pct: r * r * 100, p: pFromZ(t), n, slope, intercept };
+  return { r, r2Pct: r * r * 100, p: pFromStudentT(t, n - 2), n, slope, intercept };
 }
 
 function chiSquareIndependence(table) {
@@ -194,7 +275,11 @@ function kruskalWallis(groups) {
     return rs;
   });
   const k = groups.length;
-  const H = (12 / (n * (n + 1))) * sum(groupRankSums.map((rs, i) => (rs * rs) / groups[i].length)) - 3 * (n + 1);
+  const uncorrectedH = (12 / (n * (n + 1))) * sum(groupRankSums.map((rs, i) => (rs * rs) / groups[i].length)) - 3 * (n + 1);
+  const tieCounts = new Map();
+  all.forEach((value) => tieCounts.set(value, (tieCounts.get(value) || 0) + 1));
+  const tieCorrection = 1 - sum([...tieCounts.values()].map((count) => count ** 3 - count)) / (n ** 3 - n);
+  const H = tieCorrection > 0 ? uncorrectedH / tieCorrection : uncorrectedH;
   const df = k - 1;
   return { H, df, p: pFromChiSquare(H, df) };
 }
@@ -663,13 +748,13 @@ export const FORMULAS = {
   speedSensitivity: { formula: 'Static PCU recomputed at the lower and upper bounds of the literature tricycle operating-speed range (20-35 km/h) instead of the 27.5 km/h base assumption, holding length/width fixed', source: 'Assumptions_References (formula)', n: 'n/a' },
   regionalBenchmark: { formula: 'This study\'s base passenger-tricycle static PCU compared against two regional PCU ranges cited in the original study proposal (p.12), as a sanity check -- not a calibration target', source: 'original study proposal, p.12', n: 'n/a' },
   allDataSensitivity: { formula: 'Primary all-data totals vs. the same totals with the 7 flagged high-concentration Kibuye passenger-tricycle records removed, diagnostic only; the primary results above always use the all-data column, no observation is deleted', source: 'rawMovements', n: '1,272 records (7 flagged)' },
-  tricycleSiteAnova: { formula: 'One-way ANOVA, Tricycle Total per real movement record across the 5 real sites: F = MS_between / MS_within', source: 'rawMovements', n: '1,272 records, 5 sites' },
-  tricycleSiteKruskalWallis: { formula: 'Kruskal-Wallis H test (non-parametric one-way ANOVA on ranks), distribution-free robustness check on the site ANOVA above', source: 'rawMovements', n: '1,272 records, 5 sites' },
-  tricyclePeriodAnova: { formula: 'One-way ANOVA, Tricycle Total per real movement record across the 3 real recorded time periods', source: 'rawMovements', n: '1,272 records, 3 periods' },
-  tricyclePeriodKruskalWallis: { formula: 'Kruskal-Wallis H test, distribution-free robustness check on the time-period ANOVA above', source: 'rawMovements', n: '1,272 records, 3 periods' },
-  flowTricycleCorrelation: { formula: 'Pearson correlation, real hourly all-data motorized flow vs. real hourly tricycle total, across every site-hour row: r = cov(x,y) / (sigma_x . sigma_y). Two independently observed quantities, not the demand-pressure/PCU relationship, which is definitional by formula and is never reported as a statistical finding.', source: 'siteHour', n: '120 site-hour rows' },
+  tricycleSiteAnova: { formula: 'One-way ANOVA, Tricycle Total per real movement record across the 5 real sites: F = MS_between / MS_within; exact upper-tail p-value from the F(df1, df2) distribution.', source: 'rawMovements', n: '1,272 records, 5 sites' },
+  tricycleSiteKruskalWallis: { formula: 'Kruskal-Wallis H test (non-parametric one-way ANOVA on ranks), with the standard correction for tied values and an exact chi-square survival calculation; distribution-free robustness check on the site ANOVA above.', source: 'rawMovements', n: '1,272 records, 5 sites' },
+  tricyclePeriodAnova: { formula: 'One-way ANOVA, Tricycle Total per real movement record across the 3 real recorded time periods; exact upper-tail p-value from the F(df1, df2) distribution.', source: 'rawMovements', n: '1,272 records, 3 periods' },
+  tricyclePeriodKruskalWallis: { formula: 'Kruskal-Wallis H test with the standard correction for tied values and an exact chi-square survival calculation; distribution-free robustness check on the time-period ANOVA above.', source: 'rawMovements', n: '1,272 records, 3 periods' },
+  flowTricycleCorrelation: { formula: 'Pearson correlation, real hourly all-data motorized flow vs. real hourly tricycle total, across every site-hour row: r = cov(x,y) / (sigma_x . sigma_y). The two-sided p-value uses the exact Student t distribution with n - 2 degrees of freedom. Two independently observed quantities, not the demand-pressure/PCU relationship, which is definitional by formula and is never reported as a statistical finding.', source: 'siteHour', n: '120 site-hour rows' },
   kibuyePoissonBins: { formula: 'Observed vs. Poisson-expected hourly tricycle-arrival counts (exact log-space pmf, lambda = the site\'s own real hourly mean), Kibuye, the site with the most tricycle activity. Disclosed small-sample limitation: only 24 real hourly observations exist for this site.', source: 'siteHour (Kibuye)', n: '24 real hourly rows' },
-  incidentChiSquare: { formula: 'Chi-square test of independence, IncidentType x Severity, on the real crosstab', source: 'incidents', n: '840' },
+  incidentChiSquare: { formula: 'Chi-square test of independence, IncidentType x Severity, on the real crosstab; p-value from the exact chi-square survival calculation.', source: 'incidents', n: '840' },
   compositionBySite: { formula: 'Vehicle-class totals (Motorcycles, Passenger Tricycle, Cargo Tricycle, Cars/Taxi, all other motorized classes combined) summed from the real site-hour aggregates, as a % of that site\'s total motorized flow', source: 'siteHour', n: '120 site-hour rows' },
   hourlyProfile24: { formula: '07:00-18:00: real mean hourly value per surveyed junction, averaged across the available survey dates and across sites for the "All Sites" series. 19:00-06:00: no vehicle was ever counted in this window; these hours are a disclosed, purely mathematical connector, a straight trend line between the real 18:00 and 07:00 values multiplied by a cosine-shaped dip that reaches an editable trough ratio (default 15% of the trend line) at its midpoint. This is a visual and contextual construction only, never a measured or literature-sourced result, and is rendered as a distinct, toggleable segment.', source: 'siteHour (measured hours) + disclosed overnight connector (unmeasured hours)', n: '120 real site-hour rows (measured segment); 12 modelled hours (unmeasured segment)' },
 };
