@@ -45,13 +45,41 @@
   },
   "inferential_statistics_validation": {
     "reference": "Independent SciPy calculation from the governed CSV population",
-    "maximum_absolute_difference": 3.1913360842847907e-13,
-    "site_anova": { "F": 13.922685683663591, "df1": 4, "df2": 1267, "p": 4.047616112895068e-11 },
-    "site_kruskal_wallis": { "H": 197.62019951193258, "df": 4, "p": 1.2203753006790893e-41, "tie_corrected": true },
-    "period_anova": { "F": 1.2470686871367533, "df1": 2, "df2": 1269, "p": 0.28769776580817297 },
-    "period_kruskal_wallis": { "H": 4.265744272579416, "df": 2, "p": 0.11849646663357244, "tie_corrected": true },
-    "flow_tricycle_pearson": { "r": -0.11547396597877323, "df": 118, "p": 0.20914508837122348 },
-    "incident_chi_square": { "chi2": 13.715177928395182, "df": 18, "p": 0.7474606676667798 }
+    "maximum_absolute_difference": 3.191336084284791e-13,
+    "site_anova": {
+      "F": 13.922685683663591,
+      "df1": 4,
+      "df2": 1267,
+      "p": 4.047616112895068e-11
+    },
+    "site_kruskal_wallis": {
+      "H": 197.62019951193258,
+      "df": 4,
+      "p": 1.2203753006790893e-41,
+      "tie_corrected": true
+    },
+    "period_anova": {
+      "F": 1.2470686871367533,
+      "df1": 2,
+      "df2": 1269,
+      "p": 0.28769776580817297
+    },
+    "period_kruskal_wallis": {
+      "H": 4.265744272579416,
+      "df": 2,
+      "p": 0.11849646663357244,
+      "tie_corrected": true
+    },
+    "flow_tricycle_pearson": {
+      "r": -0.11547396597877323,
+      "df": 118,
+      "p": 0.20914508837122348
+    },
+    "incident_chi_square": {
+      "chi2": 13.715177928395182,
+      "df": 18,
+      "p": 0.7474606676667798
+    }
   },
   "browser_validation": {
     "engine": "Google Chrome via Puppeteer",
@@ -74,5 +102,36 @@
     "filter_exercised": "Natete site filter",
     "complete_count_visible": true,
     "stale_118_or_22_count_visible": false
+  },
+  "date": "2026-10-17",
+  "repo": "tricycles",
+  "technical": {
+    "httpStatus": 200,
+    "loadFailed": false,
+    "pageRendered": true,
+    "bodyTextLength": 12257,
+    "consoleErrors": [],
+    "brokenImages": [],
+    "hashLinksFound": [],
+    "chartElementCount": 13
+  },
+  "accuracy": {
+    "extractedFigures": [],
+    "discrepancies": []
+  },
+  "consistency": {
+    "districtList": null,
+    "notes": [
+      "uganda_nrms: no audit-log available yet for comparison",
+      "uganda_npms: no audit-log available yet for comparison",
+      "uganda_network_traffic: no audit-log available yet for comparison",
+      "uganda_ducar: no audit-log available yet for comparison",
+      "uganda_nbms: no audit-log available yet for comparison",
+      "uganda_gis_enterprise: no audit-log available yet for comparison",
+      "bridge_mculverts: no audit-log available yet for comparison",
+      "uganda_kee: no audit-log available yet for comparison",
+      "uganda_kee_rss: no audit-log available yet for comparison",
+      "uganda_ntis: no audit-log available yet for comparison"
+    ]
   }
 }
