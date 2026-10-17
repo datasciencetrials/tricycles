@@ -165,7 +165,7 @@ const ThesisTab = ({ goBack, canGoBack } = {}) => {
   };
 
   const thesisExportOptions = [
-    { id: 'docx', label: 'Download Thesis (DOCX)', icon: 'fa-file-word', hint: 'Full written thesis document', action: () => downloadFile('Final_Thesis.docx') },
+    { id: 'docx', label: 'Download Governed Evidence Extract (DOCX)', icon: 'fa-file-word', hint: 'Source-reconciled evidence; the full thesis remains withheld', action: () => downloadFile('Final_Thesis.docx') },
     { id: 'pptx', label: 'Download Presentation (PPTX)', icon: 'fa-file-powerpoint', hint: '40-slide defense deck', action: () => downloadFile('Modern_Thesis_Presentation_40_Slides.pptx') },
     { id: 'png', label: 'All Figures as Images (ZIP)', icon: 'fa-images', hint: 'Every chart in Chapter 4 as PNG', action: () => downloadChartsAsZip('tricycle_pcu_thesis_figures.zip', { labelFor: figureLabelFor }) },
     { id: 'json', label: 'Underlying Stats (JSON)', icon: 'fa-file-code', hint: 'Every real number behind the figures', action: () => downloadJsonFile('tricycle_pcu_thesis_stats.json', stats) },
@@ -4720,7 +4720,7 @@ const ThesisTab = ({ goBack, canGoBack } = {}) => {
                   </div>
                   <div>
                     <div style={{ fontWeight: 700, fontSize: '0.92rem' }}>Final_Thesis.docx</div>
-                    <div style={{ fontSize: '0.75rem', color: C.sub }}>Full thesis document</div>
+                    <div style={{ fontSize: '0.75rem', color: C.sub }}>Controlled evidence extract; unreconciled thesis withheld</div>
                   </div>
                 </div>
                 <button type="button" className="btn btn-small" onClick={() => downloadFile('Final_Thesis.docx')} aria-label="Download Final_Thesis.docx">

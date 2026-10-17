@@ -76,4 +76,8 @@ def convert_md_to_docx(md_path, docx_path):
     print(f"Successfully generated Word Document: {docx_path} (Size: {os.path.getsize(docx_path)/1024:.2f} KB)")
 
 if __name__ == "__main__":
-    convert_md_to_docx("final_deliverables/Final_Thesis.md", "final_deliverables/Final_Thesis.docx")
+    raise SystemExit(
+        "Direct conversion of final_deliverables/Final_Thesis.md is disabled: "
+        "that source contains unreconciled legacy material. Run "
+        "scripts/generate_governed_thesis_extract.py instead."
+    )

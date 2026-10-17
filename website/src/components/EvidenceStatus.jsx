@@ -17,7 +17,16 @@ const pFmt = (p) => p < 0.001 ? 'p < 0.001' : `p = ${p.toFixed(3)}`;
 
 export default function EvidenceStatus({ goBack, canGoBack } = {}) {
   const stats = useTrafficStats();
+  const downloadEvidenceDocx = () => {
+    const link = document.createElement('a');
+    link.href = `${import.meta.env.BASE_URL || '/'}downloads/Final_Thesis.docx`;
+    link.download = 'Final_Thesis.docx';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
   const exports = stats ? [
+    { id: 'docx', label: 'Governed Evidence Extract (DOCX)', icon: 'fa-file-word', hint: 'Source-reconciled evidence; the full thesis remains withheld', action: downloadEvidenceDocx },
     { id: 'json', label: 'Verified Evidence (JSON)', icon: 'fa-file-code', hint: 'Computed statistics and source register', action: () => downloadJsonFile('tricycle_thesis_verified_evidence.json', { stats, sources: DATA_SOURCES, formulas: FORMULAS }) },
     { id: 'print', label: 'Print / Save as PDF', icon: 'fa-print', hint: 'Opens the browser print dialog', action: () => window.print() },
   ] : [];
