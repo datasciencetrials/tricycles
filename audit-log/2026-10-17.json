@@ -1,0 +1,54 @@
+{
+  "site": "Tricycle PCU Research Platform",
+  "url": "https://datasciencetrials.github.io/tricycles/",
+  "audit_date": "2026-10-17",
+  "repair": "Restored two omitted Natete site-hour groups and regenerated the complete analytical population from governed raw movements.",
+  "source_validation": {
+    "raw_movement_rows": 1272,
+    "site_hour_rows": 120,
+    "rows_per_site": {
+      "Bakuli": 24,
+      "Bwaise": 24,
+      "Kibuye": 24,
+      "Wandegeya": 24,
+      "Natete": 24
+    },
+    "restored_groups": [
+      "Natete, 2026-08-02, 09:00:00",
+      "Natete, 2026-08-02, 10:00:00"
+    ],
+    "unchanged_existing_groups": 118,
+    "changed_existing_values": 0,
+    "site_hour_sha256": "f180c72a588cdd8471db845fe870790e533ae8e0a717b0976464ef88a566203f",
+    "source_and_public_copy_match": true
+  },
+  "build_validation": {
+    "vite_build": "passed",
+    "modules_transformed": 30,
+    "production_bundle": "assets/index-hS2n2lhw.js",
+    "production_bundle_sha256": "7a329c624e05d7b8ea3acdc6a4625ec4b45db3fce0dced25d4fdea746a803729",
+    "oxlint": "tool process exited unexpectedly on this host; Vite compiled all JSX and JavaScript successfully"
+  },
+  "browser_validation": {
+    "engine": "Google Chrome via Puppeteer",
+    "viewports": [
+      "1440x1000 desktop",
+      "390x844 mobile"
+    ],
+    "status": 200,
+    "noindex_nofollow": true,
+    "horizontal_overflow": false,
+    "console_errors": 0,
+    "failed_requests": 0,
+    "stuck_loading_states": 0,
+    "tabs_exercised": [
+      "Overview",
+      "Summary Tables",
+      "Analytics",
+      "Thesis"
+    ],
+    "filter_exercised": "Natete site filter",
+    "complete_count_visible": true,
+    "stale_118_or_22_count_visible": false
+  }
+}

@@ -50,7 +50,7 @@ export default function EvidenceStatus({ goBack, canGoBack } = {}) {
       {!stats ? <section className="evidence-panel"><p>Computing source-reconciled evidence...</p></section> : <>
         <section className="evidence-panel">
           <h2>1. Governed study population</h2>
-          <p>The governed traffic-count population covers all five Kampala study sites. Natete contributes 288 movement records and 22 site-hour rows; the other four sites each contribute 24 site-hour rows.</p>
+          <p>The governed traffic-count population covers all five Kampala study sites. Each site contributes 24 site-hour rows; Natete contributes 288 underlying movement records.</p>
           <div className="evidence-grid">
             <div className="evidence-stat"><span>Movement records</span><strong>{fmt(stats.rawMovementCount)}</strong></div>
             <div className="evidence-stat"><span>Site-hour rows</span><strong>{fmt(stats.siteHourCount)}</strong></div>

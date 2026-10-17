@@ -371,7 +371,7 @@ const InfographicDashboard = ({ goBack, canGoBack } = {}) => {
         <div className="a-hero">
           <p className="a-hero-eyebrow">Statistical Diagnostics</p>
           <h1 className="a-hero-title">Tricycle PCU Analytics</h1>
-          <p className="a-hero-sub">Every figure below is computed live in your browser from the source-reconciled traffic counts at four Kampala junctions — nothing here is hand-typed.</p>
+          <p className="a-hero-sub">Every figure below is computed live in your browser from the source-reconciled traffic counts at five Kampala junctions; nothing here is hand-typed.</p>
         </div>
 
         {!stats ? (

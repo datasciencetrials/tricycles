@@ -37,7 +37,7 @@ const csv = (stats) => {
 export default function SourceVerifiedTables({ goBack, canGoBack } = {}) {
   const stats = useTrafficStats();
   const exportOptions = stats ? [
-    { id: 'csv', label: 'Verified Site Summary (CSV)', icon: 'fa-file-csv', hint: 'Four surveyed sites', action: () => downloadTextFile('tricycle_verified_site_summary.csv', csv(stats)) },
+    { id: 'csv', label: 'Verified Site Summary (CSV)', icon: 'fa-file-csv', hint: 'Five surveyed sites', action: () => downloadTextFile('tricycle_verified_site_summary.csv', csv(stats)) },
     { id: 'json', label: 'Full Computed Dataset (JSON)', icon: 'fa-file-code', hint: 'Source-reconciled statistics', action: () => downloadJsonFile('tricycle_verified_statistics.json', stats) },
     { id: 'print', label: 'Print / Save as PDF', icon: 'fa-print', hint: 'Opens the browser print dialog', action: () => window.print() },
   ] : [];
