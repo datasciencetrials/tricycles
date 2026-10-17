@@ -34,6 +34,28 @@
 export const REAL_SITES = ['Kibuye', 'Wandegeya', 'Bakuli', 'Bwaise', 'Natete'];
 export const NO_DATA_SITES = [];
 export const SITE_JUNCTION_TYPE = { Kibuye: 'Roundabout', Wandegeya: 'Cross Junction', Bakuli: 'Cross Junction', Bwaise: 'Cross Junction', Natete: 'Cross Junction' };
+export const GOVERNED_CATEGORICAL_FIELDS = [
+  'Site', 'JunctionType', 'SourceFile', 'Sheet', 'Date', 'DateImputed',
+  'DirFrom', 'DirTo', 'Weather', 'TimeFrom', 'TimeTo',
+  'HighConcentrationReview', 'QCWarning', 'IncludedInAnalysis', 'TimePeriod',
+];
+export const GOVERNED_CATEGORICAL_LABELS = {
+  Site: 'Study Site',
+  JunctionType: 'Junction Type',
+  SourceFile: 'Source File',
+  Sheet: 'Source Sheet',
+  Date: 'Survey Date',
+  DateImputed: 'Date Imputed',
+  DirFrom: 'Direction From',
+  DirTo: 'Direction To',
+  Weather: 'Weather',
+  TimeFrom: 'Hour From',
+  TimeTo: 'Hour To',
+  HighConcentrationReview: 'High Concentration Review',
+  QCWarning: 'Quality Control Status',
+  IncludedInAnalysis: 'Included in Analysis',
+  TimePeriod: 'Time Period',
+};
 
 // --- tiny CSV parser (data is clean/numeric, no quoted commas) ------------
 // Strips trailing \r on every line so CRLF-saved source workbooks (the raw
@@ -298,6 +320,53 @@ export function computeTrafficStats(rawMovements, siteHour, incidents) {
   const reconciliationTotal = { records: rawMovements.length };
   VEHICLE_CLASS_KEYS.forEach((k) => { reconciliationTotal[k] = sum(Object.values(reconciliationBySite).map((e) => e[k])); });
 
+  // Complete-population measured traffic breakdowns. Every governed
+  // categorical field is retained, including blank direction labels, which
+  // are shown explicitly as "Not recorded" rather than silently dropped.
+  const measuredTrafficBreakdowns = {};
+  GOVERNED_CATEGORICAL_FIELDS.forEach((field) => {
+    const grouped = rawMovements.reduce((acc, row) => {
+      const category = String(row[field] ?? '').trim() || 'Not recorded';
+      (acc[category] = acc[category] || []).push(row);
+      return acc;
+    }, {});
+    measuredTrafficBreakdowns[field] = Object.entries(grouped)
+      .sort(([left], [right]) => left.localeCompare(right, 'en-GB', { numeric: true }))
+      .map(([category, rows]) => {
+        const motorizedVehicles = sum(rows.map((row) => row.MotorizedTotal));
+        const passengerTri = sum(rows.map((row) => row.PassengerTricycle));
+        const cargoTri = sum(rows.map((row) => row.CargoTricycle));
+        const totalTri = passengerTri + cargoTri;
+        return {
+          category,
+          records: rows.length,
+          motorizedVehicles,
+          passengerTri,
+          cargoTri,
+          totalTri,
+          tricycleShare: motorizedVehicles ? totalTri / motorizedVehicles : 0,
+        };
+      });
+  });
+
+  const measuredTrend = (dateKeyLength) => {
+    const grouped = rawMovements.reduce((acc, row) => {
+      const period = String(row.Date).slice(0, dateKeyLength);
+      (acc[period] = acc[period] || []).push(row);
+      return acc;
+    }, {});
+    return Object.entries(grouped).sort(([left], [right]) => left.localeCompare(right)).map(([period, rows]) => ({
+      period,
+      records: rows.length,
+      motorizedVehicles: sum(rows.map((row) => row.MotorizedTotal)),
+      passengerTri: sum(rows.map((row) => row.PassengerTricycle)),
+      cargoTri: sum(rows.map((row) => row.CargoTricycle)),
+      totalTri: sum(rows.map((row) => row.TricycleTotal)),
+    }));
+  };
+  const measuredAnnualTrend = measuredTrend(4);
+  const measuredMonthlyTrend = measuredTrend(7);
+
   // =========================================================================
   // B. Static PCU + per-site exposure (Objective 1 / Results_By_Site)
   // =========================================================================
@@ -552,6 +621,7 @@ export function computeTrafficStats(rawMovements, siteHour, incidents) {
 
   return {
     reconciliationBySite, reconciliationTotal, VEHICLE_CLASS_KEYS,
+    measuredTrafficBreakdowns, measuredAnnualTrend, measuredMonthlyTrend,
     resultsBySite, allSitesMotorized, allSitesPassengerTri, allSitesCargoTri, allSitesTotalTri,
     dynamicPcuBySite, combinedDynamicPCUOverall, passengerDynamicPCUOverall, cargoDynamicPCUOverall,
     dynamicPcuByTimePeriod, timePeriods, dynamicPcuByJunctionType,

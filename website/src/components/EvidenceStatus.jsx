@@ -1,7 +1,13 @@
 import React from 'react';
 import PageControls, { downloadJsonFile } from './PageControls';
 import useTrafficStats from '../lib/useTrafficStats';
-import { DATA_SOURCES, FORMULAS, REAL_SITES } from '../lib/trafficStats';
+import {
+  DATA_SOURCES,
+  FORMULAS,
+  GOVERNED_CATEGORICAL_FIELDS,
+  GOVERNED_CATEGORICAL_LABELS,
+  REAL_SITES,
+} from '../lib/trafficStats';
 
 const fmt = (value, digits = 0) => Number(value).toLocaleString('en-GB', {
   minimumFractionDigits: digits,
@@ -36,6 +42,10 @@ export default function EvidenceStatus({ goBack, canGoBack } = {}) {
         .evidence-table th, .evidence-table td { padding: 11px 12px; border-bottom: 1px solid #e5e5ea; text-align: right; white-space: nowrap; }
         .evidence-table th { background: #f5f5f7; color: #6e6e73; font-size: .7rem; text-transform: uppercase; letter-spacing: .03em; }
         .evidence-table th:first-child, .evidence-table td:first-child { text-align: left; }
+        .evidence-table caption { text-align: left; color: #1d1d1f; font-weight: 800; padding: 0 0 10px; }
+        .evidence-breakdown { border: 1px solid #e5e5ea; border-radius: 14px; padding: 0 16px; margin-top: 12px; background: #fff; }
+        .evidence-breakdown summary { cursor: pointer; padding: 15px 0; color: #1d1d1f; font-weight: 800; }
+        .evidence-breakdown[open] summary { border-bottom: 1px solid #e5e5ea; }
         .source-register { display: grid; gap: 12px; margin-top: 16px; }
         .source-item { border-left: 4px solid #0a84ff; background: #f7fbff; border-radius: 0 12px 12px 0; padding: 13px 15px; }
         .source-item strong { display: block; margin-bottom: 4px; }
@@ -58,6 +68,7 @@ export default function EvidenceStatus({ goBack, canGoBack } = {}) {
             <div className="evidence-stat"><span>Incident records</span><strong>{fmt(stats.incidentN)}</strong></div>
           </div>
           <div className="evidence-scroll"><table className="evidence-table">
+            <caption>Table 1: Governed Study Population by Site</caption>
             <thead><tr><th>Study site</th><th>Junction type</th><th>Motorised vehicles</th><th>Passenger tricycles</th><th>Cargo tricycles</th><th>Total tricycles</th><th>Tricycle share</th></tr></thead>
             <tbody>{REAL_SITES.map((site) => { const row = stats.resultsBySite[site]; return <tr key={site}><td>{site}</td><td>{row.junctionType}</td><td>{fmt(row.motorizedVehicles)}</td><td>{fmt(row.passengerTri)}</td><td>{fmt(row.cargoTri)}</td><td>{fmt(row.totalTri)}</td><td>{fmt(row.tricycleShare * 100, 1)}%</td></tr>; })}</tbody>
           </table></div>
@@ -67,6 +78,7 @@ export default function EvidenceStatus({ goBack, canGoBack } = {}) {
           <h2>2. Modelled passenger and cargo tricycle PCU</h2>
           <p>Dynamic PCU is modelled from the governed site-hour data using the disclosed demand-pressure method. These are not directly measured PCU observations.</p>
           <div className="evidence-scroll"><table className="evidence-table">
+            <caption>Table 2: Modelled Tricycle PCU by Site</caption>
             <thead><tr><th>Study site</th><th>Mean demand pressure</th><th>Peak demand pressure</th><th>Passenger PCU, modelled</th><th>Cargo PCU, modelled</th><th>Combined PCU, modelled</th></tr></thead>
             <tbody>{REAL_SITES.map((site) => { const row = stats.dynamicPcuBySite[site]; return <tr key={site}><td>{site}</td><td>{fmt(row.meanDemandPressure, 3)}</td><td>{fmt(row.peakDemandPressure, 3)}</td><td>{fmt(row.passengerDynamicPCU, 3)}</td><td>{fmt(row.cargoDynamicPCU, 3)}</td><td>{fmt(row.combinedDynamicPCU, 3)}</td></tr>; })}</tbody>
           </table></div>
@@ -87,13 +99,40 @@ export default function EvidenceStatus({ goBack, canGoBack } = {}) {
         </section>
 
         <section className="evidence-panel">
-          <h2>4. Explicit evidence boundary</h2>
-          <div className="evidence-warning"><strong>Not reported as findings:</strong> headway, capacity, V/C ratio, wet-weather significance, weekday versus weekend comparisons, monthly trends and measured overnight demand. The governed files do not contain the observations required for those analyses.</div>
+          <h2>4. Complete measured traffic breakdowns</h2>
+          <p>Every category present in the governed traffic-count population is shown below. No Top-N selection or category suppression is applied. Blank direction labels are retained as Not recorded. These tables contain measured traffic totals only; the modelled PCU results remain separate in Section 2.</p>
+          <div className="evidence-scroll"><table className="evidence-table">
+            <caption>Table 4.1: Complete Annual Traffic Trend</caption>
+            <thead><tr><th>Year</th><th>Records</th><th>Motorised vehicles</th><th>Passenger tricycles</th><th>Cargo tricycles</th><th>Total tricycles</th></tr></thead>
+            <tbody>{stats.measuredAnnualTrend.map((row) => <tr key={row.period}><td>{row.period}</td><td>{fmt(row.records)}</td><td>{fmt(row.motorizedVehicles)}</td><td>{fmt(row.passengerTri)}</td><td>{fmt(row.cargoTri)}</td><td>{fmt(row.totalTri)}</td></tr>)}</tbody>
+          </table></div>
+          <div className="evidence-scroll"><table className="evidence-table">
+            <caption>Table 4.2: Complete Monthly Traffic Trend</caption>
+            <thead><tr><th>Month</th><th>Records</th><th>Motorised vehicles</th><th>Passenger tricycles</th><th>Cargo tricycles</th><th>Total tricycles</th></tr></thead>
+            <tbody>{stats.measuredMonthlyTrend.map((row) => <tr key={row.period}><td>{row.period}</td><td>{fmt(row.records)}</td><td>{fmt(row.motorizedVehicles)}</td><td>{fmt(row.passengerTri)}</td><td>{fmt(row.cargoTri)}</td><td>{fmt(row.totalTri)}</td></tr>)}</tbody>
+          </table></div>
+          {GOVERNED_CATEGORICAL_FIELDS.map((field, fieldIndex) => {
+            const rows = stats.measuredTrafficBreakdowns[field];
+            return <details className="evidence-breakdown" key={field} open={field === 'Site'}>
+              <summary>{GOVERNED_CATEGORICAL_LABELS[field]} ({rows.length} categories)</summary>
+              <div className="evidence-scroll"><table className="evidence-table">
+                <caption>Table 4.{fieldIndex + 3}: Complete Traffic Breakdown by {GOVERNED_CATEGORICAL_LABELS[field]}</caption>
+                <thead><tr><th>{GOVERNED_CATEGORICAL_LABELS[field]}</th><th>Records</th><th>Motorised vehicles</th><th>Passenger tricycles</th><th>Cargo tricycles</th><th>Total tricycles</th><th>Tricycle share</th></tr></thead>
+                <tbody>{rows.map((row) => <tr key={row.category}><td>{row.category}</td><td>{fmt(row.records)}</td><td>{fmt(row.motorizedVehicles)}</td><td>{fmt(row.passengerTri)}</td><td>{fmt(row.cargoTri)}</td><td>{fmt(row.totalTri)}</td><td>{fmt(row.tricycleShare * 100, 1)}%</td></tr>)}</tbody>
+              </table></div>
+            </details>;
+          })}
+          <p>The governed traffic records cover August 2026 only. Therefore the complete annual and monthly trends each contain one observed period. No additional months or years are inferred.</p>
+        </section>
+
+        <section className="evidence-panel">
+          <h2>5. Explicit evidence boundary</h2>
+          <div className="evidence-warning"><strong>Not reported as findings:</strong> headway, capacity, V/C ratio, wet-weather significance, weekday versus weekend comparisons, change across multiple months or years, and measured overnight demand. The governed files do not contain the observations required for those analyses.</div>
           <p>The optional 19:00 to 06:00 profile shown in Analytics is a disclosed mathematical connector only. It is not measured traffic and is visually distinguished from the observed 07:00 to 18:00 segment.</p>
         </section>
 
         <section className="evidence-panel">
-          <h2>5. Source register</h2>
+          <h2>6. Source register</h2>
           <div className="source-register">
             {Object.entries(DATA_SOURCES).map(([key, description]) => <div className="source-item" key={key}><strong>{key}</strong><p>{description}</p></div>)}
           </div>

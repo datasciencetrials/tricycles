@@ -25,9 +25,23 @@
   "build_validation": {
     "vite_build": "passed",
     "modules_transformed": 30,
-    "production_bundle": "assets/index-hS2n2lhw.js",
-    "production_bundle_sha256": "7a329c624e05d7b8ea3acdc6a4625ec4b45db3fce0dced25d4fdea746a803729",
+    "production_bundle": "assets/index-cmljFhSV.js",
+    "production_bundle_sha256": "32b3005e2487dca965d63fc835008a6ce676aedf70f99d1a078562068ed0c81a",
     "oxlint": "tool process exited unexpectedly on this host; Vite compiled all JSX and JavaScript successfully"
+  },
+  "thesis_breakdown_reconciliation": {
+    "raw_rows_reconciled": 1272,
+    "categorical_fields_reported": 15,
+    "categorical_fields_omitted": 0,
+    "annual_periods_reported": 1,
+    "monthly_periods_reported": 1,
+    "category_total_mismatches": 0,
+    "traffic_total_mismatches": 0,
+    "tricycle_total_mismatches": 0,
+    "complete_population_only": true,
+    "top_n_used": false,
+    "modelled_pcu_kept_separate": true,
+    "table_captions_rendered": 19
   },
   "browser_validation": {
     "engine": "Google Chrome via Puppeteer",
