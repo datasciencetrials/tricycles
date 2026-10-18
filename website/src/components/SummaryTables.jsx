@@ -87,12 +87,12 @@ function csvFromDirectionalSplit(stats, skew) {
       lines.push(`"${junction}","${config.type}","${row.leg}",${row.pct.toFixed(1)},${Math.round(row.volume)},"${config.source}"`);
     });
   });
-  const note = 'NOTE: this table is a disclosed SIMULATION. The field study recorded no per-direction/turning-movement data (no Direction column in any source file). Only the junction totals (ADT) are real, measured figures; the per-leg split above is modeled from an assumed configuration, adjustable via the skew parameter.';
+  const note = 'NOTE: this table is a disclosed SIMULATION. The field study recorded no per-direction/turning-movement data (no Direction column in any source file). Only the junction totals (ADT) are real, measured figures; the per-leg split above is modelled from an assumed configuration, adjustable via the skew parameter.';
   return [header, ...lines, '', `"${note}"`].join('\n');
 }
 
 // ---------------------------------------------------------------------------
-// Apple-style design tokens — same tokens/classes used across the Overview,
+// Apple-style design tokens - same tokens/classes used across the Overview,
 // Summary Tables and Analytics tabs for a consistent bright, light theme.
 // ---------------------------------------------------------------------------
 const C = {
@@ -331,7 +331,7 @@ const SummaryTables = ({ goBack, canGoBack } = {}) => {
         <div className="a-hero">
           <p className="a-hero-eyebrow">Field Data Aggregation</p>
           <h1 className="a-hero-title">Primary Traffic Volumes</h1>
-          <p className="a-hero-sub">Peak-hour categorized vehicle counts (veh/hr) across five Kampala study sites — computed live from the 6,400 fifteen-minute intervals sampled in the 20-day field study.</p>
+          <p className="a-hero-sub">Peak-hour categorized vehicle counts (veh/hr) across five Kampala study sites - computed live from the 6,400 fifteen-minute intervals sampled in the 20-day field study.</p>
         </div>
 
         {!stats ? (
@@ -417,7 +417,7 @@ const SummaryTables = ({ goBack, canGoBack } = {}) => {
         <div className="a-grid">
           <div className="a-card s-12">
             <SectionHeader eyebrow="Asset Prioritization" title="Traffic Criticality Ranking" color={C.red}
-              sub="Composite 0–100 index combining each intersection's traffic demand, congestion stress, tricycle-induced friction and mixed-traffic complexity — see Methodology below for the exact weights." />
+              sub="Composite 0-100 index combining each intersection's traffic demand, congestion stress, tricycle-induced friction and mixed-traffic complexity - see Methodology below for the exact weights." />
             <ScrollableTableWrap>
               <table className="a-table">
                 <thead>
@@ -459,8 +459,8 @@ const SummaryTables = ({ goBack, canGoBack } = {}) => {
         {/* TRAFFIC CRITICALITY INDEX -- COMPONENT BREAKDOWN */}
         <div className="a-grid">
           <div className="a-card s-12">
-            <SectionHeader eyebrow="Composite Indicator · Full Breakdown" title="Traffic Criticality Index — Component Table" color={C.red}
-              sub="Every input to the 0–100 Criticality Index, per site: each of the 4 factors is min-max normalized 0–1 across the 5 sites, then weighted 35/35/15/15 — see Methodology below for the full formula" />
+            <SectionHeader eyebrow="Composite Indicator · Full Breakdown" title="Traffic Criticality Index - Component Table" color={C.red}
+              sub="Every input to the 0-100 Criticality Index, per site: each of the 4 factors is min-max normalized 0-1 across the 5 sites, then weighted 35/35/15/15 - see Methodology below for the full formula" />
             <div className="a-scroll-x-dark" style={{ overflowX: 'auto' }}>
               <table className="a-plain-table">
                 <thead>
@@ -470,7 +470,7 @@ const SummaryTables = ({ goBack, canGoBack } = {}) => {
                     <th>Congestion Stress (norm.)</th>
                     <th>Tricycle Friction (norm.)</th>
                     <th>Mixed-Traffic Complexity (norm.)</th>
-                    <th>Composite Index (0–100)</th>
+                    <th>Composite Index (0-100)</th>
                     <th>Rank</th>
                   </tr>
                 </thead>
@@ -489,7 +489,7 @@ const SummaryTables = ({ goBack, canGoBack } = {}) => {
                 </tbody>
               </table>
             </div>
-            <p className="a-footnote" style={{ marginTop: '10px' }}>Composite index, not a directly measured field — it is a derived, disclosed combination of four real per-site statistics already shown elsewhere on this page.</p>
+            <p className="a-footnote" style={{ marginTop: '10px' }}>Composite index, not a directly measured field - it is a derived, disclosed combination of four real per-site statistics already shown elsewhere on this page.</p>
           </div>
         </div>
 
@@ -497,7 +497,7 @@ const SummaryTables = ({ goBack, canGoBack } = {}) => {
         <div className="a-grid">
           <div className="a-card s-12">
             <SectionHeader eyebrow="Field Data Aggregation, All 20 Days" title="Average Daily Traffic (ADT) by Junction" color={C.blue2}
-              sub="Mean of the daily totals across all 20 real observed days, per intersection — Total ADT and ADT excluding motorcycles side by side, with the per-class breakdown behind each." />
+              sub="Mean of the daily totals across all 20 real observed days, per intersection - Total ADT and ADT excluding motorcycles side by side, with the per-class breakdown behind each." />
             <ScrollableTableWrap>
               <table className="a-table">
                 <thead>
@@ -544,7 +544,7 @@ const SummaryTables = ({ goBack, canGoBack } = {}) => {
         <div className="a-grid">
           <div className="a-card s-12">
             <SectionHeader eyebrow="Per Junction × Per Vehicle Class" title="Vehicle Class Breakdown by Junction" color={C.indigo}
-              sub="Total count, ADT and % share of that junction's combined volume, for each of the 5 real vehicle classes — 20-day field study." />
+              sub="Total count, ADT and % share of that junction's combined volume, for each of the 5 real vehicle classes - 20-day field study." />
             <ScrollableTableWrap>
               <table className="a-table">
                 <thead>
@@ -576,7 +576,7 @@ const SummaryTables = ({ goBack, canGoBack } = {}) => {
         <div className="a-grid">
           <div className="a-card s-12">
             <SectionHeader eyebrow="Per Junction × Per Day" title="Daily Breakdown, All 20 Observed Days" color={C.green}
-              sub="Every real recorded day, per site — Total and Total-excluding-motorcycles alongside the 5-class count." />
+              sub="Every real recorded day, per site - Total and Total-excluding-motorcycles alongside the 5-class count." />
             <div className="a-toggle-row" role="group" aria-label="Filter daily breakdown by study site" style={{ marginBottom: '14px' }}>
               {['All', ...Object.keys(stats.adtByIntersection)].map((j) => (
                 <button key={j} type="button" className={`a-toggle-btn ${dailyJunction === j ? 'active' : ''}`} onClick={() => setDailyJunction(j)}>
@@ -623,7 +623,7 @@ const SummaryTables = ({ goBack, canGoBack } = {}) => {
         <div className="a-grid">
           <div className="a-card s-12">
             <SectionHeader eyebrow="Per Junction × Per Week" title="Weekly Breakdown" color={C.orange}
-              sub="The 20 real observed days bucketed by calendar week-of-month (1–7, 8–14, 15–20) — Week 3 is a genuine partial 6-day week, not padded." />
+              sub="The 20 real observed days bucketed by calendar week-of-month (1-7, 8-14, 15-20) - Week 3 is a genuine partial 6-day week, not padded." />
             <div className="a-toggle-row" role="group" aria-label="Filter weekly breakdown by study site" style={{ marginBottom: '14px' }}>
               {['All', ...Object.keys(stats.adtByIntersection)].map((j) => (
                 <button key={j} type="button" className={`a-toggle-btn ${weeklyJunction === j ? 'active' : ''}`} onClick={() => setWeeklyJunction(j)}>
@@ -668,7 +668,7 @@ const SummaryTables = ({ goBack, canGoBack } = {}) => {
         <div className="a-grid">
           <div className="a-card s-12">
             <SectionHeader eyebrow="Per Junction × Per Month / Per Year" title="Monthly &amp; Yearly Breakdown" color={C.red}
-              sub="The field20 survey covers exactly one real calendar month (June 2026) and one real calendar year (2026) — both tables below collapse to that single period per site, rather than fabricating additional months or years to fill a longer series." />
+              sub="The field20 survey covers exactly one real calendar month (June 2026) and one real calendar year (2026) - both tables below collapse to that single period per site, rather than fabricating additional months or years to fill a longer series." />
             <ScrollableTableWrap>
               <table className="a-table">
                 <thead>
@@ -699,11 +699,11 @@ const SummaryTables = ({ goBack, canGoBack } = {}) => {
                 </tbody>
               </table>
             </ScrollableTableWrap>
-            <p className="a-footnote">No field data exists outside June 2026 for this study — the Monthly and Yearly rows are identical by construction, both reflecting the same real 20-day sample, and are shown separately only to satisfy both grouping dimensions.</p>
+            <p className="a-footnote">No field data exists outside June 2026 for this study - the Monthly and Yearly rows are identical by construction, both reflecting the same real 20-day sample, and are shown separately only to satisfy both grouping dimensions.</p>
           </div>
         </div>
 
-        {/* DIRECTIONAL SPLIT SIMULATOR -- explicitly modeled, not measured: no source file records vehicle direction/turning movement */}
+        {/* DIRECTIONAL SPLIT SIMULATOR -- explicitly modelled, not measured: no source file records vehicle direction/turning movement */}
         <div className="a-grid">
           <div className="a-card s-12">
             <SectionHeader eyebrow="Per Junction × Per Approach Direction" title={<>Simulated Directional Split by Junction<span className="a-illustrative-badge">Model, not measured</span></>} color={C.purple}
@@ -757,8 +757,8 @@ const SummaryTables = ({ goBack, canGoBack } = {}) => {
         {/* POISSON GOODNESS-OF-FIT -- WANDEGEYA JUNCTION */}
         <div className="a-grid">
           <div className="a-card s-12">
-            <SectionHeader eyebrow="Goodness-of-Fit · 7-day baseline dataset" title="Poisson Fit — Wandegeya Junction" color={C.indigo}
-              sub={`Observed vs Poisson-expected daytime tricycle-arrival counts per interval, λ = ${stats.wandegeyaLambda.toFixed(2)}, n = ${stats.wandegeyaN.toLocaleString()} — chart version in Analytics`} />
+            <SectionHeader eyebrow="Goodness-of-Fit · 7-day baseline dataset" title="Poisson Fit - Wandegeya Junction" color={C.indigo}
+              sub={`Observed vs Poisson-expected daytime tricycle-arrival counts per interval, λ = ${stats.wandegeyaLambda.toFixed(2)}, n = ${stats.wandegeyaN.toLocaleString()} - chart version in Analytics`} />
             <div className="a-scroll-x-dark" style={{ overflowX: 'auto' }}>
               <table className="a-plain-table">
                 <thead>
@@ -785,7 +785,7 @@ const SummaryTables = ({ goBack, canGoBack } = {}) => {
                 </tbody>
               </table>
             </div>
-            <p className="a-footnote" style={{ marginTop: '10px' }}>4 bins merged to satisfy Cochran's rule (expected count ≥ 5 per bin); a large χ² relative to observed-vs-expected spread here is the same over-dispersion the Arrival Platooning card reports as a variance-to-mean ratio — tricycle arrivals bunch into platoons rather than following a random Poisson stream.</p>
+            <p className="a-footnote" style={{ marginTop: '10px' }}>4 bins merged to satisfy Cochran's rule (expected count ≥ 5 per bin); a large χ² relative to observed-vs-expected spread here is the same over-dispersion the Arrival Platooning card reports as a variance-to-mean ratio - tricycle arrivals bunch into platoons rather than following a random Poisson stream.</p>
           </div>
         </div>
 
@@ -793,7 +793,7 @@ const SummaryTables = ({ goBack, canGoBack } = {}) => {
         <div className="a-grid">
           <div className="a-card s-12">
             <SectionHeader eyebrow="Temporal Comparison · New Test" title="Weekday vs Weekend Volume" color={C.blue2}
-              sub={`Welch's t-test, Total Volume per 15-min interval, weekend (n=${stats.weekdayWeekendTest.nA.toLocaleString()}) vs weekday (n=${stats.weekdayWeekendTest.nB.toLocaleString()}) intervals — t(${stats.weekdayWeekendTest.df.toFixed(0)}) = ${stats.weekdayWeekendTest.t.toFixed(2)}, p = ${stats.weekdayWeekendTest.p.toFixed(3)}, Cohen's d = ${stats.weekdayWeekendTest.cohensD.toFixed(2)} — chart version in Analytics`} />
+              sub={`Welch's t-test, Total Volume per 15-min interval, weekend (n=${stats.weekdayWeekendTest.nA.toLocaleString()}) vs weekday (n=${stats.weekdayWeekendTest.nB.toLocaleString()}) intervals - t(${stats.weekdayWeekendTest.df.toFixed(0)}) = ${stats.weekdayWeekendTest.t.toFixed(2)}, p = ${stats.weekdayWeekendTest.p.toFixed(3)}, Cohen's d = ${stats.weekdayWeekendTest.cohensD.toFixed(2)} - chart version in Analytics`} />
             <div className="a-scroll-x-dark" style={{ overflowX: 'auto' }}>
               <table className="a-plain-table">
                 <thead>
@@ -840,15 +840,15 @@ const SummaryTables = ({ goBack, canGoBack } = {}) => {
                 </tbody>
               </table>
             </div>
-            <p className="a-footnote">Weekday/weekend derived from the real Date field in field20 (2026-06-01 through 2026-06-20: 14 real weekdays, 6 real weekend days) — not an assumed 5:2 pattern. {stats.weekdayWeekendTest.p >= 0.05 ? 'No statistically significant difference in total network volume between weekday and weekend intervals' : 'A statistically significant difference in total network volume between weekday and weekend intervals'} (p = {stats.weekdayWeekendTest.p.toFixed(3)}).</p>
+            <p className="a-footnote">Weekday/weekend derived from the real Date field in field20 (2026-06-01 through 2026-06-20: 14 real weekdays, 6 real weekend days) - not an assumed 5:2 pattern. {stats.weekdayWeekendTest.p >= 0.05 ? 'No statistically significant difference in total network volume between weekday and weekend intervals' : 'A statistically significant difference in total network volume between weekday and weekend intervals'} (p = {stats.weekdayWeekendTest.p.toFixed(3)}).</p>
           </div>
         </div>
 
         {/* VEHICLE-CLASS CORRELATION MATRIX -- full r/p table backing the Analytics heat-table */}
         <div className="a-grid">
           <div className="a-card s-12">
-            <SectionHeader eyebrow="Co-Movement · New Test" title="Vehicle-Class Correlation Matrix — Full Pairwise Table" color={C.purple}
-              sub="Pearson r between every pair of the 5 vehicle classes' per-interval counts, network-wide, with the exact p-value for each pair — the heat-table version in Analytics shows r only." />
+            <SectionHeader eyebrow="Co-Movement · New Test" title="Vehicle-Class Correlation Matrix - Full Pairwise Table" color={C.purple}
+              sub="Pearson r between every pair of the 5 vehicle classes' per-interval counts, network-wide, with the exact p-value for each pair - the heat-table version in Analytics shows r only." />
             <div className="a-scroll-x-dark" style={{ overflowX: 'auto' }}>
               <table className="a-plain-table">
                 <thead>
@@ -870,7 +870,7 @@ const SummaryTables = ({ goBack, canGoBack } = {}) => {
                 </tbody>
               </table>
             </div>
-            <p className="a-footnote">All 10 pairs positively correlated (r = 0.53–0.96) — every vehicle class tends to be busier on the same high-demand intervals rather than substituting for one another.</p>
+            <p className="a-footnote">All 10 pairs positively correlated (r = 0.53-0.96) - every vehicle class tends to be busier on the same high-demand intervals rather than substituting for one another.</p>
           </div>
         </div>
 
@@ -878,7 +878,7 @@ const SummaryTables = ({ goBack, canGoBack } = {}) => {
         <div className="a-grid">
           <div className="a-card s-12">
             <SectionHeader eyebrow="Post-Hoc · New Test" title="Pairwise Site Differences (Tricycle Volume)" color={C.pink}
-              sub={`Bonferroni-corrected follow-up to the site ANOVA — ${stats.tricyclePostHoc.comparisons} pairwise Welch's t-tests, corrected significance threshold α = ${stats.tricyclePostHoc.correctedAlpha.toFixed(4)} — chart version in Analytics`} />
+              sub={`Bonferroni-corrected follow-up to the site ANOVA - ${stats.tricyclePostHoc.comparisons} pairwise Welch's t-tests, corrected significance threshold α = ${stats.tricyclePostHoc.correctedAlpha.toFixed(4)} - chart version in Analytics`} />
             <div className="a-scroll-x-dark" style={{ overflowX: 'auto' }}>
               <table className="a-plain-table">
                 <thead>
@@ -899,15 +899,15 @@ const SummaryTables = ({ goBack, canGoBack } = {}) => {
                 </tbody>
               </table>
             </div>
-            <p className="a-footnote">{stats.tricyclePostHoc.pairs.filter((p) => p.significant).length} of {stats.tricyclePostHoc.comparisons} site pairs differ significantly after Bonferroni correction — consistent with the significant one-way ANOVA on tricycle volume this post-hoc test follows up on.</p>
+            <p className="a-footnote">{stats.tricyclePostHoc.pairs.filter((p) => p.significant).length} of {stats.tricyclePostHoc.comparisons} site pairs differ significantly after Bonferroni correction - consistent with the significant one-way ANOVA on tricycle volume this post-hoc test follows up on.</p>
           </div>
         </div>
 
         {/* INCIDENT TYPE x SEVERITY -- chi-square observed/expected crosstab */}
         <div className="a-grid">
           <div className="a-card s-12">
-            <SectionHeader eyebrow="Independence Test · New Test" title="Incident Type vs Severity — Observed / Expected Crosstab" color={C.red}
-              sub={`Chi-square test of independence on the real IncidentType x Severity crosstab — χ²(${stats.incidentChiSquare.df}) = ${stats.incidentChiSquare.chi2.toFixed(1)}, p = ${stats.incidentChiSquare.p.toFixed(3)} — chart version in Analytics`} />
+            <SectionHeader eyebrow="Independence Test · New Test" title="Incident Type vs Severity - Observed / Expected Crosstab" color={C.red}
+              sub={`Chi-square test of independence on the real IncidentType x Severity crosstab - χ²(${stats.incidentChiSquare.df}) = ${stats.incidentChiSquare.chi2.toFixed(1)}, p = ${stats.incidentChiSquare.p.toFixed(3)} - chart version in Analytics`} />
             <div className="a-scroll-x-dark" style={{ overflowX: 'auto' }}>
               <table className="a-plain-table">
                 <thead>
@@ -942,15 +942,15 @@ const SummaryTables = ({ goBack, canGoBack } = {}) => {
                 </tbody>
               </table>
             </div>
-            <p className="a-footnote">No statistically significant association between incident type and severity (p = {stats.incidentChiSquare.p.toFixed(3)}) — each type's observed severity split is close to what independence alone would predict from the overall totals.</p>
+            <p className="a-footnote">No statistically significant association between incident type and severity (p = {stats.incidentChiSquare.p.toFixed(3)}) - each type's observed severity split is close to what independence alone would predict from the overall totals.</p>
           </div>
         </div>
 
         {/* POINT-BISERIAL WEATHER CORRELATION */}
         <div className="a-grid">
           <div className="a-card s-12">
-            <SectionHeader eyebrow="Correlation Framing · New Test" title="Point-Biserial Correlation — Weather × Total Volume" color={C.blue2}
-              sub="Weather binary-coded (Wet=1/Dry=0) correlated directly against Total Volume per interval — chart version in Analytics" />
+            <SectionHeader eyebrow="Correlation Framing · New Test" title="Point-Biserial Correlation - Weather × Total Volume" color={C.blue2}
+              sub="Weather binary-coded (Wet=1/Dry=0) correlated directly against Total Volume per interval - chart version in Analytics" />
             <div className="a-scroll-x-dark" style={{ overflowX: 'auto' }}>
               <table className="a-plain-table">
                 <thead><tr><th>r</th><th>r²</th><th>p</th><th>n</th><th>Mean, Dry</th><th>Mean, Wet</th></tr></thead>
@@ -973,8 +973,8 @@ const SummaryTables = ({ goBack, canGoBack } = {}) => {
         {/* LAG-1 AUTOCORRELATION */}
         <div className="a-grid">
           <div className="a-card s-12">
-            <SectionHeader eyebrow="Serial Dependence · New Test" title="Lag-1 Autocorrelation — Traffic Volume" color={C.green}
-              sub="Pearson r between each interval's Total Volume and the following interval's, computed within each real Intersection×Date sequence so no pair spans a day boundary — chart version in Analytics" />
+            <SectionHeader eyebrow="Serial Dependence · New Test" title="Lag-1 Autocorrelation - Traffic Volume" color={C.green}
+              sub="Pearson r between each interval's Total Volume and the following interval's, computed within each real Intersection×Date sequence so no pair spans a day boundary - chart version in Analytics" />
             <div className="a-scroll-x-dark" style={{ overflowX: 'auto' }}>
               <table className="a-plain-table">
                 <thead><tr><th>Scope</th><th>r</th><th>r²</th><th>p</th><th>n (pairs)</th></tr></thead>
@@ -998,7 +998,7 @@ const SummaryTables = ({ goBack, canGoBack } = {}) => {
                 </tbody>
               </table>
             </div>
-            <p className="a-footnote">Strongly positive at every site (r ≈ 0.76–0.78) and network-wide — a busy 15-min interval reliably tends to be followed by another busy interval ("platooning"), a time-ordered pattern the Poisson-dispersion test elsewhere on this tab cannot detect on its own.</p>
+            <p className="a-footnote">Strongly positive at every site (r ≈ 0.76-0.78) and network-wide - a busy 15-min interval reliably tends to be followed by another busy interval ("platooning"), a time-ordered pattern the Poisson-dispersion test elsewhere on this tab cannot detect on its own.</p>
           </div>
         </div>
 
@@ -1006,7 +1006,7 @@ const SummaryTables = ({ goBack, canGoBack } = {}) => {
         <div className="a-grid">
           <div className="a-card s-12">
             <SectionHeader eyebrow="Assumption Check · New Test" title="Homogeneity of Variance Across Sites (Levene's Test)" color={C.purple}
-              sub="Brown-Forsythe Levene's test on Tricycles/interval across the 5 sites — chart version in Analytics" />
+              sub="Brown-Forsythe Levene's test on Tricycles/interval across the 5 sites - chart version in Analytics" />
             <div className="a-scroll-x-dark" style={{ overflowX: 'auto' }}>
               <table className="a-plain-table">
                 <thead><tr><th>Site</th><th>Std Dev</th><th>n</th></tr></thead>
@@ -1025,7 +1025,7 @@ const SummaryTables = ({ goBack, canGoBack } = {}) => {
                 </tbody>
               </table>
             </div>
-            <p className="a-footnote">The equal-variance assumption behind the tricycle-volume one-way ANOVA is significantly violated — disclosed here as a genuine methodological limitation, not smoothed over. The Bonferroni-corrected pairwise post-hoc test above uses Welch's t-test per pair, which does not assume equal variances and remains sound regardless.</p>
+            <p className="a-footnote">The equal-variance assumption behind the tricycle-volume one-way ANOVA is significantly violated - disclosed here as a genuine methodological limitation, not smoothed over. The Bonferroni-corrected pairwise post-hoc test above uses Welch's t-test per pair, which does not assume equal variances and remains sound regardless.</p>
           </div>
         </div>
 
@@ -1033,7 +1033,7 @@ const SummaryTables = ({ goBack, canGoBack } = {}) => {
         <div className="a-grid">
           <div className="a-card s-12">
             <SectionHeader eyebrow="Factorial Design · New Test" title="Two-Way ANOVA: Intersection × Period on Tricycle Volume" color={C.red}
-              sub="Full factorial design on field20's real per-interval Tricycle counts (exactly orthogonal: every site shares the identical 400 Peak / 880 Off-Peak split) — chart version in Analytics" />
+              sub="Full factorial design on field20's real per-interval Tricycle counts (exactly orthogonal: every site shares the identical 400 Peak / 880 Off-Peak split) - chart version in Analytics" />
             <div className="a-scroll-x-dark" style={{ overflowX: 'auto' }}>
               <table className="a-plain-table">
                 <thead><tr><th>Effect</th><th>F</th><th>df1</th><th>df2</th><th>p</th></tr></thead>
@@ -1082,15 +1082,15 @@ const SummaryTables = ({ goBack, canGoBack } = {}) => {
                 </tbody>
               </table>
             </div>
-            <p className="a-footnote">All three effects are significant, including the interaction — the size of the peak-hour surge itself differs by site. Relative surge is similar network-wide (all sites roughly double from off-peak to peak), but the absolute increase scales with each site's baseline: sites with higher off-peak volume see a proportionally larger absolute jump at peak.</p>
+            <p className="a-footnote">All three effects are significant, including the interaction - the size of the peak-hour surge itself differs by site. Relative surge is similar network-wide (all sites roughly double from off-peak to peak), but the absolute increase scales with each site's baseline: sites with higher off-peak volume see a proportionally larger absolute jump at peak.</p>
           </div>
         </div>
 
         {/* KRUSKAL-WALLIS H TEST */}
         <div className="a-grid">
           <div className="a-card s-6">
-            <SectionHeader eyebrow="Robustness Check · New Test" title="Kruskal-Wallis H Test — Tricycle Volume by Site" color={C.teal}
-              sub="Non-parametric counterpart to the tricycle-volume one-way ANOVA — chart version in Analytics" />
+            <SectionHeader eyebrow="Robustness Check · New Test" title="Kruskal-Wallis H Test - Tricycle Volume by Site" color={C.teal}
+              sub="Non-parametric counterpart to the tricycle-volume one-way ANOVA - chart version in Analytics" />
             <div className="a-scroll-x-dark" style={{ overflowX: 'auto' }}>
               <table className="a-plain-table">
                 <thead><tr><th>Site</th><th>Mean Rank</th><th>n</th></tr></thead>
@@ -1109,12 +1109,12 @@ const SummaryTables = ({ goBack, canGoBack } = {}) => {
                 </tbody>
               </table>
             </div>
-            <p className="a-footnote">Reaches the same conclusion as the parametric ANOVA without assuming equal variances or normality — a distribution-free confirmation that tricycle volume genuinely differs by site.</p>
+            <p className="a-footnote">Reaches the same conclusion as the parametric ANOVA without assuming equal variances or normality - a distribution-free confirmation that tricycle volume genuinely differs by site.</p>
           </div>
 
           <div className="a-card s-6">
-            <SectionHeader eyebrow="Robustness Check · New Test" title="Mann-Whitney U Test — Peak vs Off-Peak" color={C.yellow}
-              sub="Non-parametric counterpart to the peak/off-peak Welch's t-test — chart version in Analytics" />
+            <SectionHeader eyebrow="Robustness Check · New Test" title="Mann-Whitney U Test - Peak vs Off-Peak" color={C.yellow}
+              sub="Non-parametric counterpart to the peak/off-peak Welch's t-test - chart version in Analytics" />
             <div className="a-scroll-x-dark" style={{ overflowX: 'auto' }}>
               <table className="a-plain-table">
                 <thead><tr><th>Period</th><th>Mean Rank</th><th>n</th></tr></thead>
@@ -1128,15 +1128,15 @@ const SummaryTables = ({ goBack, canGoBack } = {}) => {
                 </tbody>
               </table>
             </div>
-            <p className="a-footnote">Compares the entire Peak and Off-Peak distributions via ranks and agrees with the Welch's t-test — peak intervals rank consistently higher, not just on average.</p>
+            <p className="a-footnote">Compares the entire Peak and Off-Peak distributions via ranks and agrees with the Welch's t-test - peak intervals rank consistently higher, not just on average.</p>
           </div>
         </div>
 
         {/* WILCOXON SIGNED-RANK TEST */}
         <div className="a-grid">
           <div className="a-card s-12">
-            <SectionHeader eyebrow="Robustness Check · New Test" title="Wilcoxon Signed-Rank Test — Tricycle vs Car Headway" color={C.indigo}
-              sub="Non-parametric counterpart to the paired headway t-test — chart version in Analytics" />
+            <SectionHeader eyebrow="Robustness Check · New Test" title="Wilcoxon Signed-Rank Test - Tricycle vs Car Headway" color={C.indigo}
+              sub="Non-parametric counterpart to the paired headway t-test - chart version in Analytics" />
             <div className="a-scroll-x-dark" style={{ overflowX: 'auto' }}>
               <table className="a-plain-table">
                 <thead><tr><th>Statistic</th><th>Value</th></tr></thead>
@@ -1158,7 +1158,7 @@ const SummaryTables = ({ goBack, canGoBack } = {}) => {
         <div className="a-grid">
           <div className="a-card s-12">
             <SectionHeader eyebrow="Regression Method · New Test" title="Multiple Linear Regression: V/C Ratio ~ Vehicle-Class Counts" color={C.pink}
-              sub="Operationalizes the Section 2.3.2 'Multiple Linear Regression' PCU-estimation method with real computed coefficients — chart version in Analytics" />
+              sub="Operationalizes the Section 2.3.2 'Multiple Linear Regression' PCU-estimation method with real computed coefficients - chart version in Analytics" />
             <div className="a-scroll-x-dark" style={{ overflowX: 'auto' }}>
               <table className="a-plain-table">
                 <thead><tr><th>Predictor</th><th>β (coefficient)</th><th>Std. Error</th><th>t</th><th>p</th></tr></thead>
@@ -1196,7 +1196,7 @@ const SummaryTables = ({ goBack, canGoBack } = {}) => {
                 </tbody>
               </table>
             </div>
-            <p className="a-footnote">All 5 coefficients are positive and statistically significant, but the 5 vehicle-class counts are themselves strongly correlated (Section 4.9.11's correlation matrix, r = 0.53–0.96) — a multicollinearity condition under which individual coefficients can be unstable even though the overall model fits extremely well. The MLR-derived tricycle PCU diverges from the headway-ratio PCU; both agree tricycles exceed a car's road time-space, but disagree on magnitude, an honest cross-method discrepancy disclosed here rather than resolved by picking one number.</p>
+            <p className="a-footnote">All 5 coefficients are positive and statistically significant, but the 5 vehicle-class counts are themselves strongly correlated (Section 4.9.11's correlation matrix, r = 0.53-0.96) - a multicollinearity condition under which individual coefficients can be unstable even though the overall model fits extremely well. The MLR-derived tricycle PCU diverges from the headway-ratio PCU; both agree tricycles exceed a car's road time-space, but disagree on magnitude, an honest cross-method discrepancy disclosed here rather than resolved by picking one number.</p>
           </div>
         </div>
 

@@ -94,7 +94,7 @@ const SearchableSelect = ({ label, options, value, onChange, placeholder = 'Sear
 
 export default SearchableSelect;
 
-// Shared CSS injected once — every tab that renders a SearchableSelect
+// Shared CSS injected once - every tab that renders a SearchableSelect
 // includes this same stylesheet string in its own <style> block, so no
 // separate import wiring is needed. Kept here so the rules travel with
 // the component.

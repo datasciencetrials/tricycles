@@ -18,7 +18,7 @@ const MethodologyPanel = ({ keys, color = '#0071e3' }) => {
       >
         <span>
           <i className="fa-solid fa-square-root-variable" style={{ color, marginRight: '10px' }}></i>
-          Methodology &amp; Formulas — how every figure on this page is calculated
+          Methodology &amp; Formulas - how every figure on this page is calculated
         </span>
         <i className={`fa-solid fa-chevron-${open ? 'up' : 'down'}`}></i>
       </button>
@@ -26,7 +26,7 @@ const MethodologyPanel = ({ keys, color = '#0071e3' }) => {
         <div className="a-methodology-body">
           <p className="a-sub" style={{ marginBottom: '14px' }}>
             Every number on this page is computed live in your browser from real field data shipped with the
-            site (not hand-typed) — reload the page and it recomputes from scratch. Two source datasets are
+            site (not hand-typed) - reload the page and it recomputes from scratch. Two source datasets are
             used; a figure's row below states which one.
           </p>
           <div className="a-methodology-sources">

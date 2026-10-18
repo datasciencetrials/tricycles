@@ -3,7 +3,7 @@ import JSZip from 'jszip';
 
 // ---------------------------------------------------------------------------
 // Shared floating top-right control cluster: Back (in-app tab history, not
-// browser history — this is a single-page app with no routing, so a literal
+// browser history - this is a single-page app with no routing, so a literal
 // browser-back would just leave the site), scroll-to-Top, and a tab-specific
 // Export menu. Used by all four tabs so the interaction feels the same
 // everywhere. Fades in once the user has actually scrolled, and collapses to
@@ -74,7 +74,7 @@ export async function downloadChartsAsZip(zipFilename, { container = document, l
       const base64 = dataUrl.split(',')[1];
       if (base64) zip.file(name, base64, { base64: true });
     } catch {
-      // canvas may be tainted or empty — skip it rather than fail the whole export
+      // canvas may be tainted or empty - skip it rather than fail the whole export
     }
   });
   const blob = await zip.generateAsync({ type: 'blob' });

@@ -108,7 +108,7 @@ const SITE_GEO = [
 ];
 
 // ---------------------------------------------------------------------------
-// Apple-style design tokens (bright, light, system-color palette) — same
+// Apple-style design tokens (bright, light, system-color palette) - same
 // tokens used across the Overview / Summary Tables / Analytics tabs so the
 // three redesigned views feel like one product.
 // ---------------------------------------------------------------------------
@@ -231,7 +231,7 @@ const OverviewTab = ({ goBack, canGoBack } = {}) => {
           coords: geo.coords,
           legs,
           vcMean: stats.vcByIntersection[geo.name]?.mean,
-          isModeledHour: !!hourEntry?.isModeled,
+          isModelledHour: !!hourEntry?.isModelled,
           intervalVolume: hourEntry?.volume,
           hourlyRate,
           source: config.source,
@@ -241,7 +241,7 @@ const OverviewTab = ({ goBack, canGoBack } = {}) => {
       .filter(Boolean);
   }, [stats, selectedHour, flowSkew]);
 
-  const flowIsRealHour = flowData.length ? !flowData[0].isModeledHour : true;
+  const flowIsRealHour = flowData.length ? !flowData[0].isModelledHour : true;
 
   const exportSites = () => {
     if (!studySites) return;
@@ -550,7 +550,7 @@ const OverviewTab = ({ goBack, canGoBack } = {}) => {
                                 <div><b>PCU (headway):</b> {site.pcuHeadway.toFixed(3)}</div>
                                 <div><b>Tricycle share:</b> {site.tricycleSharePct.toFixed(1)}%</div>
                                 <div><b>Mean daily volume:</b> {Math.round(site.meanDailyVolume).toLocaleString()} veh/day</div>
-                                <div><b>{weatherView} mean (15-min):</b> {chipVolume(site) != null ? Math.round(chipVolume(site)).toLocaleString() : '—'}</div>
+                                <div><b>{weatherView} mean (15-min):</b> {chipVolume(site) != null ? Math.round(chipVolume(site)).toLocaleString() : '-'}</div>
                                 <div style={{ gridColumn: '1 / -1' }}><b>Coordinates:</b> {site.coords[0].toFixed(4)}, {site.coords[1].toFixed(4)}</div>
                               </div>
                             </div>
@@ -591,7 +591,7 @@ const OverviewTab = ({ goBack, canGoBack } = {}) => {
                 <h2 className="a-hud-title" style={{ fontSize: '0.92rem' }}>
                   {String(selectedHour).padStart(2, '0')}:00
                   <span className="a-illustrative-badge" style={{ marginLeft: '8px' }}>
-                    {flowIsRealHour ? 'Real hour · split modeled' : 'Modeled hour'}
+                    {flowIsRealHour ? 'Real hour · split modelled' : 'Modelled hour'}
                   </span>
                 </h2>
               </div>
@@ -619,7 +619,7 @@ const OverviewTab = ({ goBack, canGoBack } = {}) => {
               <span>00:00</span><span>06:00</span><span>12:00</span><span>18:00</span><span>23:00</span>
             </div>
             <p className="a-footnote" style={{ margin: '8px 0 0' }}>
-              Leg identity/count author-confirmed · this hour's volume is {flowIsRealHour ? 'real, measured' : 'a disclosed model outside the 06:00–21:45 field sample'} · per-leg split is a disclosed assumption, cited on tap.
+              Leg identity/count author-confirmed · this hour's volume is {flowIsRealHour ? 'real, measured' : 'a disclosed model outside the 06:00-21:45 field sample'} · per-leg split is a disclosed assumption, cited on tap.
             </p>
           </div>
 
@@ -629,7 +629,7 @@ const OverviewTab = ({ goBack, canGoBack } = {}) => {
             <div className="a-hud-top-row">
               <div>
                 <p className="a-hud-eyebrow">Geospatial Study Console</p>
-                <h1 className="a-hud-title">Network Overview — 5 Kampala Study Intersections</h1>
+                <h1 className="a-hud-title">Network Overview - 5 Kampala Study Intersections</h1>
               </div>
               <div className="a-toggle-row" role="group" aria-label="Weather condition for site volume figures">
                 <button
@@ -650,7 +650,7 @@ const OverviewTab = ({ goBack, canGoBack } = {}) => {
               <KpiCard icon="fa-location-dot" color={C.blue} label="Study Intersections" value="5" sub="Kampala City road network" />
               <KpiCard icon="fa-car-side" color={C.indigo} label={`Combined Interval Volume (${weatherView})`} value={Math.round(combinedIntervalVolume).toLocaleString()} sub={`Veh/15-min · n=${(weatherN ?? 0).toLocaleString()} intervals`} />
               <KpiCard icon="fa-ban" color={C.purple} label="Combined ADT (Excl. MC)" value={Math.round(totalVolumeExclMC).toLocaleString()} sub="Cars+Tricycles+Minibus+Trucks" />
-              <KpiCard icon="fa-gauge-high" color={C.teal} label="Mean PCU (headway-ratio)" value={stats.pcuHeadwayOverall.toFixed(2)} sub={`Range ${Math.min(...studySites.map(s=>s.pcuHeadway)).toFixed(2)}–${Math.max(...studySites.map(s=>s.pcuHeadway)).toFixed(2)}`} />
+              <KpiCard icon="fa-gauge-high" color={C.teal} label="Mean PCU (headway-ratio)" value={stats.pcuHeadwayOverall.toFixed(2)} sub={`Range ${Math.min(...studySites.map(s=>s.pcuHeadway)).toFixed(2)}-${Math.max(...studySites.map(s=>s.pcuHeadway)).toFixed(2)}`} />
               <KpiCard icon="fa-fire" color={C.orange} label={`Busiest Site (${weatherView})`} value={stats.shortName((busiestUnderWeather || busiest).name)} sub={`${Math.round(chipVolume(busiestUnderWeather || busiest)).toLocaleString()} veh/15-min mean`} />
               <KpiCard icon="fa-route" color={C.pink} label="Highest Tricycle Share" value={stats.shortName(highestTricycle.name)} sub={`${highestTricycle.tricycleSharePct.toFixed(1)}% of site volume`} />
               <KpiCard icon="fa-cloud-showers-heavy" color={C.red} label="Wet-Weather Impact" value={`${weatherDelta.toFixed(1)}%`} sub={`vs Dry · n=${stats.weatherTest.nA.toLocaleString()}/${stats.weatherTest.nB.toLocaleString()}`} />
@@ -688,11 +688,11 @@ const OverviewTab = ({ goBack, canGoBack } = {}) => {
             {selectedSite && (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '14px' }}>
                 <div className="a-stat-box">
-                  <div className="a-stat-label">Mean Daily Volume — 20-day field sample, 2026 (n = 20 days)</div>
+                  <div className="a-stat-label">Mean Daily Volume - 20-day field sample, 2026 (n = 20 days)</div>
                   <div className="a-stat-value" style={{ color: C.blue }}>{Math.round(selectedSite.meanDailyVolume).toLocaleString()}</div>
                 </div>
                 <div className="a-stat-box">
-                  <div className="a-stat-label">ADT Excluding Motorcycles — same 20-day sample</div>
+                  <div className="a-stat-label">ADT Excluding Motorcycles - same 20-day sample</div>
                   <div className="a-stat-value" style={{ color: C.purple }}>{Math.round(selectedSite.meanDailyVolumeExclMC).toLocaleString()}</div>
                 </div>
                 <div className="a-stat-box">
@@ -707,20 +707,20 @@ const OverviewTab = ({ goBack, canGoBack } = {}) => {
                   <div className="a-stat-box">
                     <div className="a-stat-label"><i className="fa-solid fa-sun" style={{ marginRight: '5px' }}></i>Dry Mean (15-min)</div>
                     <div className="a-stat-value" style={{ color: C.orange, fontSize: '1.05rem' }}>
-                      {selectedSite.meanIntervalVolumeDry != null ? Math.round(selectedSite.meanIntervalVolumeDry).toLocaleString() : '—'}
+                      {selectedSite.meanIntervalVolumeDry != null ? Math.round(selectedSite.meanIntervalVolumeDry).toLocaleString() : '-'}
                     </div>
                   </div>
                   <div className="a-stat-box">
                     <div className="a-stat-label"><i className="fa-solid fa-cloud-showers-heavy" style={{ marginRight: '5px' }}></i>Wet Mean (15-min)</div>
                     <div className="a-stat-value" style={{ color: C.blue2, fontSize: '1.05rem' }}>
-                      {selectedSite.meanIntervalVolumeWet != null ? Math.round(selectedSite.meanIntervalVolumeWet).toLocaleString() : '—'}
+                      {selectedSite.meanIntervalVolumeWet != null ? Math.round(selectedSite.meanIntervalVolumeWet).toLocaleString() : '-'}
                     </div>
                   </div>
                 </div>
                 <div className="a-stat-box">
                   <div className="a-stat-label"><i className="fa-solid fa-triangle-exclamation" style={{ marginRight: '5px' }}></i>Traffic Criticality Index</div>
                   <div className="a-stat-value" style={{ color: C.red, fontSize: '1.05rem' }}>
-                    {selectedSite.criticalityIndex != null ? selectedSite.criticalityIndex.toFixed(1) : '—'} / 100
+                    {selectedSite.criticalityIndex != null ? selectedSite.criticalityIndex.toFixed(1) : '-'} / 100
                   </div>
                 </div>
                 <div className="a-stat-box">

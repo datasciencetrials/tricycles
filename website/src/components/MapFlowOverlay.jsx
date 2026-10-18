@@ -27,7 +27,7 @@ import { LEG_ROUTES } from '../lib/legRoutes';
 // directionalSplit.js and legGeometry.js: leg identity/count is real
 // (author-confirmed); the per-leg VOLUME shown is `simulateDirectionalSplit()`
 // applied to the selected hour's volume (itself `simulateFullDayProfile()`'s
-// real reading for 06:00-21:45 or a disclosed modeled estimate outside it) --
+// real reading for 06:00-21:45 or a disclosed modelled estimate outside it) --
 // that part is unchanged and still a disclosed model either way.
 //
 // The LINE ITSELF is now mixed: for every leg listed in legRoutes.js's
@@ -290,20 +290,20 @@ export default function MapFlowOverlay({ flowData, accentColor = '#0071e3', mute
       site.legs.forEach((leg, i) => {
         const entry = legStateRef.current[`${site.name}__${i}`];
         if (!entry) return;
-        const modeledNote = site.isModeledHour
-          ? '<div style="color:#ff9f0a;font-weight:700;margin-top:3px;">Modeled hour — outside the 06:00–21:45 field sample</div>'
-          : '<div style="color:#30d158;font-weight:700;margin-top:3px;">Real sampled hour (06:00–21:45)</div>';
+        const modelledNote = site.isModelledHour
+          ? '<div style="color:#ff9f0a;font-weight:700;margin-top:3px;">Modelled hour - outside the 06:00-21:45 field sample</div>'
+          : '<div style="color:#30d158;font-weight:700;margin-top:3px;">Real sampled hour (06:00-21:45)</div>';
         const realRoute = (LEG_ROUTES[site.name] || [])[i];
         const routeNote = realRoute
           ? `<div style="color:#0071e3;font-weight:700;margin-top:3px;">Real road route · ${realRoute.realMeters}m mapped from GIS road data</div>`
-          : '<div style="color:#888;font-weight:700;margin-top:3px;">Schematic line — direction/length not a real road measurement</div>';
+          : '<div style="color:#888;font-weight:700;margin-top:3px;">Schematic line - direction/length not a real road measurement</div>';
         const html = `
           <div style="min-width:190px;font-family:-apple-system,BlinkMacSystemFont,'Inter',system-ui,sans-serif;">
             <div style="font-weight:800;font-size:12.5px;color:#1d1d1f;">${site.shortName || site.name}</div>
             <div style="font-size:11px;color:#555;margin-top:2px;">${leg.leg}</div>
             <div style="font-size:11.5px;color:#333;margin-top:6px;">${leg.isPrimary ? '★ Primary leg · ' : ''}${leg.pct.toFixed(1)}% assumed share of this hour</div>
             <div style="font-size:13px;font-weight:800;color:#0071e3;margin-top:2px;">${Math.round(leg.volume).toLocaleString()} veh/hr (simulated)</div>
-            ${modeledNote}
+            ${modelledNote}
             ${routeNote}
             <div style="font-size:10px;color:#888;margin-top:6px;line-height:1.4;">Leg identity/count real (author-confirmed). Per-leg split is a disclosed assumption. Source: ${site.source}</div>
           </div>`;

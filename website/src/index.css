@@ -314,7 +314,7 @@ a { color: inherit; }
 }
 
 /* ===================================================================
-   MOBILE RESPONSIVENESS (additive — appended, does not alter rules above)
+   MOBILE RESPONSIVENESS (additive - appended, does not alter rules above)
    =================================================================== */
 
 /* Global overflow safety */
@@ -444,8 +444,8 @@ body::after {
 
 .tab-panel {
   /* `backwards` (not `both`) is deliberate: `both` would leave `transform:
-     translateY(0)` permanently applied after the animation ends — a real
-     transform value, not `none` — which silently makes .tab-panel a
+     translateY(0)` permanently applied after the animation ends - a real
+     transform value, not `none` - which silently makes .tab-panel a
      containing block for every `position: fixed` descendant (their "fixed"
      position becomes relative to this scrolling box instead of the
      viewport). `backwards` still prevents the pre-animation flash but lets

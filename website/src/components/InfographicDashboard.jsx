@@ -46,9 +46,9 @@ const PERIOD_COLORS = { 'Morning Peak': C.blue, 'Midday / Off-Peak': C.orange, '
 // these before it reaches the DOM, so a null/undefined/NaN renders as an
 // em dash instead of leaking "undefined"/"NaN" text.
 const isBad = (v) => v === null || v === undefined || Number.isNaN(v);
-const fmt = (v, d = 1) => (isBad(v) ? '—' : Number(v).toFixed(d));
-const fmtN = (v) => (isBad(v) ? '—' : Number(v).toLocaleString());
-const pFmt = (p) => (isBad(p) ? '—' : (p < 0.001 ? 'p < .001' : `p = ${p.toFixed(3)}`));
+const fmt = (v, d = 1) => (isBad(v) ? '-' : Number(v).toFixed(d));
+const fmtN = (v) => (isBad(v) ? '-' : Number(v).toLocaleString());
+const pFmt = (p) => (isBad(p) ? '-' : (p < 0.001 ? 'p < .001' : `p = ${p.toFixed(3)}`));
 
 // Equation text for a correlation's OLS line of best fit (slope/intercept
 // come straight from trafficStats.js's pearson(), fit on the same real
@@ -107,12 +107,12 @@ const DescribeCard = ({ color, span = 's-4', eyebrow, title, sub, d, unit }) => 
       <SectionHeader eyebrow={eyebrow} title={title} color={color} sub={sub} />
       <div style={{ marginTop: '4px' }}>
         <StatRow label="Sample size (n)" value={fmtN(d?.n)} />
-        <StatRow label="Mean" value={d ? `${fmt(d.mean, 2)}${u}` : '—'} />
-        <StatRow label="Median" value={d ? `${fmt(d.median, 2)}${u}` : '—'} />
-        <StatRow label="Std. deviation" value={d ? `${fmt(d.std, 2)}${u}` : '—'} />
-        <StatRow label="Q1 – Q3 (IQR)" value={d ? `${fmt(d.q1, 2)} – ${fmt(d.q3, 2)} (${fmt(d.iqr, 2)})${u}` : '—'} />
-        <StatRow label="Min – Max" value={d ? `${fmt(d.min, 2)} – ${fmt(d.max, 2)}${u}` : '—'} />
-        <StatRow label="Coeff. of variation" value={d && !isBad(d.cv) ? `${fmt(d.cv)}%` : '—'} />
+        <StatRow label="Mean" value={d ? `${fmt(d.mean, 2)}${u}` : '-'} />
+        <StatRow label="Median" value={d ? `${fmt(d.median, 2)}${u}` : '-'} />
+        <StatRow label="Std. deviation" value={d ? `${fmt(d.std, 2)}${u}` : '-'} />
+        <StatRow label="Q1 - Q3 (IQR)" value={d ? `${fmt(d.q1, 2)} - ${fmt(d.q3, 2)} (${fmt(d.iqr, 2)})${u}` : '-'} />
+        <StatRow label="Min - Max" value={d ? `${fmt(d.min, 2)} - ${fmt(d.max, 2)}${u}` : '-'} />
+        <StatRow label="Coeff. of variation" value={d && !isBad(d.cv) ? `${fmt(d.cv)}%` : '-'} />
       </div>
     </div>
   );
@@ -396,7 +396,7 @@ const InfographicDashboard = ({ goBack, canGoBack } = {}) => {
         <div className="a-grid">
           <div className="a-card s-12">
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '12px' }}>
-              <SectionHeader eyebrow="24-Hour Traffic Volume Profile" title={`Hourly Traffic Pattern — ${hourlyProfileSite === 'All Sites' ? 'All Sites (Mean)' : hourlyProfileSite}`} color={hourlyProfileSite === 'All Sites' ? C.blue : SITE_COLORS[hourlyProfileSite]}
+              <SectionHeader eyebrow="24-Hour Traffic Volume Profile" title={`Hourly Traffic Pattern - ${hourlyProfileSite === 'All Sites' ? 'All Sites (Mean)' : hourlyProfileSite}`} color={hourlyProfileSite === 'All Sites' ? C.blue : SITE_COLORS[hourlyProfileSite]}
                 sub={hourlyProfileSite === 'All Sites' ? `Mean hourly value per surveyed junction across ${REAL_SITES.length} sites and the available survey dates` : `Mean hourly value at ${hourlyProfileSite} across the available survey dates`} />
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'flex-end' }}>
                 <div className="a-toggle-row" role="group" aria-label="Study site">
@@ -406,10 +406,10 @@ const InfographicDashboard = ({ goBack, canGoBack } = {}) => {
                 </div>
                 <div className="a-toggle-row" role="group" aria-label="Overnight hours display">
                   <button type="button" className={`a-toggle-btn ${!showOvernightModel ? 'active' : ''}`} aria-pressed={!showOvernightModel} onClick={() => setShowOvernightModel(false)}>
-                    <i className="fa-solid fa-sun" style={{ marginRight: '6px' }}></i>Measured only (07:00–18:00)
+                    <i className="fa-solid fa-sun" style={{ marginRight: '6px' }}></i>Measured only (07:00-18:00)
                   </button>
                   <button type="button" className={`a-toggle-btn ${showOvernightModel ? 'active' : ''}`} aria-pressed={showOvernightModel} onClick={() => setShowOvernightModel(true)}>
-                    <i className="fa-solid fa-moon" style={{ marginRight: '6px' }}></i>Full 24h (incl. modeled overnight)
+                    <i className="fa-solid fa-moon" style={{ marginRight: '6px' }}></i>Full 24h (incl. modelled overnight)
                   </button>
                 </div>
               </div>
@@ -460,7 +460,7 @@ const InfographicDashboard = ({ goBack, canGoBack } = {}) => {
                           const profile = hourlyProfileSite === 'All Sites' ? stats.hourlyProfile24 : stats.hourlyProfile24BySite[hourlyProfileSite];
                           const arr = ctx.dataset.label.startsWith('Motorized') ? profile.motorizedFlow : profile.tricycleTotal;
                           const isReal = arr[ctx.dataIndex]?.isReal;
-                          return `${ctx.dataset.label}: ${ctx.parsed.y === null ? '—' : Math.round(ctx.parsed.y).toLocaleString()}${isReal ? '' : ' (modeled)'}`;
+                          return `${ctx.dataset.label}: ${ctx.parsed.y === null ? '-' : Math.round(ctx.parsed.y).toLocaleString()}${isReal ? '' : ' (modelled)'}`;
                         },
                       },
                     },
@@ -609,7 +609,7 @@ const InfographicDashboard = ({ goBack, canGoBack } = {}) => {
                 data={{
                   labels: stats.regionalBenchmark.map((b) => b.benchmark),
                   datasets: [
-                    { label: 'Published range (lower–upper)', data: stats.regionalBenchmark.map((b) => [b.lower, b.upper]), backgroundColor: hex2rgba(C.faint, 0.4), borderRadius: 6 },
+                    { label: 'Published range (lower-upper)', data: stats.regionalBenchmark.map((b) => [b.lower, b.upper]), backgroundColor: hex2rgba(C.faint, 0.4), borderRadius: 6 },
                     { label: 'This study (base static PCU)', data: stats.regionalBenchmark.map((b) => b.basePassengerStaticPCU), backgroundColor: C.green, borderRadius: 6, type: 'bar', barThickness: 10 },
                   ],
                 }}
@@ -765,7 +765,7 @@ const InfographicDashboard = ({ goBack, canGoBack } = {}) => {
 
           <div className="a-card s-6">
             <SectionHeader eyebrow="Chi-Square Test of Independence" title="Observed vs. Independence-Expected" color={C.purple}
-              sub={`χ²(${stats.incidentChiSquare.df}) = ${stats.incidentChiSquare.chi2.toFixed(1)}, ${pFmt(stats.incidentChiSquare.p)} — full crosstab in Summary Tables`} />
+              sub={`χ²(${stats.incidentChiSquare.df}) = ${stats.incidentChiSquare.chi2.toFixed(1)}, ${pFmt(stats.incidentChiSquare.p)} - full crosstab in Summary Tables`} />
             <div className="a-chart-box">
               <Bar
                 data={{
@@ -819,19 +819,19 @@ const InfographicDashboard = ({ goBack, canGoBack } = {}) => {
           <MethodologyPanel color={C.indigo} keys={['staticPCU', 'resultsBySite', 'dynamicPcuBySite', 'dynamicPcuByTimePeriod', 'dynamicPcuByJunctionType', 'weatherAvailability', 'wetPavementScenario', 'speedSensitivity', 'regionalBenchmark', 'allDataSensitivity', 'tricycleSiteAnova', 'tricycleSiteKruskalWallis', 'tricyclePeriodAnova', 'tricyclePeriodKruskalWallis', 'flowTricycleCorrelation', 'kibuyePoissonBins', 'incidentChiSquare', 'compositionBySite', 'hourlyProfile24']} />
         </div>
 
-        {/* PHOTO CAROUSEL — all 24 original geotagged field photographs from
+        {/* PHOTO CAROUSEL - all 24 original geotagged field photographs from
             this study's own count sessions (no stock or illustrative images). */}
         <div className="a-card a-carousel-card s-12">
           <SectionHeader eyebrow="Field Documentation" title="Traffic & Site Conditions" color={C.teal}
             sub="All 24 original photographs taken during this study's own traffic data collection at the case-study corridors in Kampala." />
           <PhotoCarousel photos={[
-            { src: `${baseUrl}assets/field/field-01.jpg`, eyebrow: 'Kibuye – Natete Road', title: 'Logging Counts Roadside', color: C.blue,
-              text: 'Two enumerators seated on the paved shoulder with clipboards, logging vehicle counts opposite an electronics shopfront as motorcycles and a tricycle move through the Kibuye–Natete Road junction.' },
-            { src: `${baseUrl}assets/field/field-02.jpg`, eyebrow: 'Kibuye – Natete Road', title: 'Pedestrians Near the Mosque', color: C.blue2,
-              text: 'A pedestrian crosses near a combo-meal billboard and a neighbourhood mosque, while two people rest at the roadside during a count interval at the Kibuye–Natete Road site.' },
-            { src: `${baseUrl}assets/field/field-03.jpg`, eyebrow: 'Kibuye – Natete Road', title: 'Recording a Count Interval', color: C.teal,
+            { src: `${baseUrl}assets/field/field-01.jpg`, eyebrow: 'Kibuye - Natete Road', title: 'Logging Counts Roadside', color: C.blue,
+              text: 'Two enumerators seated on the paved shoulder with clipboards, logging vehicle counts opposite an electronics shopfront as motorcycles and a tricycle move through the Kibuye-Natete Road junction.' },
+            { src: `${baseUrl}assets/field/field-02.jpg`, eyebrow: 'Kibuye - Natete Road', title: 'Pedestrians Near the Mosque', color: C.blue2,
+              text: 'A pedestrian crosses near a combo-meal billboard and a neighbourhood mosque, while two people rest at the roadside during a count interval at the Kibuye-Natete Road site.' },
+            { src: `${baseUrl}assets/field/field-03.jpg`, eyebrow: 'Kibuye - Natete Road', title: 'Recording a Count Interval', color: C.teal,
               text: 'An enumerator in an orange hard hat and hi-vis vest records counts on a clipboard at a roadside table, with a pickup truck and passing motorcycles part of the stream being logged.' },
-            { src: `${baseUrl}assets/field/field-04.jpg`, eyebrow: 'Kibuye – Natete Road', title: 'Passing Commercial Traffic', color: C.indigo,
+            { src: `${baseUrl}assets/field/field-04.jpg`, eyebrow: 'Kibuye - Natete Road', title: 'Passing Commercial Traffic', color: C.indigo,
               text: 'A branded delivery truck passes close to the count point, with motorcycles, an SUV, and roadside advertising boards forming the junction backdrop under an overcast sky.' },
             { src: `${baseUrl}assets/field/field-05.jpg`, eyebrow: 'Wandegeya', title: 'The Junction at Sunrise', color: C.green,
               text: 'An early-morning view of the signalized Wandegeya junction, with motorcycles and cars crossing beneath the traffic-signal gantries as the sun rises behind the intersection.' },
@@ -865,7 +865,7 @@ const InfographicDashboard = ({ goBack, canGoBack } = {}) => {
               text: 'Enumerators seated at a shopfront table log counts as pedestrians, including a man carrying market bags, pass by on Bombo Road.' },
             { src: `${baseUrl}assets/field/field-20.jpg`, eyebrow: 'Entebbe Road', title: 'Beside the Clock Tower', color: C.indigo,
               text: 'An enumerator records counts near the Airtel-branded Clock Tower on Entebbe Road, as a man carries sacks past the roundabout.' },
-            { src: `${baseUrl}assets/field/field-21.jpg`, eyebrow: 'Kibuye – Natete Road', title: 'The Junction Being Counted', color: C.green,
+            { src: `${baseUrl}assets/field/field-21.jpg`, eyebrow: 'Kibuye - Natete Road', title: 'The Junction Being Counted', color: C.green,
               text: 'A wide view of an unpaved roundabout lined with shop signage as enumerators seated on a brick wall log motorcycles and cars crossing the junction.' },
             { src: `${baseUrl}assets/field/field-22.jpg`, eyebrow: 'Bombo Road', title: 'Comparing Notes at the Corner', color: C.orange,
               text: 'The enumerator team gathers at a Bombo Road street corner, comparing tally sheets between count intervals near the roadside shopfronts.' },

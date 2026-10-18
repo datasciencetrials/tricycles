@@ -144,7 +144,7 @@ export default function JunctionDigitalTwin({
         ctx.fillStyle = labelColor;
         ctx.font = '600 13px Inter, system-ui, sans-serif';
         ctx.textAlign = Math.cos(ang) > 0.3 ? 'left' : Math.cos(ang) < -0.3 ? 'right' : 'center';
-        const shortLeg = cfg.legs[i].split(' — ')[0].split(' (')[0];
+        const shortLeg = cfg.legs[i].split(' - ')[0].split(' (')[0];
         ctx.fillText(`${flows[i]?.isPrimary ? '★ ' : ''}${shortLeg}`, lx, ly);
         ctx.fillStyle = subColor;
         ctx.font = '500 11.5px Inter, system-ui, sans-serif';

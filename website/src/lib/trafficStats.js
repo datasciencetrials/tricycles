@@ -322,10 +322,10 @@ export const ASSUMPTIONS = {
   // the hourly traffic profile chart. The source counts cover 07:00-18:00
   // only; no vehicle was ever counted overnight. This ratio is the fraction
   // of the straight trend-line between the real 18:00 and (next) 07:00
-  // values that the modeled curve dips to at its lowest point -- it is a
+  // values that the modelled curve dips to at its lowest point -- it is a
   // plain mathematical construction (a cosine-shaped dip), not a figure
   // taken from external literature or additional field data. It exists so
-  // an unmistakably "modeled" overnight segment can be shown for context
+  // an unmistakably "modelled" overnight segment can be shown for context
   // without ever being presented as measured.
   overnightTroughRatio: 0.15,
 };
@@ -362,7 +362,7 @@ function buildOvernightConnector(hour18Value, hour7Value, troughRatio) {
 
 // Builds a full 0-23 hourly profile for one or more grain-matching
 // `siteHour` rows: real measured means for 07:00-18:00, plus a disclosed
-// modeled connector for the remaining 12 hours. `valueKey` is a numeric
+// modelled connector for the remaining 12 hours. `valueKey` is a numeric
 // field already present on each siteHour row (e.g. MotorizedFlow,
 // TricycleTotal).
 function buildHourlyProfile24(rows, valueKey) {
@@ -374,12 +374,12 @@ function buildHourlyProfile24(rows, valueKey) {
     realByHour[h] = hourRows.length ? mean(hourRows.map((r) => r[valueKey])) : 0;
   });
   const connector = buildOvernightConnector(realByHour[18], realByHour[7], ASSUMPTIONS.overnightTroughRatio);
-  const modeledByHour = {};
-  connector.forEach(({ hour, value }) => { modeledByHour[hour] = value; });
+  const modelledByHour = {};
+  connector.forEach(({ hour, value }) => { modelledByHour[hour] = value; });
   return Array.from({ length: 24 }, (_, hour) => ({
     hour,
     isReal: REAL_HOURS.includes(hour),
-    value: REAL_HOURS.includes(hour) ? realByHour[hour] : modeledByHour[hour],
+    value: REAL_HOURS.includes(hour) ? realByHour[hour] : modelledByHour[hour],
   }));
 }
 
@@ -569,7 +569,7 @@ export function computeTrafficStats(rawMovements, siteHour, incidents) {
   //     purely mathematical overnight connector defined above
   //     (ASSUMPTIONS.overnightTroughRatio) and are always flagged
   //     isReal:false so the UI can render them as a visually distinct,
-  //     toggleable "modeled" segment rather than measured data.
+  //     toggleable "modelled" segment rather than measured data.
   // =========================================================================
   const hourlyProfile24 = {
     motorizedFlow: buildHourlyProfile24(siteHour, 'MotorizedFlow'),
