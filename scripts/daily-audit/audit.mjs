@@ -46,6 +46,12 @@ async function auditSelf() {
   let chartElementCount = 0;
   let extractedFigures = [];
   let districtOptions = null;
+  let approvedInterface = {
+    navigationTabs: [],
+    overviewMapPresent: false,
+    digitalTwinCanvasPresent: false,
+    digitalTwinControlsPresent: false,
+  };
 
   if (!loadFailed) {
     try {
@@ -66,6 +72,23 @@ async function auditSelf() {
 
     try {
       chartElementCount = await page.$$eval('canvas, svg', (els) => els.length);
+    } catch { /* ignore */ }
+
+    try {
+      approvedInterface = await page.evaluate(() => ({
+        navigationTabs: [...document.querySelectorAll('.nav-links .nav-item span')]
+          .map((el) => el.textContent.trim()),
+        overviewMapPresent: Boolean(document.querySelector('.leaflet-container')),
+        digitalTwinCanvasPresent: false,
+        digitalTwinControlsPresent: false,
+      }));
+      const digitalTwinTab = page.locator('.nav-links .nav-item', { hasText: 'Digital Twin' });
+      if (await digitalTwinTab.count()) {
+        await digitalTwinTab.click();
+        await page.waitForSelector('.a-twin-period-controls', { timeout: 10000 });
+        approvedInterface.digitalTwinCanvasPresent = await page.locator('canvas').count() > 0;
+        approvedInterface.digitalTwinControlsPresent = await page.locator('.a-twin-period-controls').count() > 0;
+      }
     } catch { /* ignore */ }
 
     const figureRe = /([\d]{1,3}(?:,\d{3})*(?:\.\d+)?)\s*(km|kilomet\w*)/gi;
@@ -97,6 +120,7 @@ async function auditSelf() {
     brokenImages,
     hashLinksFound: hashLinks,
     chartElementCount,
+    approvedInterface,
   };
 
   const majorTechnicalIssues = [];
@@ -105,6 +129,13 @@ async function auditSelf() {
   if (!loadFailed && bodyTextLen <= 50) majorTechnicalIssues.push('Page rendered with little/no visible content (possible blank SPA shell)');
   if (consoleErrors.length > 0) majorTechnicalIssues.push(`${consoleErrors.length} console error(s) captured`);
   if (brokenImages.length > 0) majorTechnicalIssues.push(`${brokenImages.length} broken image(s): ${brokenImages.slice(0, 5).join(', ')}`);
+  const expectedTabs = ['Overview', 'Digital Twin', 'Summary Tables', 'Analytics', 'Thesis'];
+  if (approvedInterface.navigationTabs.join('|') !== expectedTabs.join('|')) {
+    majorTechnicalIssues.push(`Approved 30 September navigation changed: ${approvedInterface.navigationTabs.join(', ') || 'none found'}`);
+  }
+  if (!approvedInterface.overviewMapPresent || !approvedInterface.digitalTwinCanvasPresent || !approvedInterface.digitalTwinControlsPresent) {
+    majorTechnicalIssues.push('Approved 30 September map or Digital Twin animation controls are missing');
+  }
 
   return { technical, majorTechnicalIssues, extractedFigures, districtOptions };
 }
