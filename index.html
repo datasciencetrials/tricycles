@@ -22,6 +22,36 @@
           right: 0 !important;
         }
       }
+      /* Preserve the approved 30 September interface while containing the
+         thesis article and its wide evidence tables within the viewport. */
+      .thesis-card,
+      .thesis-content {
+        min-width: 0;
+        max-width: 100%;
+        box-sizing: border-box;
+      }
+      .thesis-body-card {
+        min-width: 0;
+        max-width: calc(100% - 324px);
+        box-sizing: border-box;
+      }
+      .thesis-content {
+        overflow-wrap: anywhere;
+      }
+      .thesis-content table,
+      .thesis-content pre {
+        display: block;
+        max-width: 100%;
+        box-sizing: border-box;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      @media (max-width: 768px) {
+        .thesis-body-card {
+          width: 100% !important;
+          max-width: 100% !important;
+        }
+      }
     </style>
     <script type="module" crossorigin src="/tricycles/assets/index-B690DFC2.js"></script>
     <link rel="stylesheet" crossorigin href="/tricycles/assets/index-B_lv47Dl.css">
