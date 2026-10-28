@@ -1,0 +1,52 @@
+{
+  "date": "2026-10-28",
+  "repo": "tricycles",
+  "url": "https://datasciencetrials.github.io/tricycles/",
+  "technical": {
+    "httpStatus": 200,
+    "loadFailed": false,
+    "pageRendered": true,
+    "bodyTextLength": 2226,
+    "consoleErrors": [],
+    "brokenImages": [],
+    "hashLinksFound": [],
+    "chartElementCount": 1,
+    "approvedInterface": {
+      "navigationTabs": [
+        "Overview",
+        "Digital Twin",
+        "Summary Tables",
+        "Analytics",
+        "Thesis"
+      ],
+      "overviewMapPresent": true,
+      "digitalTwinCanvasPresent": true,
+      "digitalTwinControlsPresent": true
+    }
+  },
+  "accuracy": {
+    "extractedFigures": [
+      {
+        "value": 1,
+        "raw": "1 km",
+        "context": "CU 1.20\nBwaise\nPCU 1.31\nNatete\nPCU 1.23"
+      }
+    ],
+    "discrepancies": []
+  },
+  "consistency": {
+    "districtList": null,
+    "notes": [
+      "uganda_nrms: no audit-log available yet for comparison",
+      "uganda_npms: no audit-log available yet for comparison",
+      "uganda_network_traffic: no audit-log available yet for comparison",
+      "uganda_ducar: no audit-log available yet for comparison",
+      "uganda_nbms: no audit-log available yet for comparison",
+      "uganda_gis_enterprise: no audit-log available yet for comparison",
+      "bridge_mculverts: no audit-log available yet for comparison",
+      "uganda_kee: no audit-log available yet for comparison",
+      "uganda_kee_rss: no audit-log available yet for comparison",
+      "uganda_ntis: no audit-log available yet for comparison"
+    ]
+  }
+}
