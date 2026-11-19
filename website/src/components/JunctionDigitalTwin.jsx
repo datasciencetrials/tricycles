@@ -21,7 +21,13 @@ import React, { useEffect, useRef } from 'react';
 // study's scope.
 // ---------------------------------------------------------------------------
 
-const VEHICLE_SIZE = { Cars: 5.5, Boda_bodas: 3.4, Tricycles: 4.4, Minibuses: 6.4, Heavy_Trucks: 7.4 };
+const VEHICLE_SIZE = {
+  CarsTaxi: 5.5,
+  Motorcycles: 3.4,
+  PassengerTricycle: 4.5,
+  CargoTricycle: 4.8,
+  OtherMotorized: 6.8,
+};
 
 function pickWeighted(classMix, rand) {
   const total = classMix.reduce((a, r) => a + r.sharePct, 0) || 1;
@@ -30,21 +36,21 @@ function pickWeighted(classMix, rand) {
     x -= r.sharePct;
     if (x <= 0) return r.vehicleClass;
   }
-  return classMix[0]?.vehicleClass || 'Cars';
+  return classMix[0]?.vehicleClass || 'CarsTaxi';
 }
 
 export default function JunctionDigitalTwin({
-  legConfig, legFlows, classMix, vcMean, classColors, hubColor = '#0071e3', laneColor = 'rgba(0,0,0,0.16)',
-  labelColor = '#1d1d1f', subColor = '#6e6e73', height = 640,
+  legConfig, legFlows, classMix, vcMean, classColors,
+  laneColor = 'rgba(15,23,42,0.10)',
+  labelColor = '#0F172A', subColor = '#475569', height = 520,
+  isPlaying = true, unitLabel = 'veh/hr',
 }) {
   const canvasRef = useRef(null);
   const containerRef = useRef(null);
   const stateRef = useRef({ particles: [], last: 0 });
   const paramsRef = useRef({});
 
-  // keep latest props available to the running animation loop without
-  // tearing the loop down and restarting it on every render
-  paramsRef.current = { legConfig, legFlows, classMix, vcMean, classColors };
+  paramsRef.current = { legConfig, legFlows, classMix, vcMean, classColors, isPlaying, unitLabel };
 
   useEffect(() => {
     // junction changed -- old particles reference the previous leg layout,
@@ -79,8 +85,9 @@ export default function JunctionDigitalTwin({
     window.addEventListener('resize', resize);
 
     const step = (t) => {
-      const { legConfig: cfg, legFlows: flows, classMix: mix, vcMean: vc, classColors: colors } = paramsRef.current;
-      const dt = stateRef.current.last ? Math.min((t - stateRef.current.last) / 1000, 0.05) : 0.016;
+      const { legConfig: cfg, legFlows: flows, classMix: mix, vcMean: vc, classColors: colors, isPlaying: playing, unitLabel: unit } = paramsRef.current;
+      const rawDt = stateRef.current.last ? Math.min((t - stateRef.current.last) / 1000, 0.05) : 0.016;
+      const dt = playing ? rawDt : 0;
       stateRef.current.last = t;
 
       const w = canvas.clientWidth;
@@ -147,8 +154,8 @@ export default function JunctionDigitalTwin({
         const shortLeg = cfg.legs[i].split(' - ')[0].split(' (')[0];
         ctx.fillText(`${flows[i]?.isPrimary ? '★ ' : ''}${shortLeg}`, lx, ly);
         ctx.fillStyle = subColor;
-        ctx.font = '500 11.5px Inter, system-ui, sans-serif';
-        ctx.fillText(`${Math.round(flows[i]?.volume || 0).toLocaleString()} ADT/day`, lx, ly + 16);
+        ctx.font = '600 11.5px Inter, system-ui, sans-serif';
+        ctx.fillText(`${Math.round(flows[i]?.volume || 0).toLocaleString('en-GB')} ${unit}`, lx, ly + 16);
 
         // spawn particles proportional to this leg's simulated share of real
         // ADT. Each direction of travel is pinned to its own side of the
@@ -179,10 +186,10 @@ export default function JunctionDigitalTwin({
         }
       });
 
-      // hub -- color ramps green -> orange -> red with mean V/C
+      // hub -- color ramps green -> amber -> red with demand pressure
       const hubColorMix = congestion < 0.5
-        ? `rgba(48, 209, 88, ${0.85})`
-        : congestion < 0.85 ? `rgba(255, 159, 10, 0.9)` : `rgba(255, 69, 58, 0.9)`;
+        ? 'rgba(22, 163, 74, 0.88)'
+        : congestion < 0.85 ? 'rgba(217, 119, 6, 0.90)' : 'rgba(220, 38, 38, 0.92)';
       ctx.beginPath();
       ctx.fillStyle = hubColorMix;
       ctx.arc(cx, cy, hubR, 0, Math.PI * 2);

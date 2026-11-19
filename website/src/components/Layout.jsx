@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 
 const TABS = [
   { id: 'overview', label: 'Overview', icon: 'fa-map' },
+  { id: 'digital-twin', label: 'Digital Twin', icon: 'fa-network-wired' },
   { id: 'summary', label: 'Summary Tables', icon: 'fa-table-list' },
   { id: 'analytics', label: 'Analytics', icon: 'fa-chart-pie' },
-  { id: 'thesis', label: 'Thesis', icon: 'fa-book-open' },
+  { id: 'documentation', label: 'Docs & Mind Map', icon: 'fa-book-open' },
 ];
 
 const Layout = ({ children, activeTab, setActiveTab }) => {

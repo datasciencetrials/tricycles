@@ -1,49 +1,51 @@
 :root {
-  /* Surfaces */
-  --bg-0: #040507;
-  --bg-1: #0a0b0e;
-  --bg-card: rgba(18, 20, 26, 0.5);
-  --bg-card-hover: rgba(26, 29, 38, 0.65);
-  --bg-inset: rgba(0, 0, 0, 0.4);
+  color-scheme: light;
+  /* Surfaces - True Apple HIG Light Theme */
+  --bg-0: #F5F5F7;
+  --bg-1: #F5F5F7;
+  --bg-card: #FFFFFF;
+  --bg-card-hover: #F8FAFC;
+  --bg-inset: #F1F5F9;
 
   /* Borders */
-  --border: rgba(255, 255, 255, 0.06);
-  --border-strong: rgba(255, 255, 255, 0.12);
-  --border-glow: rgba(109, 123, 255, 0.3);
+  --border: #E2E8F0;
+  --border-strong: #CBD5E1;
+  --border-glow: rgba(0, 113, 227, 0.25);
 
-  /* Text */
-  --text-main: #f8fafc;
-  --text-muted: #94a3b8;
-  --text-faint: #475569;
+  /* Text - High WCAG AA contrast */
+  --text-main: #0F172A;
+  --text-muted: #475569;
+  --text-faint: #64748B;
 
-  /* Accent system (modern indigo, replaces the old neon cyan) */
-  --accent: #6366f1;
-  --accent-2: #818cf8;
-  --accent-soft: rgba(99, 102, 241, 0.15);
-  --accent-border: rgba(99, 102, 241, 0.4);
-  --accent-glow: rgba(99, 102, 241, 0.3);
+  /* Vibrant non-neon Apple HIG semantic accents */
+  --accent: #0071E3;
+  --accent-2: #0071E3;
+  --accent-soft: rgba(0, 113, 227, 0.10);
+  --accent-border: rgba(0, 113, 227, 0.28);
+  --accent-glow: rgba(0, 113, 227, 0.18);
 
-  /* Semantic colors */
-  --positive: #10b981;
-  --positive-soft: rgba(16, 185, 129, 0.15);
-  --warn: #f59e0b;
-  --warn-soft: rgba(245, 158, 11, 0.15);
-  --danger: #ef4444;
-  --danger-soft: rgba(239, 68, 68, 0.15);
-  --info: #0ea5e9;
-  --info-soft: rgba(14, 165, 233, 0.15);
-  --violet: #8b5cf6;
-  --violet-soft: rgba(139, 92, 246, 0.15);
+  --positive: #16A34A;
+  --positive-soft: rgba(22, 163, 74, 0.12);
+  --warn: #D97706;
+  --warn-soft: rgba(217, 119, 6, 0.12);
+  --danger: #DC2626;
+  --danger-soft: rgba(220, 38, 38, 0.12);
+  --info: #0071E3;
+  --info-soft: rgba(0, 113, 227, 0.10);
+  --violet: #7C3AED;
+  --violet-soft: rgba(124, 58, 237, 0.12);
+  --teal: #0D9488;
+  --teal-soft: rgba(13, 148, 136, 0.12);
 
-  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-  --font-display: 'Outfit', system-ui, -apple-system, sans-serif;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif;
+  --font-display: 'Outfit', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
 
   --radius-sm: 12px;
   --radius-md: 16px;
-  --radius-lg: 24px;
+  --radius-lg: 22px;
 
-  --shadow-card: 0 4px 24px -1px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  --shadow-card-hover: 0 12px 40px -4px rgba(0, 0, 0, 0.6), 0 0 0 1px var(--border-glow), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  --shadow-card: 0 1px 3px rgba(15, 23, 42, 0.05), 0 8px 24px -12px rgba(15, 23, 42, 0.10);
+  --shadow-card-hover: 0 4px 12px rgba(15, 23, 42, 0.07), 0 14px 32px -12px rgba(15, 23, 42, 0.14);
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -52,8 +54,10 @@
 }
 
 html {
-  scrollbar-color: rgba(255, 255, 255, 0.16) transparent;
+  scrollbar-color: #CBD5E1 transparent;
   scrollbar-width: thin;
+  background: #F5F5F7;
+  color: #0F172A;
 }
 
 ::-webkit-scrollbar {
@@ -64,24 +68,20 @@ html {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.12);
+  background: #CBD5E1;
   border-radius: 8px;
-  border: 2px solid var(--bg-0);
+  border: 2px solid #F5F5F7;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: #94A3B8;
 }
 
 body {
   margin: 0;
   padding: 0;
   font-family: var(--font-sans);
-  background:
-    radial-gradient(1000px circle at 0% 0%, rgba(99, 102, 241, 0.08), transparent 40%),
-    radial-gradient(1200px circle at 100% 100%, rgba(139, 92, 246, 0.06), transparent 50%),
-    linear-gradient(180deg, var(--bg-0) 0%, var(--bg-1) 100%);
-  background-attachment: fixed;
-  color: var(--text-main);
+  background: #F5F5F7;
+  color: #0F172A;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -91,23 +91,25 @@ body {
 h1, h2, h3, h4 {
   font-family: var(--font-display);
   margin: 0;
-  font-weight: 600;
-  color: #fff;
-  letter-spacing: -0.01em;
+  font-weight: 700;
+  color: #0F172A;
+  letter-spacing: -0.015em;
 }
 
 h1 {
   font-size: 2.25rem;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.025em;
 }
 
-a { color: inherit; }
+a { color: #0071E3; }
 
 /* App Shell Layout */
 .app-shell {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  background: #F5F5F7;
+  color: #0F172A;
 }
 
 .main-content {
@@ -126,12 +128,12 @@ a { color: inherit; }
   align-items: center;
   justify-content: space-between;
   padding: 0 28px;
-  height: 72px;
-  background-color: rgba(4, 5, 7, 0.6);
-  backdrop-filter: blur(24px) saturate(180%);
-  -webkit-backdrop-filter: blur(24px) saturate(180%);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-  box-shadow: 0 4px 20px -2px rgba(0,0,0,0.4);
+  min-height: 72px;
+  background-color: rgba(255, 255, 255, 0.90);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid #E2E8F0;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -152,7 +154,7 @@ a { color: inherit; }
   width: 38px;
   height: 38px;
   background: var(--accent-soft);
-  color: var(--accent-2);
+  color: #0071E3;
   border: 1px solid var(--accent-border);
   border-radius: 10px;
   font-size: 1.05rem;
@@ -162,15 +164,15 @@ a { color: inherit; }
   font-size: 1.05rem;
   font-weight: 700;
   margin: 0;
-  letter-spacing: 0.02em;
-  color: var(--text-main);
+  letter-spacing: -0.01em;
+  color: #0F172A;
 }
 
 .nexus-version {
-  font-size: 0.7rem;
-  color: var(--text-faint);
+  font-size: 0.72rem;
+  color: #475569;
   font-weight: 600;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.04em;
   margin: 1px 0 0 0;
   text-transform: uppercase;
 }
@@ -179,10 +181,10 @@ a { color: inherit; }
 .nav-links {
   display: flex;
   gap: 4px;
-  background: var(--bg-inset);
+  background: #F1F5F9;
   padding: 4px;
   border-radius: var(--radius-md);
-  border: 1px solid var(--border);
+  border: 1px solid #E2E8F0;
 }
 
 .nav-item {
@@ -191,52 +193,54 @@ a { color: inherit; }
   gap: 8px;
   background: transparent;
   border: 1px solid transparent;
-  color: var(--text-muted);
+  color: #475569;
   padding: 7px 14px;
-  border-radius: 8px;
+  border-radius: 10px;
   font-family: var(--font-sans);
-  font-size: 0.875rem;
-  font-weight: 500;
+  font-size: 0.85rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: color 0.15s var(--ease), background 0.15s var(--ease);
+  transition: color 0.15s var(--ease), background 0.15s var(--ease), box-shadow 0.15s var(--ease);
   text-decoration: none;
+  white-space: nowrap;
 }
 
 .nav-item:hover {
-  color: var(--text-main);
-  background: rgba(255, 255, 255, 0.04);
+  color: #0F172A;
+  background: rgba(255, 255, 255, 0.7);
 }
 
 .nav-item.active {
-  color: #fff;
-  background: var(--accent);
+  color: #FFFFFF;
+  background: #0071E3;
+  box-shadow: 0 2px 8px rgba(0, 113, 227, 0.25);
 }
 
 .nav-item i {
-  font-size: 0.9rem;
+  font-size: 0.88rem;
 }
 
-@media (max-width: 860px) {
+@media (max-width: 1020px) {
   .nav-item span { display: none; }
-  .nav-item { padding: 8px 10px; }
+  .nav-item { padding: 8px 11px; }
 }
 
 /* Topbar Actions (Status) */
 .topbar-actions {
   display: flex;
   align-items: center;
-  gap: 18px;
+  gap: 14px;
 }
 
 .live-clock {
   font-variant-numeric: tabular-nums;
   font-weight: 600;
-  color: var(--text-muted);
-  font-size: 0.85rem;
+  color: #0F172A;
+  font-size: 0.84rem;
   padding: 6px 12px;
-  background: var(--bg-inset);
+  background: #F1F5F9;
   border-radius: 8px;
-  border: 1px solid var(--border);
+  border: 1px solid #E2E8F0;
 }
 
 .status-block {
@@ -253,58 +257,57 @@ a { color: inherit; }
 .status-dot {
   width: 7px;
   height: 7px;
-  background-color: var(--positive);
+  background-color: #16A34A;
   border-radius: 50%;
-  box-shadow: 0 0 0 3px var(--positive-soft);
+  box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.18);
 }
 
 .status-text {
   font-size: 0.75rem;
   font-weight: 600;
-  color: var(--text-muted);
-  letter-spacing: 0.02em;
+  color: #0F172A;
+  letter-spacing: 0.01em;
 }
 
 .agency-text {
   font-size: 0.68rem;
-  color: var(--text-faint);
-  margin: 3px 0 0 0;
-  letter-spacing: 0.03em;
+  color: #475569;
+  margin: 2px 0 0 0;
+  letter-spacing: 0.02em;
 }
 
 /* Leaflet Map */
 .leaflet-container {
   border-radius: var(--radius-sm);
-  border: 1px solid var(--border);
-  background-color: #14161a;
+  border: 1px solid #E2E8F0;
+  background-color: #F5F5F7;
 }
 
 /* Buttons */
 .btn {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
-  color: var(--text-main);
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+  color: #0F172A;
   padding: 8px 16px;
-  border-radius: 12px;
+  border-radius: 10px;
   cursor: pointer;
   font-size: 0.85rem;
-  font-weight: 500;
+  font-weight: 600;
   transition: all 0.2s var(--ease);
 }
 
 .btn:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.15);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  background: #F8FAFC;
+  border-color: #CBD5E1;
   transform: translateY(-1px);
 }
 
 .btn.active {
-  background: var(--accent);
-  color: #fff;
-  border-color: var(--accent-2);
-  box-shadow: 0 4px 12px var(--accent-glow), inset 0 1px 0 rgba(255,255,255,0.3);
+  background: #0071E3;
+  color: #FFFFFF;
+  border-color: #0071E3;
+  box-shadow: 0 4px 12px rgba(0, 113, 227, 0.22);
 }
 
 .btn-small {
@@ -313,22 +316,13 @@ a { color: inherit; }
   border-radius: 8px;
 }
 
-/* ===================================================================
-   MOBILE RESPONSIVENESS (additive - appended, does not alter rules above)
-   =================================================================== */
-
 /* Global overflow safety */
 html, body { max-width: 100%; overflow-x: hidden; }
 img { max-width: 100%; }
 
 @media (max-width: 768px) {
-  /* Prevent CSS grid/flex "blowout": without this, a grid/flex item's
-     default min-width:auto lets its content push it wider than its
-     track, causing horizontal overflow that html/body overflow-x:hidden
-     would otherwise silently clip instead of truly fixing. */
   * { min-width: 0; }
 
-  /* Topbar wraps into two rows: [brand | hamburger] then [status/clock] */
   .topbar {
     height: auto;
     min-height: 64px;
@@ -338,102 +332,23 @@ img { max-width: 100%; }
   }
   .brand-block { order: 1; }
   .brand-block h1 { font-size: 1rem; }
-  .nexus-version { font-size: 0.6rem; }
+  .nexus-version { font-size: 0.62rem; }
   .topbar-actions {
     order: 3;
     flex: 1 1 100%;
     justify-content: center;
-    gap: 16px;
+    gap: 12px;
   }
   .live-clock { font-size: 0.8rem; padding: 4px 10px; }
-  .agency-text { font-size: 0.62rem; }
-
+  .agency-text { font-size: 0.65rem; }
   .nav-item { width: 100%; min-height: 44px; }
-
-  /* Font sizes */
   h1 { font-size: 1.8rem; }
-
-  /* Touch targets */
   .btn, .nav-item { min-height: 44px; }
-
-  /* Thesis tab: stack the sticky TOC sidebar above the article instead of
-     a fixed 300px side-by-side column, and let it flow with the page */
-  [style*="max-width: 1400px"] { flex-direction: column !important; }
-  [style*="flex: 0 0 300px"] {
-    flex: 1 1 auto !important;
-    position: static !important;
-    max-height: none !important;
-    width: 100% !important;
-  }
-  [style*="padding: 40px;"] { padding: 20px !important; }
-  [style*="font-size: 2.2rem"] { font-size: 1.5rem !important; }
-  [style*="font-size: 2.5rem"] { font-size: 1.7rem !important; }
 }
 
 @media (max-width: 480px) {
-  .brand-block h1 { font-size: 0.85rem; }
+  .brand-block h1 { font-size: 0.9rem; }
   h1 { font-size: 1.5rem; }
-
-  [style*="font-size: 2.2rem"] { font-size: 1.3rem !important; }
-}
-
-
-/* ============================================================
-   Ambient background motion, texture, and motion primitives
-   ============================================================ */
-
-body::before,
-body::after {
-  content: "";
-  position: fixed;
-  border-radius: 50%;
-  filter: blur(90px);
-  z-index: -2;
-  pointer-events: none;
-  opacity: 0.55;
-}
-
-body::before {
-  width: 46vw;
-  height: 46vw;
-  top: -14vw;
-  left: -10vw;
-  background: radial-gradient(circle, rgba(109, 123, 255, 0.28), transparent 70%);
-  animation: orbit-a 34s ease-in-out infinite;
-}
-
-body::after {
-  width: 38vw;
-  height: 38vw;
-  bottom: -12vw;
-  right: -8vw;
-  background: radial-gradient(circle, rgba(52, 211, 153, 0.18), transparent 70%);
-  animation: orbit-b 40s ease-in-out infinite;
-}
-
-@keyframes orbit-a {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(6vw, 4vw) scale(1.08); }
-}
-
-@keyframes orbit-b {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(-5vw, -3vw) scale(1.06); }
-}
-
-/* Fine film-grain texture, laid over everything at very low opacity */
-.grain-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 2000;
-  pointer-events: none;
-  opacity: 0.035;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-
-@media (prefers-reduced-motion: reduce) {
-  body::before, body::after { animation: none; }
 }
 
 /* Tab-switch transition */
@@ -443,13 +358,6 @@ body::after {
 }
 
 .tab-panel {
-  /* `backwards` (not `both`) is deliberate: `both` would leave `transform:
-     translateY(0)` permanently applied after the animation ends - a real
-     transform value, not `none` - which silently makes .tab-panel a
-     containing block for every `position: fixed` descendant (their "fixed"
-     position becomes relative to this scrolling box instead of the
-     viewport). `backwards` still prevents the pre-animation flash but lets
-     the element's styles fully revert once the 0.28s entrance finishes. */
   animation: tab-in 0.28s var(--ease) backwards;
 }
 
@@ -460,10 +368,10 @@ body::after {
   justify-content: center;
   width: 38px;
   height: 38px;
-  background: var(--bg-inset);
-  border: 1px solid var(--border);
+  background: #F1F5F9;
+  border: 1px solid #E2E8F0;
   border-radius: 8px;
-  color: var(--text-main);
+  color: #0F172A;
   cursor: pointer;
   font-size: 1rem;
 }
@@ -482,19 +390,13 @@ body::after {
     flex-direction: column;
     gap: 4px;
     position: absolute;
-    /* The mobile topbar wraps into a variable-height, multi-row layout (brand
-       row + status/hamburger row), so a fixed pixel offset here would overlap
-       whichever row ends up taller. `.topbar` is the positioning context
-       (it's `position: sticky`, itself a containing block for absolute
-       descendants), so `top: 100%` always sits the panel flush under the
-       topbar's actual rendered height instead of a guessed constant. */
     top: 100%;
     left: 0;
     right: 0;
     padding: 10px;
-    background: rgba(12, 14, 17, 0.98);
-    backdrop-filter: blur(14px);
-    border-bottom: 1px solid var(--border);
+    background: #FFFFFF;
+    border-bottom: 1px solid #E2E8F0;
+    box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.10);
     z-index: 999;
   }
 
