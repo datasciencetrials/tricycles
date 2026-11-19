@@ -348,8 +348,8 @@ export default function DocumentationMindMapTab({ goBack, canGoBack } = {}) {
               </div>
               <div className="ev-stat">
                 <span>Kibuye Poisson Fit</span>
-                <strong>chi² = {fmt(stats.kibuyePoissonChiSq.chi2, 2)}</strong>
-                <small>lambda = {fmt(stats.kibuyeLambda, 1)} veh/hr ({pFmt(stats.kibuyePoissonChiSq.p)})</small>
+                <strong>chi² = {fmt(stats.kibuyePoissonChiSq, 2)}</strong>
+                <small>lambda = {fmt(stats.kibuyeLambda, 1)} veh/hr</small>
               </div>
               <div className="ev-stat">
                 <span>Incident Type x Severity</span>
