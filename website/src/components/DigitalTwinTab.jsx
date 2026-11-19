@@ -108,11 +108,13 @@ export default function DigitalTwinTab({ goBack, canGoBack } = {}) {
       demandPressure = matchingHours.reduce((s, r) => s + (r.DemandPressure || 0), 0) / matchingHours.length;
       dynamicPcu = matchingHours.reduce((s, r) => s + (r.CombinedDynamicPCU || 0), 0) / matchingHours.length;
     } else {
-      const series = stats.hourlyProfile24BySite[selectedSite] || [];
-      const fallback = series[selectedHour] || { motorizedFlow: 0, tricycleTotal: 0, isModelled: true };
-      hourlyFlow = fallback.motorizedFlow || 0;
-      hourlyTricycles = fallback.tricycleTotal || 0;
-      isObservedHour = !fallback.isModelled;
+      const flowSeries = stats.hourlyProfile24BySite[selectedSite]?.motorizedFlow || [];
+      const triSeries = stats.hourlyProfile24BySite[selectedSite]?.tricycleTotal || [];
+      const fallbackFlow = flowSeries[selectedHour] || { value: 0, isReal: false };
+      const fallbackTri = triSeries[selectedHour] || { value: 0, isReal: false };
+      hourlyFlow = fallbackFlow.value || 0;
+      hourlyTricycles = fallbackTri.value || 0;
+      isObservedHour = !!fallbackFlow.isReal;
       demandPressure = stats.dynamicPcuBySite[selectedSite]?.meanDemandPressure || 0.5;
     }
 

@@ -159,10 +159,10 @@ const OverviewTab = ({ goBack, canGoBack } = {}) => {
       const r = stats.resultsBySite[geo.key] || {};
       const pcu = stats.dynamicPcuBySite[geo.key] || {};
       const comp = stats.compositionBySite[geo.key] || {};
-      const hourlySeries = stats.hourlyProfile24BySite[geo.key] || [];
-      const observedHours = hourlySeries.filter((h) => !h.isModelled);
+      const hourlySeries = stats.hourlyProfile24BySite[geo.key]?.motorizedFlow || [];
+      const observedHours = hourlySeries.filter((h) => h.isReal);
       const meanHourlyFlow = observedHours.length
-        ? observedHours.reduce((s, h) => s + h.motorizedFlow, 0) / observedHours.length
+        ? observedHours.reduce((s, h) => s + h.value, 0) / observedHours.length
         : 0;
       return {
         ...geo,
@@ -197,9 +197,9 @@ const OverviewTab = ({ goBack, canGoBack } = {}) => {
       .map((site) => {
         const config = JUNCTION_LEG_CONFIG[site.name] || JUNCTION_LEG_CONFIG[site.key];
         if (!config) return null;
-        const series = stats.hourlyProfile24BySite[site.key] || [];
-        const hourEntry = series[selectedHour] || { motorizedFlow: 0, isModelled: true };
-        const hourlyRate = (hourEntry.motorizedFlow || 0) * growthMult;
+        const series = stats.hourlyProfile24BySite[site.key]?.motorizedFlow || [];
+        const hourEntry = series[selectedHour] || { value: 0, isReal: false };
+        const hourlyRate = (hourEntry.value || 0) * growthMult;
         const legs = simulateDirectionalSplit(hourlyRate, config, 0.3);
         return {
           name: site.name,
@@ -207,7 +207,7 @@ const OverviewTab = ({ goBack, canGoBack } = {}) => {
           coords: site.coords,
           legs,
           vcMean: site.meanDemandPressure,
-          isModelledHour: !!hourEntry.isModelled,
+          isModelledHour: !hourEntry.isReal,
           hourlyRate,
           source: config.source,
           type: config.type,
