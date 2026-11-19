@@ -18,11 +18,11 @@ const C = {
   line: '#E2E8F0',
 };
 
-const fmt = (value, digits = 0) => Number(value).toLocaleString('en-GB', {
+const fmt = (value, digits = 0) => (value == null || Number.isNaN(Number(value)) ? '-' : Number(value).toLocaleString('en-GB', {
   minimumFractionDigits: digits,
   maximumFractionDigits: digits,
-});
-const pFmt = (p) => (p < 0.001 ? 'p < 0.001' : `p = ${p.toFixed(3)}`);
+}));
+const pFmt = (p) => (p == null || Number.isNaN(Number(p)) ? '-' : (p < 0.001 ? 'p < 0.001' : `p = ${Number(p).toFixed(3)}`));
 
 export default function DocumentationMindMapTab({ goBack, canGoBack } = {}) {
   const stats = useTrafficStats();
@@ -44,7 +44,7 @@ export default function DocumentationMindMapTab({ goBack, canGoBack } = {}) {
         metrics: [
           { k: 'Survey Window', v: '02/08/2026 to 03/08/2026 (07:00-19:00)' },
           { k: 'Observed Motorised Flow', v: stats ? `${fmt(totalMotorized)} veh` : 'Loading...' },
-          { k: 'Combined Dynamic PCU', v: stats ? dynPcu.toFixed(3) : 'Loading...' },
+          { k: 'Combined Dynamic PCU', v: stats ? fmt(dynPcu, 3) : 'Loading...' },
         ],
       },
       {
@@ -72,8 +72,8 @@ export default function DocumentationMindMapTab({ goBack, canGoBack } = {}) {
         category: 'Analytical Engine',
         summary: 'Combines speed-area static equivalency with demand-pressure dynamic PCU scaling across peak and off-peak periods.',
         metrics: [
-          { k: 'Passenger Dynamic PCU', v: stats ? stats.passengerDynamicPCUOverall.toFixed(3) : '-' },
-          { k: 'Cargo Dynamic PCU', v: stats ? stats.cargoDynamicPCUOverall.toFixed(3) : '-' },
+          { k: 'Passenger Dynamic PCU', v: stats ? fmt(stats.passengerDynamicPCUOverall, 3) : '-' },
+          { k: 'Cargo Dynamic PCU', v: stats ? fmt(stats.cargoDynamicPCUOverall, 3) : '-' },
           { k: 'Demand Pressure Beta', v: '0.40' },
         ],
       },
