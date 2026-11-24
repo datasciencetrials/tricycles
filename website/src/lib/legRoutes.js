@@ -6,8 +6,7 @@
 // the source data's own vertices.
 //
 // SOURCE: two real datasets, both WGS84 lat/lng, no reprojection needed --
-//   1) The user's own national road-network shapefile (Uganda National Road Network Authority of
-//      Works and Transport roads GIS data, ~402,835 segments), for every leg
+//   1) A Kampala road-network GIS dataset (~402,835 segments), for every leg
 //      that carries a compass bearing in directionalSplit.js's
 //      JUNCTION_LEG_CONFIG label (detected the same way legGeometry.js's
 //      detectBearing() detects it for the schematic fallback).

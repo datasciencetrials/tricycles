@@ -278,6 +278,8 @@ const OverviewTab = ({ goBack, canGoBack } = {}) => {
         .a-map-tilt .leaflet-container { width: 100%; height: 100%; }
         .a-map-fullscreen-btn, .a-map-reset-btn { display: flex; align-items: center; justify-content: center; font-size: 14px; }
         .leaflet-container:fullscreen { width: 100%; height: 100%; }
+        .leaflet-bar a, .leaflet-control-layers { background: #FFFFFF !important; color: #0F172A !important; border-color: #E2E8F0 !important; }
+        .leaflet-control-scale-line { background: rgba(255,255,255,0.9) !important; color: #0F172A !important; border-color: #0F172A !important; }
 
         .a-map-horizon-fade { position: absolute; top: 0; left: 0; right: 0; height: 22%;
           background: linear-gradient(180deg, ${C.canvas} 0%, rgba(245,245,247,0) 100%); pointer-events: none; z-index: 450; }
@@ -527,7 +529,7 @@ const OverviewTab = ({ goBack, canGoBack } = {}) => {
               <div className="a-hud-kpis">
                 <KpiCard icon="fa-location-dot" color={C.blue} label="Study Intersections" value="5" sub="Kampala City network" />
                 <KpiCard icon="fa-car-side" color={C.purple} label={`Motorised Flow (${projectionYear})`} value={Math.round(totalMotorized).toLocaleString('en-GB')} sub="07:00-19:00 window" />
-                <KpiCard icon="fa-tricycle" color={C.green} label={`Total Tricycles (${projectionYear})`} value={Math.round(totalTricycles).toLocaleString('en-GB')} sub={`${((totalTricycles / (totalMotorized || 1)) * 100).toFixed(2)}% network share`} />
+                <KpiCard icon="fa-motorcycle" color={C.green} label={`Total Tricycles (${projectionYear})`} value={Math.round(totalTricycles).toLocaleString('en-GB')} sub={`${((totalTricycles / (totalMotorized || 1)) * 100).toFixed(2)}% network share`} />
                 <KpiCard icon="fa-gauge-high" color={C.teal} label="Combined Dynamic PCU" value={stats.combinedDynamicPCUOverall.toFixed(3)} sub="Demand-pressure model" />
                 <KpiCard icon="fa-fire" color={C.amber} label="Busiest Site" value={busiest ? busiest.key : '-'} sub={busiest ? `${Math.round(busiest.motorizedVehicles).toLocaleString('en-GB')} veh` : ''} />
                 <KpiCard icon="fa-route" color={C.red} label="Highest Tricycle Share" value={highestTricycle ? highestTricycle.key : '-'} sub={highestTricycle ? `${highestTricycle.tricycleSharePct.toFixed(2)}% of site flow` : ''} />

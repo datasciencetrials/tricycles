@@ -55,7 +55,7 @@ const Layout = ({ children, activeTab, setActiveTab }) => {
               <span className="status-dot"></span>
               <span className="status-text">Dashboard Active</span>
             </div>
-            <p className="agency-text">Kampala Capital City Authority · Study Area</p>
+            <p className="agency-text">Kampala Urban Corridors · Study Area</p>
           </div>
           <button
             type="button"

@@ -39,7 +39,7 @@ const legendTheme = { labels: { color: chartSub, boxWidth: 10, boxHeight: 10, pa
 const INCIDENT_COLORS = [C.red, C.orange, C.blue, C.indigo, C.teal, C.purple, C.pink, C.green, C.yellow, '#8e8e93'];
 const SITE_COLORS = { Kibuye: C.blue, Wandegeya: C.indigo, Bakuli: C.teal, Bwaise: C.orange, Natete: C.purple };
 const COMP_CLASSES = ['Motorcycles', 'PassengerTricycle', 'CargoTricycle', 'CarsTaxi', 'OtherMotorized'];
-const COMP_LABELS = { Motorcycles: 'Motorcycles', PassengerTricycle: 'Passenger Tricycles', CargoTricycle: 'Cargo Tricycles', CarsTaxi: 'Cars / Taxis', OtherMotorized: 'Other Motorized' };
+const COMP_LABELS = { Motorcycles: 'Motorcycles', PassengerTricycle: 'Passenger Tricycles', CargoTricycle: 'Cargo Tricycles', CarsTaxi: 'Cars / Taxis', OtherMotorized: 'Other Motorised' };
 const COMP_COLORS = { Motorcycles: C.indigo, PassengerTricycle: C.green, CargoTricycle: C.orange, CarsTaxi: C.blue, OtherMotorized: C.faint };
 const PERIOD_COLORS = { 'Morning Peak': C.blue, 'Midday / Off-Peak': C.orange, 'Evening Peak': C.indigo };
 
@@ -424,7 +424,7 @@ const InfographicDashboard = ({ goBack, canGoBack } = {}) => {
                     labels: profile.motorizedFlow.map((h) => `${String(h.hour).padStart(2, '0')}:00`),
                     datasets: [
                       {
-                        label: 'Motorized flow (mean, veh/hr)',
+                        label: 'Motorised flow (mean, veh/hr)',
                         data: profile.motorizedFlow.map((h) => (showOvernightModel || h.isReal ? h.value : null)),
                         borderColor: lineColor, backgroundColor: hex2rgba(lineColor, 0.12), fill: true, tension: 0.35,
                         pointRadius: profile.motorizedFlow.map((h) => (h.isReal ? 4 : 3)),
@@ -459,7 +459,7 @@ const InfographicDashboard = ({ goBack, canGoBack } = {}) => {
                       callbacks: {
                         label: (ctx) => {
                           const profile = hourlyProfileSite === 'All Sites' ? stats.hourlyProfile24 : stats.hourlyProfile24BySite[hourlyProfileSite];
-                          const arr = ctx.dataset.label.startsWith('Motorized') ? profile.motorizedFlow : profile.tricycleTotal;
+                          const arr = ctx.dataset.label.startsWith('Motorised') ? profile.motorizedFlow : profile.tricycleTotal;
                           const isReal = arr[ctx.dataIndex]?.isReal;
                           return `${ctx.dataset.label}: ${ctx.parsed.y === null ? '-' : Math.round(ctx.parsed.y).toLocaleString()}${isReal ? '' : ' (modelled)'}`;
                         },
@@ -468,7 +468,7 @@ const InfographicDashboard = ({ goBack, canGoBack } = {}) => {
                   },
                   scales: {
                     x: { grid: { display: false }, ticks: { color: chartSub, font: { size: 10 } } },
-                    y: { title: { display: true, text: 'Motorized flow (veh/hr)', color: chartSub, font: { size: 11 } }, ticks: { color: chartSub }, grid: { color: chartGrid } },
+                    y: { title: { display: true, text: 'Motorised flow (veh/hr)', color: chartSub, font: { size: 11 } }, ticks: { color: chartSub }, grid: { color: chartGrid } },
                     y1: { position: 'right', title: { display: true, text: 'Tricycle total (veh/hr)', color: chartSub, font: { size: 11 } }, ticks: { color: chartSub }, grid: { display: false } },
                   },
                 }}
@@ -630,7 +630,7 @@ const InfographicDashboard = ({ goBack, canGoBack } = {}) => {
             <div className="a-chart-box">
               <Bar
                 data={{
-                  labels: ['Motorized Vehicles', 'Passenger Tricycles', 'Cargo Tricycles', 'Total Tricycles'],
+                  labels: ['Motorised Vehicles', 'Passenger Tricycles', 'Cargo Tricycles', 'Total Tricycles'],
                   datasets: [
                     { label: 'All data (primary)', data: [stats.allDataSensitivity.motorizedVehicles.allData, stats.allDataSensitivity.passengerTri.allData, stats.allDataSensitivity.cargoTri.allData, stats.allDataSensitivity.totalTri.allData], backgroundColor: C.blue, borderRadius: 5 },
                     { label: 'Flags removed', data: [stats.allDataSensitivity.motorizedVehicles.flagsRemoved, stats.allDataSensitivity.passengerTri.flagsRemoved, stats.allDataSensitivity.cargoTri.flagsRemoved, stats.allDataSensitivity.totalTri.flagsRemoved], backgroundColor: hex2rgba(C.red, 0.55), borderRadius: 5 },

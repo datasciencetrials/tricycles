@@ -19,17 +19,61 @@ const C = {
 };
 
 const CLASSES = [
-  ['Motorcycles', 'Motorcycles'],
-  ['PassengerTricycle', 'Passenger tricycles'],
-  ['CargoTricycle', 'Cargo tricycles'],
-  ['CarsTaxi', 'Cars and taxis'],
-  ['OtherMotorized', 'Other motorised'],
+  ['Motorcycles', 'Motorcycles (Boda-Boda)'],
+  ['PassengerTricycle', 'Passenger Tricycles'],
+  ['CargoTricycle', 'Cargo Tricycles'],
+  ['CarsTaxi', 'Cars and Taxis'],
+  ['OtherMotorized', 'Other Motorised'],
+];
+
+const SITE_CORRIDOR_META = {
+  Kibuye: { urbanCentre: 'Kibuye Urban Centre', corridors: 'Entebbe Road, Masaka Road, Makindye Road' },
+  Wandegeya: { urbanCentre: 'Wandegeya Urban Centre', corridors: 'Bombo Road, Yusuf Lule Road, Makerere Hill Road' },
+  Bakuli: { urbanCentre: 'Bakuli Urban Centre', corridors: 'Hoima Road Corridor' },
+  Bwaise: { urbanCentre: 'Bwaise Urban Centre', corridors: 'Bombo Road (Kampala-Gulu Hwy), Mumbule Road' },
+  Natete: { urbanCentre: 'Natete Urban Centre', corridors: 'Masaka Road, Mityana Road, Northern Bypass' },
+};
+
+const ALL_VEHICLE_CLASSES = [
+  ['Carts', 'Handcarts & Animal Carts'],
+  ['Bicycles', 'Bicycles'],
+  ['Motorcycles', 'Motorcycles (Boda-Boda)'],
+  ['PassengerTricycle', 'Passenger Tricycles'],
+  ['CargoTricycle', 'Cargo Tricycles'],
+  ['CarsTaxi', 'Cars & Taxis'],
+  ['LightGoods', 'Light Goods Vehicles'],
+  ['MinibusMatatu', 'Minibuses (Matatu)'],
+  ['Coaster', 'Coasters'],
+  ['Bus', 'Buses'],
+  ['LightTruck', 'Light Trucks'],
+  ['HeavyTruck', 'Heavy Trucks'],
+  ['Trailer', 'Trailers'],
 ];
 
 const fmt = (value, digits = 0) => Number(value).toLocaleString('en-GB', {
   minimumFractionDigits: digits,
   maximumFractionDigits: digits,
 });
+
+const itmCsv = (stats) => {
+  const header = [
+    'Urban Centre', 'Study Site', 'Primary Corridors',
+    ...ALL_VEHICLE_CLASSES.map(([, label]) => label),
+    'Total ITMs', 'Grand Total Traffic', 'ITM Share (%)',
+  ];
+  const rows = REAL_SITES.map((site) => {
+    const rec = stats.reconciliationBySite[site] || {};
+    const meta = SITE_CORRIDOR_META[site] || { urbanCentre: site, corridors: 'Urban Corridor' };
+    const totalItm = (rec.Carts || 0) + (rec.Bicycles || 0) + (rec.Motorcycles || 0) + (rec.PassengerTricycle || 0) + (rec.CargoTricycle || 0);
+    const grandTotal = ALL_VEHICLE_CLASSES.reduce((s, [k]) => s + (rec[k] || 0), 0);
+    return [
+      meta.urbanCentre, site, meta.corridors,
+      ...ALL_VEHICLE_CLASSES.map(([k]) => rec[k] || 0),
+      totalItm, grandTotal, grandTotal ? ((totalItm / grandTotal) * 100).toFixed(2) : '0.00',
+    ].map((value) => `"${String(value).replaceAll('"', '""')}"`).join(',');
+  });
+  return [header.join(','), ...rows].join('\n');
+};
 
 const csv = (stats) => {
   const header = [
@@ -60,6 +104,7 @@ export default function SourceVerifiedTables({ goBack, canGoBack } = {}) {
 
   const exportOptions = stats ? [
     { id: 'csv', label: 'Verified Site Summary (CSV)', icon: 'fa-file-csv', hint: 'Five surveyed sites with Vision 2040 projections', action: () => downloadTextFile('tricycle_verified_site_summary.csv', csv(stats)) },
+    { id: 'itm-csv', label: 'ITM & Corridor Inventory (CSV)', icon: 'fa-table', hint: 'All 13 decoded vehicle & ITM classes per corridor', action: () => downloadTextFile('itm_corridor_mobility_inventory.csv', itmCsv(stats)) },
     { id: 'json', label: 'Full Computed Dataset (JSON)', icon: 'fa-file-code', hint: 'Source-reconciled statistics', action: () => downloadJsonFile('tricycle_verified_statistics.json', stats) },
     { id: 'print', label: 'Print / Save as PDF', icon: 'fa-print', hint: 'Opens the browser print dialog', action: () => window.print() },
   ] : [];
@@ -186,6 +231,73 @@ export default function SourceVerifiedTables({ goBack, canGoBack } = {}) {
                     <td>{fmt(tp.passengerDynamicPCU, 3)}</td>
                     <td>{fmt(tp.cargoDynamicPCU, 3)}</td>
                     <td style={{ fontWeight: 700, color: C.purple }}>{fmt(tp.combinedDynamicPCU, 3)}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table></div>
+        </section>
+
+        <section className="verified-card">
+          <h2>Intermediate Transport Modes (ITMs) &amp; Tricycles Inventory Across Corridors and Urban Centres</h2>
+          <p>Disaggregated mobility inventory of non-motorised and intermediate transport modes (handcarts, bicycles, motorcycles, passenger tricycles, and cargo tricycles) across the five surveyed Kampala urban centres and arterial corridors (02/08/2026 to 03/08/2026, 07:00 to 19:00).</p>
+          <div className="verified-scroll"><table className="verified-table">
+            <thead>
+              <tr>
+                <th>Urban centre</th><th>Corridors served</th><th>Handcarts &amp; animal carts</th>
+                <th>Bicycles</th><th>Motorcycles (Boda-Boda)</th><th>Passenger tricycles</th>
+                <th>Cargo tricycles</th><th>Total tricycles</th><th>Total ITMs</th><th>ITM share of total traffic</th>
+              </tr>
+            </thead>
+            <tbody>
+              {visibleSites.map((site) => {
+                const rec = stats.reconciliationBySite[site] || {};
+                const meta = SITE_CORRIDOR_META[site] || { urbanCentre: site, corridors: 'Urban Corridor' };
+                const totalTri = (rec.PassengerTricycle || 0) + (rec.CargoTricycle || 0);
+                const totalItm = (rec.Carts || 0) + (rec.Bicycles || 0) + (rec.Motorcycles || 0) + totalTri;
+                const grandTotal = ALL_VEHICLE_CLASSES.reduce((s, [k]) => s + (rec[k] || 0), 0);
+                return (
+                  <tr key={site}>
+                    <td style={{ fontWeight: 700 }}>{meta.urbanCentre}</td>
+                    <td style={{ whiteSpace: 'normal', minWidth: '210px' }}>{meta.corridors}</td>
+                    <td>{fmt(rec.Carts || 0)}</td>
+                    <td>{fmt(rec.Bicycles || 0)}</td>
+                    <td>{fmt(rec.Motorcycles || 0)}</td>
+                    <td>{fmt(rec.PassengerTricycle || 0)}</td>
+                    <td>{fmt(rec.CargoTricycle || 0)}</td>
+                    <td style={{ fontWeight: 700, color: C.green }}>{fmt(totalTri)}</td>
+                    <td style={{ fontWeight: 700, color: C.blue }}>{fmt(totalItm)}</td>
+                    <td style={{ fontWeight: 700 }}>{fmt(grandTotal ? (totalItm / grandTotal) * 100 : 0, 2)}%</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table></div>
+        </section>
+
+        <section className="verified-card">
+          <h2>Complete classified vehicle fleet inventory (all 13 decoded categories)</h2>
+          <p>Full multi-modal classified traffic counts including non-motorised transport, ITMs, public transport vehicles, and freight classes.</p>
+          <div className="verified-scroll"><table className="verified-table">
+            <thead>
+              <tr>
+                <th>Study site</th>
+                <th>Junction type</th>
+                {ALL_VEHICLE_CLASSES.map(([key, label]) => <th key={key}>{label}</th>)}
+                <th>Grand total</th>
+              </tr>
+            </thead>
+            <tbody>
+              {visibleSites.map((site) => {
+                const rec = stats.reconciliationBySite[site] || {};
+                const res = stats.resultsBySite[site] || {};
+                const grandTotal = ALL_VEHICLE_CLASSES.reduce((s, [k]) => s + (rec[k] || 0), 0);
+                return (
+                  <tr key={site}>
+                    <td style={{ fontWeight: 700 }}>{site}</td>
+                    <td>{res.junctionType}</td>
+                    {ALL_VEHICLE_CLASSES.map(([key]) => <td key={key}>{fmt(rec[key] || 0)}</td>)}
+                    <td style={{ fontWeight: 700, color: C.blue }}>{fmt(grandTotal)}</td>
                   </tr>
                 );
               })}

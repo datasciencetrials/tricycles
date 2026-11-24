@@ -593,7 +593,7 @@ export function computeTrafficStats(rawMovements, siteHour, incidents) {
     { scenario: 'High impact / slower', speed: 20, passengerStaticPCU: staticPcuSpeedArea({ ...ASSUMPTIONS.passengerTricycle, speed: 20 }, ASSUMPTIONS.car), cargoStaticPCU: staticPcuSpeedArea({ ...ASSUMPTIONS.cargoTricycle, speed: 20 }, ASSUMPTIONS.car) },
   ];
   const regionalBenchmark = [
-    { benchmark: 'Ghana signalized intersections', lower: 0.67, upper: 0.75, basePassengerStaticPCU: STATIC_PCU.passengerTricycle, withinRange: false, source: 'Cited in the original study proposal, p.12' },
+    { benchmark: 'Ghana signalised intersections', lower: 0.67, upper: 0.75, basePassengerStaticPCU: STATIC_PCU.passengerTricycle, withinRange: false, source: 'Cited in the original study proposal, p.12' },
     { benchmark: 'Indian urban roads', lower: 0.91, upper: 1.32, basePassengerStaticPCU: STATIC_PCU.passengerTricycle, withinRange: true, source: 'Cited in the original study proposal, p.12' },
   ];
 
@@ -741,6 +741,13 @@ export function projectToYear(baseValue, targetYear, growthRate = VISION_2040_GR
 // "Methodology" panels so every figure's workflow is visible, not just its
 // result.
 // ---------------------------------------------------------------------------
+export const DATA_SOURCE_LABELS = {
+  classifiedCounts: 'Classified Counts',
+  hourlyAggregates: 'Site-Hour Aggregates',
+  incidentLog: 'Incident Log',
+  assumptions: 'Literature Parameters',
+};
+
 export const DATA_SOURCES = {
   classifiedCounts: 'Classified hourly directional traffic counts across five Kampala study sites (Kibuye, Wandegeya, Bakuli, Bwaise, and Natete) surveyed on 02/08/2026 and 03/08/2026 during the 07:00 to 19:00 survey window.',
   hourlyAggregates: 'Site-hour traffic aggregates across the five study sites, carrying the speed-area static baseline and demand-pressure dynamic PCU model.',
@@ -749,26 +756,26 @@ export const DATA_SOURCES = {
 };
 
 export const FORMULAS = {
-  staticPCU: { formula: 'Speed-area equivalency: PCU_i = (Speed_car / Speed_i) x (Area_i / Area_car), Area = Length x Width. Literature-based length, width, and speed parameters (editable) are used because no measured tricycle dimensions or speeds exist in the field counts.', source: 'assumptions', n: 'Formula-derived' },
-  resultsBySite: { formula: 'Motorised-vehicle and tricycle totals summed directly from classified directional traffic counts per study site.', source: 'classifiedCounts', n: '5 study sites' },
-  dynamicPcuBySite: { formula: 'Dynamic PCU = Static PCU x [1 + beta x (Demand Pressure - 0.5)], beta = 0.4; Demand Pressure = hourly motorised flow / site maximum recorded hourly flow. Site figures are the tricycle-count-weighted mean across surveyed hours.', source: 'hourlyAggregates', n: '5 study sites (07:00 to 19:00)' },
-  dynamicPcuByTimePeriod: { formula: 'Dynamic PCU model grouped by the three surveyed time periods: Morning Peak (07:00 to 10:00), Midday / Off-Peak (10:00 to 16:00), and Evening Peak (16:00 to 19:00).', source: 'hourlyAggregates', n: '3 time periods' },
-  dynamicPcuByJunctionType: { formula: 'Dynamic PCU model grouped by junction type. Kibuye is the only roundabout in the study; this comparison is descriptive only.', source: 'hourlyAggregates', n: '5 study sites' },
-  weatherAvailability: { formula: 'Mean dynamic PCU grouped by recorded weather condition. Zero wet or rain hours were observed during 02/08/2026 to 03/08/2026; the wet-pavement figure is an explicit sensitivity scenario.', source: 'hourlyAggregates', n: '5 study sites' },
-  wetPavementScenario: { formula: 'Observed dry dynamic PCU x 1.10 (editable sensitivity scenario multiplier).', source: 'hourlyAggregates', n: 'Scenario multiplier' },
-  speedSensitivity: { formula: 'Static PCU recomputed at the lower and upper bounds of the literature tricycle operating-speed range (20 to 35 km/h) instead of the 27.5 km/h base assumption.', source: 'assumptions', n: 'Sensitivity range' },
-  regionalBenchmark: { formula: 'Base passenger-tricycle static PCU compared against regional PCU ranges cited in urban mixed-traffic literature.', source: 'assumptions', n: 'Literature benchmark' },
-  allDataSensitivity: { formula: 'Primary all-data totals compared against totals excluding high-concentration Kibuye passenger-tricycle intervals (diagnostic only; all observations are retained in primary results).', source: 'classifiedCounts', n: '5 study sites' },
-  tricycleSiteAnova: { formula: 'One-way ANOVA of tricycle volume across the 5 study sites: F = MS_between / MS_within; upper-tail p-value from the F(df1, df2) distribution.', source: 'classifiedCounts', n: '5 study sites' },
-  tricycleSiteKruskalWallis: { formula: 'Kruskal-Wallis H test (non-parametric one-way ANOVA on ranks) with tie correction and chi-square survival calculation.', source: 'classifiedCounts', n: '5 study sites' },
-  tricyclePeriodAnova: { formula: 'One-way ANOVA of tricycle volume across the 3 surveyed time periods; upper-tail p-value from the F(df1, df2) distribution.', source: 'classifiedCounts', n: '3 time periods' },
-  tricyclePeriodKruskalWallis: { formula: 'Kruskal-Wallis H test with tie correction across the 3 surveyed time periods.', source: 'classifiedCounts', n: '3 time periods' },
-  flowTricycleCorrelation: { formula: 'Pearson correlation between hourly motorised flow and hourly tricycle total across surveyed site-hours: r = cov(x, y) / (sigma_x . sigma_y).', source: 'hourlyAggregates', n: '5 study sites' },
-  kibuyePoissonBins: { formula: 'Observed versus Poisson-expected hourly tricycle arrival distributions (lambda = site hourly mean) at Kibuye.', source: 'hourlyAggregates', n: 'Kibuye Roundabout' },
-  incidentChiSquare: { formula: 'Chi-square test of independence between incident type and severity.', source: 'incidentLog', n: 'Kampala network' },
-  compositionBySite: { formula: 'Vehicle-class totals (Motorcycles, Passenger Tricycles, Cargo Tricycles, Cars/Taxis, Other Motorised) as a percentage of site motorised flow.', source: 'hourlyAggregates', n: '5 study sites' },
-  hourlyProfile24: { formula: '07:00 to 19:00: observed mean hourly volume per surveyed junction. 19:00 to 07:00: disclosed mathematical overnight connector interpolating between 18:00 and 07:00 with a cosine trough (15% default), toggleable in the UI.', source: 'hourlyAggregates', n: '07:00 to 19:00 observed; overnight modelled' },
-  vision2040: { formula: 'Vision 2040 compounding projection: V(year) = V(2026) x (1 + r)^(year - 2026), with default annual corridor growth rate r = 4.5% from 2026 to 2040.', source: 'hourlyAggregates', n: '2026 to 2040 horizon' },
+  staticPCU: { label: 'Static PCU (Speed-Area Equivalency)', formula: 'Speed-area equivalency: PCU_i = (Speed_car / Speed_i) x (Area_i / Area_car), Area = Length x Width. Literature-based length, width, and speed parameters (editable) are used because no measured tricycle dimensions or speeds exist in the field counts.', source: 'assumptions', n: 'Formula-derived' },
+  resultsBySite: { label: 'Observed Volume by Study Site', formula: 'Motorised-vehicle, intermediate transport mode (ITM), and tricycle totals summed directly from classified directional traffic counts per study site.', source: 'classifiedCounts', n: '5 study sites' },
+  dynamicPcuBySite: { label: 'Dynamic PCU by Study Site', formula: 'Dynamic PCU = Static PCU x [1 + beta x (Demand Pressure - 0.5)], beta = 0.4; Demand Pressure = hourly motorised flow / site maximum recorded hourly flow. Site figures are the tricycle-count-weighted mean across surveyed hours.', source: 'hourlyAggregates', n: '5 study sites (07:00 to 19:00)' },
+  dynamicPcuByTimePeriod: { label: 'Dynamic PCU by Time Period', formula: 'Dynamic PCU model grouped by the three surveyed time periods: Morning Peak (07:00 to 10:00), Midday / Off-Peak (10:00 to 16:00), and Evening Peak (16:00 to 19:00).', source: 'hourlyAggregates', n: '3 time periods' },
+  dynamicPcuByJunctionType: { label: 'Dynamic PCU by Junction Type', formula: 'Dynamic PCU model grouped by junction type. Kibuye is the only roundabout in the study; this comparison is descriptive only.', source: 'hourlyAggregates', n: '5 study sites' },
+  weatherAvailability: { label: 'Weather Data Availability', formula: 'Mean dynamic PCU grouped by recorded weather condition. Zero wet or rain hours were observed during 02/08/2026 to 03/08/2026; the wet-pavement figure is an explicit sensitivity scenario.', source: 'hourlyAggregates', n: '5 study sites' },
+  wetPavementScenario: { label: 'Wet-Pavement Scenario', formula: 'Observed dry dynamic PCU x 1.10 (editable sensitivity scenario multiplier).', source: 'hourlyAggregates', n: 'Scenario multiplier' },
+  speedSensitivity: { label: 'Operating-Speed Sensitivity', formula: 'Static PCU recomputed at the lower and upper bounds of the literature tricycle operating-speed range (20 to 35 km/h) instead of the 27.5 km/h base assumption.', source: 'assumptions', n: 'Sensitivity range' },
+  regionalBenchmark: { label: 'Regional PCU Benchmark', formula: 'Base passenger-tricycle static PCU compared against regional PCU ranges cited in urban mixed-traffic literature.', source: 'assumptions', n: 'Literature benchmark' },
+  allDataSensitivity: { label: 'All-Data vs. Flags-Removed', formula: 'Primary all-data totals compared against totals excluding high-concentration Kibuye passenger-tricycle intervals (diagnostic only; all observations are retained in primary results).', source: 'classifiedCounts', n: '5 study sites' },
+  tricycleSiteAnova: { label: 'Site Volume One-Way ANOVA', formula: 'One-way ANOVA of tricycle volume across the 5 study sites: F = MS_between / MS_within; upper-tail p-value from the F(df1, df2) distribution.', source: 'classifiedCounts', n: '5 study sites' },
+  tricycleSiteKruskalWallis: { label: 'Site Volume Kruskal-Wallis H', formula: 'Kruskal-Wallis H test (non-parametric one-way ANOVA on ranks) with tie correction and chi-square survival calculation.', source: 'classifiedCounts', n: '5 study sites' },
+  tricyclePeriodAnova: { label: 'Time-Period One-Way ANOVA', formula: 'One-way ANOVA of tricycle volume across the 3 surveyed time periods; upper-tail p-value from the F(df1, df2) distribution.', source: 'classifiedCounts', n: '3 time periods' },
+  tricyclePeriodKruskalWallis: { label: 'Time-Period Kruskal-Wallis H', formula: 'Kruskal-Wallis H test with tie correction across the 3 surveyed time periods.', source: 'classifiedCounts', n: '3 time periods' },
+  flowTricycleCorrelation: { label: 'Flow vs. Tricycle Correlation', formula: 'Pearson correlation between hourly motorised flow and hourly tricycle total across surveyed site-hours: r = cov(x, y) / (sigma_x . sigma_y).', source: 'hourlyAggregates', n: '5 study sites' },
+  kibuyePoissonBins: { label: 'Kibuye Poisson Arrival Fit', formula: 'Observed versus Poisson-expected hourly tricycle arrival distributions (lambda = site hourly mean) at Kibuye.', source: 'hourlyAggregates', n: 'Kibuye Roundabout' },
+  incidentChiSquare: { label: 'Incident Type x Severity Chi-Square', formula: 'Chi-square test of independence between incident type and severity.', source: 'incidentLog', n: 'Kampala network' },
+  compositionBySite: { label: 'Fleet Composition by Site', formula: 'Vehicle-class totals (Motorcycles, Passenger Tricycles, Cargo Tricycles, Cars/Taxis, Other Motorised) as a percentage of site motorised flow.', source: 'hourlyAggregates', n: '5 study sites' },
+  hourlyProfile24: { label: '24-Hour Traffic Volume Profile', formula: '07:00 to 19:00: observed mean hourly volume per surveyed junction. 19:00 to 07:00: disclosed mathematical overnight connector interpolating between 18:00 and 07:00 with a cosine trough (15% default), toggleable in the UI.', source: 'hourlyAggregates', n: '07:00 to 19:00 observed; overnight modelled' },
+  vision2040: { label: 'Vision 2040 Horizon Projection', formula: 'Vision 2040 compounding projection: V(year) = V(2026) x (1 + r)^(year - 2026), with default annual corridor growth rate r = 4.5% from 2026 to 2040.', source: 'hourlyAggregates', n: '2026 to 2040 horizon' },
 };
 
 // ---------------------------------------------------------------------------

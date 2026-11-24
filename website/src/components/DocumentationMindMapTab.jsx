@@ -58,13 +58,15 @@ export default function DocumentationMindMapTab({ goBack, canGoBack } = {}) {
         ],
       },
       {
-        id: 'fleet', x: 180, y: 360, r: 34, color: C.green, parent: 'root', label: 'Vehicle\nClasses',
-        category: 'Fleet Mix',
-        summary: 'Five governed motorised vehicle classes with distinct static dimensions, speeds, and dynamic PCU factors.',
+        id: 'fleet', x: 180, y: 360, r: 34, color: C.green, parent: 'root', label: 'ITMs &\nFleet Mix',
+        category: 'Mobility Inventory',
+        summary: 'Complete 13-class mobility inventory covering Intermediate Transport Modes (handcarts, bicycles, motorcycles, passenger & cargo tricycles) plus cars, transit, and freight.',
         metrics: [
           { k: 'Total Tricycles', v: stats ? `${fmt(totalTri)} veh` : '-' },
           { k: 'Passenger Tricycles', v: stats ? `${fmt(stats.allSitesPassengerTri)} veh` : '-' },
           { k: 'Cargo Tricycles', v: stats ? `${fmt(stats.allSitesCargoTri)} veh` : '-' },
+          { k: 'Motorcycles (Boda-Boda)', v: stats ? `${fmt(stats.reconciliationTotal.Motorcycles)} veh` : '-' },
+          { k: 'Bicycles & Handcarts', v: stats ? `${fmt(stats.reconciliationTotal.Bicycles + stats.reconciliationTotal.Carts)} units` : '-' },
         ],
       },
       {
@@ -166,7 +168,7 @@ export default function DocumentationMindMapTab({ goBack, canGoBack } = {}) {
         <span className="doc-badge">View-Only Research Platform</span>
         <h1>Platform Documentation &amp; Interactive Mind Map</h1>
         <p>
-          Explore the system architecture through the interactive view-only Mind Map, review the Platform Documentation, and inspect the governed statistical evidence. No login, access levels, or administrative editing tools are present.
+          Explore the system architecture through the interactive view-only Mind Map, review the Platform Documentation, and inspect the governed statistical evidence. This public research portal operates strictly in view-only mode with zero authentication gates or editing controls.
         </p>
       </header>
 
@@ -314,7 +316,7 @@ export default function DocumentationMindMapTab({ goBack, canGoBack } = {}) {
             </div>
             <div className="doc-mini-card">
               <h3>4. View-Only Public Governance</h3>
-              <p>Strictly view-only analytical interface with no login, no role-based access control, no data-entry forms, UK English, metric units, and dd/mm/yyyy date formatting.</p>
+              <p>Strictly view-only analytical interface with zero authentication gates, zero role-based restrictions, zero data-entry forms, UK English, metric units, and dd/mm/yyyy date formatting.</p>
             </div>
           </div>
         </section>
