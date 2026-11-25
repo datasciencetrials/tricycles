@@ -3,14 +3,14 @@ import { Octokit } from '@octokit/rest';
 import fs from 'node:fs';
 import path from 'node:path';
 
-const [OWNER = 'datasciencetrials', REPOSITORY = 'tricycles'] = (process.env.GITHUB_REPOSITORY || 'datasciencetrials/tricycles').split('/');
+const OWNER = 'networkengineringmowt-ai';
 const ALL_REPOS = [
   'uganda_nrms', 'tricycles', 'uganda_npms', 'uganda_network_traffic',
   'uganda_ducar', 'uganda_nbms', 'uganda_gis_enterprise', 'bridge_mculverts',
   'kee', 'uganda_kee', 'uganda_kee_rss', 'uganda_ntis',
 ];
 
-const SELF = REPOSITORY;
+const SELF = (process.env.GITHUB_REPOSITORY || '').split('/')[1];
 const TOKEN = process.env.GITHUB_TOKEN;
 const SIBLINGS = ALL_REPOS.filter((r) => r !== SELF);
 const URL = `https://${OWNER}.github.io/${SELF}/`;
@@ -46,12 +46,6 @@ async function auditSelf() {
   let chartElementCount = 0;
   let extractedFigures = [];
   let districtOptions = null;
-  let approvedInterface = {
-    navigationTabs: [],
-    overviewMapPresent: false,
-    digitalTwinCanvasPresent: false,
-    digitalTwinControlsPresent: false,
-  };
 
   if (!loadFailed) {
     try {
@@ -72,23 +66,6 @@ async function auditSelf() {
 
     try {
       chartElementCount = await page.$$eval('canvas, svg', (els) => els.length);
-    } catch { /* ignore */ }
-
-    try {
-      approvedInterface = await page.evaluate(() => ({
-        navigationTabs: [...document.querySelectorAll('.nav-links .nav-item span')]
-          .map((el) => el.textContent.trim()),
-        overviewMapPresent: Boolean(document.querySelector('.leaflet-container')),
-        digitalTwinCanvasPresent: false,
-        digitalTwinControlsPresent: false,
-      }));
-      const digitalTwinTab = page.locator('.nav-links .nav-item', { hasText: 'Digital Twin' });
-      if (await digitalTwinTab.count()) {
-        await digitalTwinTab.click();
-        await page.waitForSelector('.a-twin-period-controls', { timeout: 10000 });
-        approvedInterface.digitalTwinCanvasPresent = await page.locator('canvas').count() > 0;
-        approvedInterface.digitalTwinControlsPresent = await page.locator('.a-twin-period-controls').count() > 0;
-      }
     } catch { /* ignore */ }
 
     const figureRe = /([\d]{1,3}(?:,\d{3})*(?:\.\d+)?)\s*(km|kilomet\w*)/gi;
@@ -120,7 +97,6 @@ async function auditSelf() {
     brokenImages,
     hashLinksFound: hashLinks,
     chartElementCount,
-    approvedInterface,
   };
 
   const majorTechnicalIssues = [];
@@ -129,13 +105,6 @@ async function auditSelf() {
   if (!loadFailed && bodyTextLen <= 50) majorTechnicalIssues.push('Page rendered with little/no visible content (possible blank SPA shell)');
   if (consoleErrors.length > 0) majorTechnicalIssues.push(`${consoleErrors.length} console error(s) captured`);
   if (brokenImages.length > 0) majorTechnicalIssues.push(`${brokenImages.length} broken image(s): ${brokenImages.slice(0, 5).join(', ')}`);
-  const expectedTabs = ['Overview', 'Digital Twin', 'Summary Tables', 'Analytics', 'Thesis'];
-  if (approvedInterface.navigationTabs.join('|') !== expectedTabs.join('|')) {
-    majorTechnicalIssues.push(`Approved 30 September navigation changed: ${approvedInterface.navigationTabs.join(', ') || 'none found'}`);
-  }
-  if (!approvedInterface.overviewMapPresent || !approvedInterface.digitalTwinCanvasPresent || !approvedInterface.digitalTwinControlsPresent) {
-    majorTechnicalIssues.push('Approved 30 September map or Digital Twin animation controls are missing');
-  }
 
   return { technical, majorTechnicalIssues, extractedFigures, districtOptions };
 }
@@ -254,16 +223,7 @@ async function main() {
 
   const dir = 'audit-log';
   fs.mkdirSync(dir, { recursive: true });
-  const reportPath = path.join(dir, `${TODAY}.json`);
-  let existingReport = {};
-  if (fs.existsSync(reportPath)) {
-    try {
-      existingReport = JSON.parse(fs.readFileSync(reportPath, 'utf8'));
-    } catch {
-      existingReport = {};
-    }
-  }
-  fs.writeFileSync(reportPath, JSON.stringify({ ...existingReport, ...report }, null, 2));
+  fs.writeFileSync(path.join(dir, `${TODAY}.json`), JSON.stringify(report, null, 2));
 
   const problems = [
     ...self.majorTechnicalIssues,

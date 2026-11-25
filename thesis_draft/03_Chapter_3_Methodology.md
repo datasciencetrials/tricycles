@@ -44,7 +44,7 @@ Traffic engineering often ignores the human element. To capture the behavioral "
 
 ### 3.3.2 Secondary Data
 To establish a historical baseline and validate our primary observations, two critical secondary data sources were utilized:
-1. **National Transport Enterprise (MoWT) Historical Traffic Logs (2021):** We extracted historical 2021 intersection volume data from the MoWT archives. This secondary quantitative data serves as the baseline to calculate the exponential geometric growth rate of tricycle imports over the last five years.
+1. **Ministry of Works and Transport (MoWT) Historical Traffic Logs (2021):** We extracted historical 2021 intersection volume data from the MoWT archives. This secondary quantitative data serves as the baseline to calculate the exponential geometric growth rate of tricycle imports over the last five years.
 2. **Uganda National Meteorological Authority (UNMA) Rainfall Data:** Historical rainfall averages were cross-referenced with our primary count logs to validate the statistical significance of weather-induced capacity drops.
 
 ## 3.4 Data Processing and Statistical Testing

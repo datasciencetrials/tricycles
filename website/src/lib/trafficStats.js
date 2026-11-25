@@ -10,52 +10,36 @@
 // actual field record and has been withdrawn in full. This module now loads
 // ONLY the source-reconciled data:
 //
-//   raw_movements.csv   1,272 real classified hourly movement records,
-//                       reconciled against the five supplied study sites
-//                       (Kibuye, Wandegeya, Bakuli, Bwaise and Natete;
-//                       every source total independently
+//   raw_movements.csv   984 real classified hourly movement records,
+//                       reconciled 1:1 against the four supplied raw
+//                       per-junction count workbooks (Kibuye, Wandegeya,
+//                       Bakuli, Bwaise; every source total independently
 //                       re-summed and confirmed to match). Two consecutive
 //                       days (2026-08-02/03), 07:00-18:00. No headway, V/C,
 //                       or capacity field exists in the source data, so none
 //                       is reported here.
-//   site_hour.csv       The same 1,272 records aggregated to 120 site-hour
+//   site_hour.csv       The same 984 records aggregated to 96 site-hour
 //                       rows, carrying the workbook's own static + dynamic
 //                       PCU model (speed-area static baseline; demand-
 //                       pressure dynamic adjustment) computed at that grain.
-//   incidents.csv       840 real traffic-incident records (type x severity),
+//   incidents.csv       841 real traffic-incident records (type x severity),
 //                       independently verified against the source incident
 //                       log and unaffected by the correction above.
+//
+// Natete Junction was named in the original study proposal but no raw count
+// workbook for it was ever supplied -- it is carried in the UI as a
+// disclosed no-data site, never assigned a fabricated figure.
 //
 // Every number below is computed at runtime from these three CSVs; nothing
 // is a hand-typed constant. FORMULAS documents each figure's derivation for
 // the UI's Methodology panels.
 // ---------------------------------------------------------------------------
 
-export const REAL_SITES = ['Kibuye', 'Wandegeya', 'Bakuli', 'Bwaise', 'Natete'];
-export const NO_DATA_SITES = [];
-export const SITE_JUNCTION_TYPE = { Kibuye: 'Roundabout', Wandegeya: 'Cross Junction', Bakuli: 'Cross Junction', Bwaise: 'Cross Junction', Natete: 'Cross Junction' };
-export const GOVERNED_CATEGORICAL_FIELDS = [
-  'Site', 'JunctionType', 'SourceFile', 'Sheet', 'Date', 'DateImputed',
-  'DirFrom', 'DirTo', 'Weather', 'TimeFrom', 'TimeTo',
-  'HighConcentrationReview', 'QCWarning', 'IncludedInAnalysis', 'TimePeriod',
+export const REAL_SITES = ['Kibuye', 'Wandegeya', 'Bakuli', 'Bwaise'];
+export const NO_DATA_SITES = [
+  { name: 'Natete', note: 'Named in the original study proposal; no raw traffic-count workbook was ever supplied for this site. Excluded from every primary result below -- no figure is estimated or assumed for it.' },
 ];
-export const GOVERNED_CATEGORICAL_LABELS = {
-  Site: 'Study Site',
-  JunctionType: 'Junction Type',
-  SourceFile: 'Source File',
-  Sheet: 'Source Sheet',
-  Date: 'Survey Date',
-  DateImputed: 'Date Imputed',
-  DirFrom: 'Direction From',
-  DirTo: 'Direction To',
-  Weather: 'Weather',
-  TimeFrom: 'Hour From',
-  TimeTo: 'Hour To',
-  HighConcentrationReview: 'High Concentration Review',
-  QCWarning: 'Quality Control Status',
-  IncludedInAnalysis: 'Included in Analysis',
-  TimePeriod: 'Time Period',
-};
+export const SITE_JUNCTION_TYPE = { Kibuye: 'Roundabout', Wandegeya: 'Cross Junction', Bakuli: 'Cross Junction', Bwaise: 'Cross Junction' };
 
 // --- tiny CSV parser (data is clean/numeric, no quoted commas) ------------
 // Strips trailing \r on every line so CRLF-saved source workbooks (the raw
@@ -115,101 +99,20 @@ function describe(arr) {
   };
 }
 
-// Numerical Recipes style special functions used for exact distribution
-// tails. Inferential results must not use normal or Wilson-Hilferty
-// approximations because those can materially misstate small p-values.
-function logGamma(z) {
-  const coefficients = [
-    676.5203681218851, -1259.1392167224028, 771.3234287776531,
-    -176.6150291621406, 12.507343278686905, -0.13857109526572012,
-    9.984369578019572e-6, 1.5056327351493116e-7,
-  ];
-  if (z < 0.5) return Math.log(Math.PI) - Math.log(Math.sin(Math.PI * z)) - logGamma(1 - z);
-  let x = 0.9999999999998099;
-  const shifted = z - 1;
-  coefficients.forEach((coefficient, i) => { x += coefficient / (shifted + i + 1); });
-  const t = shifted + coefficients.length - 0.5;
-  return 0.5 * Math.log(2 * Math.PI) + (shifted + 0.5) * Math.log(t) - t + Math.log(x);
+function erf(x) {
+  const sign = x < 0 ? -1 : 1;
+  x = Math.abs(x);
+  const a1 = 0.254829592, a2 = -0.284496736, a3 = 1.421413741, a4 = -1.453152027, a5 = 1.061405429, p = 0.3275911;
+  const t = 1 / (1 + p * x);
+  const y = 1 - (((((a5 * t + a4) * t) + a3) * t + a2) * t + a1) * t * Math.exp(-x * x);
+  return sign * y;
 }
-
-function betaContinuedFraction(a, b, x) {
-  const maxIterations = 200;
-  const epsilon = 3e-14;
-  const floor = 1e-300;
-  const qab = a + b, qap = a + 1, qam = a - 1;
-  let c = 1;
-  let d = 1 - (qab * x) / qap;
-  if (Math.abs(d) < floor) d = floor;
-  d = 1 / d;
-  let h = d;
-  for (let m = 1; m <= maxIterations; m += 1) {
-    const m2 = 2 * m;
-    let aa = (m * (b - m) * x) / ((qam + m2) * (a + m2));
-    d = 1 + aa * d;
-    if (Math.abs(d) < floor) d = floor;
-    c = 1 + aa / c;
-    if (Math.abs(c) < floor) c = floor;
-    d = 1 / d;
-    h *= d * c;
-    aa = -((a + m) * (qab + m) * x) / ((a + m2) * (qap + m2));
-    d = 1 + aa * d;
-    if (Math.abs(d) < floor) d = floor;
-    c = 1 + aa / c;
-    if (Math.abs(c) < floor) c = floor;
-    d = 1 / d;
-    const delta = d * c;
-    h *= delta;
-    if (Math.abs(delta - 1) < epsilon) break;
-  }
-  return h;
+const normalCdf = (z) => 0.5 * (1 + erf(z / Math.sqrt(2)));
+const pFromZ = (z) => 2 * (1 - normalCdf(Math.abs(z)));
+function pFromChiSquare(chi2, df) {
+  const z = (Math.pow(chi2 / df, 1 / 3) - (1 - 2 / (9 * df))) / Math.sqrt(2 / (9 * df));
+  return 1 - normalCdf(z);
 }
-
-function regularizedBeta(x, a, b) {
-  if (x <= 0) return 0;
-  if (x >= 1) return 1;
-  const front = Math.exp(logGamma(a + b) - logGamma(a) - logGamma(b) + a * Math.log(x) + b * Math.log1p(-x));
-  if (x < (a + 1) / (a + b + 2)) return front * betaContinuedFraction(a, b, x) / a;
-  return 1 - front * betaContinuedFraction(b, a, 1 - x) / b;
-}
-
-function regularizedGammaQ(a, x) {
-  if (x <= 0) return 1;
-  const epsilon = 3e-14;
-  const maxIterations = 200;
-  if (x < a + 1) {
-    let term = 1 / a;
-    let series = term;
-    for (let n = 1; n <= maxIterations; n += 1) {
-      term *= x / (a + n);
-      series += term;
-      if (Math.abs(term) < Math.abs(series) * epsilon) break;
-    }
-    const p = series * Math.exp(-x + a * Math.log(x) - logGamma(a));
-    return Math.max(0, Math.min(1, 1 - p));
-  }
-  const floor = 1e-300;
-  let b = x + 1 - a;
-  let c = 1 / floor;
-  let d = 1 / b;
-  let h = d;
-  for (let i = 1; i <= maxIterations; i += 1) {
-    const an = -i * (i - a);
-    b += 2;
-    d = an * d + b;
-    if (Math.abs(d) < floor) d = floor;
-    c = b + an / c;
-    if (Math.abs(c) < floor) c = floor;
-    d = 1 / d;
-    const delta = d * c;
-    h *= delta;
-    if (Math.abs(delta - 1) < epsilon) break;
-  }
-  return Math.max(0, Math.min(1, Math.exp(-x + a * Math.log(x) - logGamma(a)) * h));
-}
-
-const pFromChiSquare = (chi2, df) => regularizedGammaQ(df / 2, chi2 / 2);
-const pFromF = (f, df1, df2) => regularizedBeta(df2 / (df2 + df1 * f), df2 / 2, df1 / 2);
-const pFromStudentT = (t, df) => regularizedBeta(df / (df + t * t), df / 2, 0.5);
 
 function oneWayAnova(groups) {
   const all = groups.flat();
@@ -220,7 +123,7 @@ function oneWayAnova(groups) {
   const df1 = k - 1, df2 = n - k;
   const msBetween = ssBetween / df1, msWithin = ssWithin / df2;
   const F = msBetween / msWithin;
-  const p = pFromF(F, df1, df2);
+  const p = pFromChiSquare(F * df1, df1);
   return { F, df1, df2, p };
 }
 
@@ -235,7 +138,7 @@ function pearson(x, y) {
   const t = r * Math.sqrt((n - 2) / (1 - r * r));
   const slope = cov / sxx;
   const intercept = my - slope * mx;
-  return { r, r2Pct: r * r * 100, p: pFromStudentT(t, n - 2), n, slope, intercept };
+  return { r, r2Pct: r * r * 100, p: pFromZ(t), n, slope, intercept };
 }
 
 function chiSquareIndependence(table) {
@@ -275,11 +178,7 @@ function kruskalWallis(groups) {
     return rs;
   });
   const k = groups.length;
-  const uncorrectedH = (12 / (n * (n + 1))) * sum(groupRankSums.map((rs, i) => (rs * rs) / groups[i].length)) - 3 * (n + 1);
-  const tieCounts = new Map();
-  all.forEach((value) => tieCounts.set(value, (tieCounts.get(value) || 0) + 1));
-  const tieCorrection = 1 - sum([...tieCounts.values()].map((count) => count ** 3 - count)) / (n ** 3 - n);
-  const H = tieCorrection > 0 ? uncorrectedH / tieCorrection : uncorrectedH;
+  const H = (12 / (n * (n + 1))) * sum(groupRankSums.map((rs, i) => (rs * rs) / groups[i].length)) - 3 * (n + 1);
   const df = k - 1;
   return { H, df, p: pFromChiSquare(H, df) };
 }
@@ -322,10 +221,10 @@ export const ASSUMPTIONS = {
   // the hourly traffic profile chart. The source counts cover 07:00-18:00
   // only; no vehicle was ever counted overnight. This ratio is the fraction
   // of the straight trend-line between the real 18:00 and (next) 07:00
-  // values that the modelled curve dips to at its lowest point -- it is a
+  // values that the modeled curve dips to at its lowest point -- it is a
   // plain mathematical construction (a cosine-shaped dip), not a figure
   // taken from external literature or additional field data. It exists so
-  // an unmistakably "modelled" overnight segment can be shown for context
+  // an unmistakably "modeled" overnight segment can be shown for context
   // without ever being presented as measured.
   overnightTroughRatio: 0.15,
 };
@@ -362,7 +261,7 @@ function buildOvernightConnector(hour18Value, hour7Value, troughRatio) {
 
 // Builds a full 0-23 hourly profile for one or more grain-matching
 // `siteHour` rows: real measured means for 07:00-18:00, plus a disclosed
-// modelled connector for the remaining 12 hours. `valueKey` is a numeric
+// modeled connector for the remaining 12 hours. `valueKey` is a numeric
 // field already present on each siteHour row (e.g. MotorizedFlow,
 // TricycleTotal).
 function buildHourlyProfile24(rows, valueKey) {
@@ -374,12 +273,12 @@ function buildHourlyProfile24(rows, valueKey) {
     realByHour[h] = hourRows.length ? mean(hourRows.map((r) => r[valueKey])) : 0;
   });
   const connector = buildOvernightConnector(realByHour[18], realByHour[7], ASSUMPTIONS.overnightTroughRatio);
-  const modelledByHour = {};
-  connector.forEach(({ hour, value }) => { modelledByHour[hour] = value; });
+  const modeledByHour = {};
+  connector.forEach(({ hour, value }) => { modeledByHour[hour] = value; });
   return Array.from({ length: 24 }, (_, hour) => ({
     hour,
     isReal: REAL_HOURS.includes(hour),
-    value: REAL_HOURS.includes(hour) ? realByHour[hour] : modelledByHour[hour],
+    value: REAL_HOURS.includes(hour) ? realByHour[hour] : modeledByHour[hour],
   }));
 }
 
@@ -404,53 +303,6 @@ export function computeTrafficStats(rawMovements, siteHour, incidents) {
   });
   const reconciliationTotal = { records: rawMovements.length };
   VEHICLE_CLASS_KEYS.forEach((k) => { reconciliationTotal[k] = sum(Object.values(reconciliationBySite).map((e) => e[k])); });
-
-  // Complete-population measured traffic breakdowns. Every governed
-  // categorical field is retained, including blank direction labels, which
-  // are shown explicitly as "Not recorded" rather than silently dropped.
-  const measuredTrafficBreakdowns = {};
-  GOVERNED_CATEGORICAL_FIELDS.forEach((field) => {
-    const grouped = rawMovements.reduce((acc, row) => {
-      const category = String(row[field] ?? '').trim() || 'Not recorded';
-      (acc[category] = acc[category] || []).push(row);
-      return acc;
-    }, {});
-    measuredTrafficBreakdowns[field] = Object.entries(grouped)
-      .sort(([left], [right]) => left.localeCompare(right, 'en-GB', { numeric: true }))
-      .map(([category, rows]) => {
-        const motorizedVehicles = sum(rows.map((row) => row.MotorizedTotal));
-        const passengerTri = sum(rows.map((row) => row.PassengerTricycle));
-        const cargoTri = sum(rows.map((row) => row.CargoTricycle));
-        const totalTri = passengerTri + cargoTri;
-        return {
-          category,
-          records: rows.length,
-          motorizedVehicles,
-          passengerTri,
-          cargoTri,
-          totalTri,
-          tricycleShare: motorizedVehicles ? totalTri / motorizedVehicles : 0,
-        };
-      });
-  });
-
-  const measuredTrend = (dateKeyLength) => {
-    const grouped = rawMovements.reduce((acc, row) => {
-      const period = String(row.Date).slice(0, dateKeyLength);
-      (acc[period] = acc[period] || []).push(row);
-      return acc;
-    }, {});
-    return Object.entries(grouped).sort(([left], [right]) => left.localeCompare(right)).map(([period, rows]) => ({
-      period,
-      records: rows.length,
-      motorizedVehicles: sum(rows.map((row) => row.MotorizedTotal)),
-      passengerTri: sum(rows.map((row) => row.PassengerTricycle)),
-      cargoTri: sum(rows.map((row) => row.CargoTricycle)),
-      totalTri: sum(rows.map((row) => row.TricycleTotal)),
-    }));
-  };
-  const measuredAnnualTrend = measuredTrend(4);
-  const measuredMonthlyTrend = measuredTrend(7);
 
   // =========================================================================
   // B. Static PCU + per-site exposure (Objective 1 / Results_By_Site)
@@ -494,7 +346,6 @@ export function computeTrafficStats(rawMovements, siteHour, incidents) {
     const totalTri = sum(rows.map((r) => r.TricycleTotal));
     dynamicPcuBySite[site] = {
       junctionType: SITE_JUNCTION_TYPE[site],
-      recordCount: rows.length,
       meanDemandPressure: mean(rows.map((r) => r.DemandPressure)),
       peakDemandPressure: Math.max(...rows.map((r) => r.DemandPressure)),
       passengerDynamicPCU: weightedMean(rows, 'PassengerDynamicPCU', 'PassengerTricycle'),
@@ -564,12 +415,12 @@ export function computeTrafficStats(rawMovements, siteHour, incidents) {
   // C2. Full 24-hour hourly traffic profile (Overview / Analytics chart).
   //     Hours 07:00-18:00 are the real, measured mean hourly values (per
   //     surveyed junction, averaged across the 2 survey days and, for the
-  //     "All Sites" series, across the 5 sites too). No vehicle was ever
+  //     "All Sites" series, across the 4 sites too). No vehicle was ever
   //     counted outside that window; hours 19:00-06:00 use the disclosed,
   //     purely mathematical overnight connector defined above
   //     (ASSUMPTIONS.overnightTroughRatio) and are always flagged
   //     isReal:false so the UI can render them as a visually distinct,
-  //     toggleable "modelled" segment rather than measured data.
+  //     toggleable "modeled" segment rather than measured data.
   // =========================================================================
   const hourlyProfile24 = {
     motorizedFlow: buildHourlyProfile24(siteHour, 'MotorizedFlow'),
@@ -593,7 +444,7 @@ export function computeTrafficStats(rawMovements, siteHour, incidents) {
     { scenario: 'High impact / slower', speed: 20, passengerStaticPCU: staticPcuSpeedArea({ ...ASSUMPTIONS.passengerTricycle, speed: 20 }, ASSUMPTIONS.car), cargoStaticPCU: staticPcuSpeedArea({ ...ASSUMPTIONS.cargoTricycle, speed: 20 }, ASSUMPTIONS.car) },
   ];
   const regionalBenchmark = [
-    { benchmark: 'Ghana signalised intersections', lower: 0.67, upper: 0.75, basePassengerStaticPCU: STATIC_PCU.passengerTricycle, withinRange: false, source: 'Cited in the original study proposal, p.12' },
+    { benchmark: 'Ghana signalized intersections', lower: 0.67, upper: 0.75, basePassengerStaticPCU: STATIC_PCU.passengerTricycle, withinRange: false, source: 'Cited in the original study proposal, p.12' },
     { benchmark: 'Indian urban roads', lower: 0.91, upper: 1.32, basePassengerStaticPCU: STATIC_PCU.passengerTricycle, withinRange: true, source: 'Cited in the original study proposal, p.12' },
   ];
 
@@ -621,14 +472,14 @@ export function computeTrafficStats(rawMovements, siteHour, incidents) {
 
   // =========================================================================
   // E. Legitimate inferential statistics computed directly on the real,
-  //    reconciled data (n = 1,272 raw movement records, or n = 120 site-hour
+  //    reconciled data (n = 984 raw movement records, or n = 96 site-hour
   //    rows where noted). Every test below uses fields that were genuinely
   //    recorded; none substitutes for headway, V/C or capacity data that
   //    does not exist in the source counts.
   // =========================================================================
 
   // --- Tricycle volume by site (one-way ANOVA + Kruskal-Wallis robustness
-  //     check), on every real raw movement record, n=1,272, 5 real sites ---
+  //     check), on every real raw movement record, n=984, 4 real sites ---
   const triBySiteGroups = REAL_SITES.map((s) => (byRawSite[s] || []).map((r) => r.TricycleTotal));
   const tricycleSiteAnova = oneWayAnova(triBySiteGroups);
   const tricycleSiteKruskalWallis = kruskalWallis(triBySiteGroups);
@@ -636,7 +487,7 @@ export function computeTrafficStats(rawMovements, siteHour, incidents) {
   REAL_SITES.forEach((s, i) => { tricycleDescribeBySite[s] = describe(triBySiteGroups[i]); });
 
   // --- Tricycle volume by time-of-day (one-way ANOVA + Kruskal-Wallis),
-  //     n=1,272, 3 real time periods (Morning Peak / Midday-Off-Peak /
+  //     n=984, 3 real time periods (Morning Peak / Midday-Off-Peak /
   //     Evening Peak) -- the real replacement for the old 2-group peak/
   //     off-peak comparison, since the source data has 3 real periods ---
   const byRawTimePeriod = groupBy(rawMovements, 'TimePeriod');
@@ -647,7 +498,7 @@ export function computeTrafficStats(rawMovements, siteHour, incidents) {
   timePeriods.forEach((tp, i) => { tricycleDescribeByPeriod[tp] = describe(triByPeriodGroups[i]); });
 
   // --- Correlation: hourly all-data motorized flow vs hourly tricycle
-  //     total, across the 120 real site-hour rows -- two independently
+  //     total, across the 96 real site-hour rows -- two independently
   //     observed quantities (not the demand-pressure/PCU relationship, which
   //     is definitional by formula and is never presented as a statistical
   //     finding here) ---
@@ -706,7 +557,6 @@ export function computeTrafficStats(rawMovements, siteHour, incidents) {
 
   return {
     reconciliationBySite, reconciliationTotal, VEHICLE_CLASS_KEYS,
-    measuredTrafficBreakdowns, measuredAnnualTrend, measuredMonthlyTrend,
     resultsBySite, allSitesMotorized, allSitesPassengerTri, allSitesCargoTri, allSitesTotalTri,
     dynamicPcuBySite, combinedDynamicPCUOverall, passengerDynamicPCUOverall, cargoDynamicPCUOverall,
     dynamicPcuByTimePeriod, timePeriods, dynamicPcuByJunctionType,
@@ -720,62 +570,43 @@ export function computeTrafficStats(rawMovements, siteHour, incidents) {
     compositionBySite,
     hourlyProfile24, hourlyProfile24BySite,
     rawMovementCount: rawMovements.length, siteHourCount: siteHour.length, siteHourRows: siteHour,
-    dateRange: { start: '02/08/2026', end: '03/08/2026' }, surveyWindow: '07:00-19:00',
-    surveyDates: ['02/08/2026', '03/08/2026'],
-    annualGrowthRate: 0.045,
+    dateRange: { start: '2026-08-02', end: '2026-08-03' }, surveyWindow: '07:00-18:00',
     shortName,
   };
 }
 const shortName = (n) => n;
-
-export const VISION_2040_YEARS = [2026, 2028, 2030, 2032, 2034, 2036, 2038, 2040];
-export const VISION_2040_GROWTH_RATE = 0.045; // 4.5% p.a. urban corridor growth scenario
-
-export function projectToYear(baseValue, targetYear, growthRate = VISION_2040_GROWTH_RATE) {
-  const years = Math.max(0, targetYear - 2026);
-  return baseValue * Math.pow(1 + growthRate, years);
-}
 
 // ---------------------------------------------------------------------------
 // Human-readable formulas + data-source notes, shown in the UI's
 // "Methodology" panels so every figure's workflow is visible, not just its
 // result.
 // ---------------------------------------------------------------------------
-export const DATA_SOURCE_LABELS = {
-  classifiedCounts: 'Classified Counts',
-  hourlyAggregates: 'Site-Hour Aggregates',
-  incidentLog: 'Incident Log',
-  assumptions: 'Literature Parameters',
-};
-
 export const DATA_SOURCES = {
-  classifiedCounts: 'Classified hourly directional traffic counts across five Kampala study sites (Kibuye, Wandegeya, Bakuli, Bwaise, and Natete) surveyed on 02/08/2026 and 03/08/2026 during the 07:00 to 19:00 survey window.',
-  hourlyAggregates: 'Site-hour traffic aggregates across the five study sites, carrying the speed-area static baseline and demand-pressure dynamic PCU model.',
-  incidentLog: 'Verified Kampala traffic-incident dataset categorised by incident type and severity.',
-  assumptions: 'Literature-based vehicle dimensions and operating speed parameters used for speed-area equivalency.',
+  rawMovements: '984 real classified hourly movement records, reconciled 1:1 against the four supplied raw per-junction count workbooks (Kibuye, Wandegeya, Bakuli, Bwaise). 2026-08-02 to 2026-08-03, 07:00-18:00. No Natete data was ever supplied.',
+  siteHour: 'The same 984 records aggregated to 96 real site-hour rows, carrying the static + dynamic PCU model at that grain.',
+  incidents: '841 real, independently-verified traffic-incident records across the Kampala road network, with incident type and severity. Unaffected by the count-data correction.',
 };
 
 export const FORMULAS = {
-  staticPCU: { label: 'Static PCU (Speed-Area Equivalency)', formula: 'Speed-area equivalency: PCU_i = (Speed_car / Speed_i) x (Area_i / Area_car), Area = Length x Width. Literature-based length, width, and speed parameters (editable) are used because no measured tricycle dimensions or speeds exist in the field counts.', source: 'assumptions', n: 'Formula-derived' },
-  resultsBySite: { label: 'Observed Volume by Study Site', formula: 'Motorised-vehicle, intermediate transport mode (ITM), and tricycle totals summed directly from classified directional traffic counts per study site.', source: 'classifiedCounts', n: '5 study sites' },
-  dynamicPcuBySite: { label: 'Dynamic PCU by Study Site', formula: 'Dynamic PCU = Static PCU x [1 + beta x (Demand Pressure - 0.5)], beta = 0.4; Demand Pressure = hourly motorised flow / site maximum recorded hourly flow. Site figures are the tricycle-count-weighted mean across surveyed hours.', source: 'hourlyAggregates', n: '5 study sites (07:00 to 19:00)' },
-  dynamicPcuByTimePeriod: { label: 'Dynamic PCU by Time Period', formula: 'Dynamic PCU model grouped by the three surveyed time periods: Morning Peak (07:00 to 10:00), Midday / Off-Peak (10:00 to 16:00), and Evening Peak (16:00 to 19:00).', source: 'hourlyAggregates', n: '3 time periods' },
-  dynamicPcuByJunctionType: { label: 'Dynamic PCU by Junction Type', formula: 'Dynamic PCU model grouped by junction type. Kibuye is the only roundabout in the study; this comparison is descriptive only.', source: 'hourlyAggregates', n: '5 study sites' },
-  weatherAvailability: { label: 'Weather Data Availability', formula: 'Mean dynamic PCU grouped by recorded weather condition. Zero wet or rain hours were observed during 02/08/2026 to 03/08/2026; the wet-pavement figure is an explicit sensitivity scenario.', source: 'hourlyAggregates', n: '5 study sites' },
-  wetPavementScenario: { label: 'Wet-Pavement Scenario', formula: 'Observed dry dynamic PCU x 1.10 (editable sensitivity scenario multiplier).', source: 'hourlyAggregates', n: 'Scenario multiplier' },
-  speedSensitivity: { label: 'Operating-Speed Sensitivity', formula: 'Static PCU recomputed at the lower and upper bounds of the literature tricycle operating-speed range (20 to 35 km/h) instead of the 27.5 km/h base assumption.', source: 'assumptions', n: 'Sensitivity range' },
-  regionalBenchmark: { label: 'Regional PCU Benchmark', formula: 'Base passenger-tricycle static PCU compared against regional PCU ranges cited in urban mixed-traffic literature.', source: 'assumptions', n: 'Literature benchmark' },
-  allDataSensitivity: { label: 'All-Data vs. Flags-Removed', formula: 'Primary all-data totals compared against totals excluding high-concentration Kibuye passenger-tricycle intervals (diagnostic only; all observations are retained in primary results).', source: 'classifiedCounts', n: '5 study sites' },
-  tricycleSiteAnova: { label: 'Site Volume One-Way ANOVA', formula: 'One-way ANOVA of tricycle volume across the 5 study sites: F = MS_between / MS_within; upper-tail p-value from the F(df1, df2) distribution.', source: 'classifiedCounts', n: '5 study sites' },
-  tricycleSiteKruskalWallis: { label: 'Site Volume Kruskal-Wallis H', formula: 'Kruskal-Wallis H test (non-parametric one-way ANOVA on ranks) with tie correction and chi-square survival calculation.', source: 'classifiedCounts', n: '5 study sites' },
-  tricyclePeriodAnova: { label: 'Time-Period One-Way ANOVA', formula: 'One-way ANOVA of tricycle volume across the 3 surveyed time periods; upper-tail p-value from the F(df1, df2) distribution.', source: 'classifiedCounts', n: '3 time periods' },
-  tricyclePeriodKruskalWallis: { label: 'Time-Period Kruskal-Wallis H', formula: 'Kruskal-Wallis H test with tie correction across the 3 surveyed time periods.', source: 'classifiedCounts', n: '3 time periods' },
-  flowTricycleCorrelation: { label: 'Flow vs. Tricycle Correlation', formula: 'Pearson correlation between hourly motorised flow and hourly tricycle total across surveyed site-hours: r = cov(x, y) / (sigma_x . sigma_y).', source: 'hourlyAggregates', n: '5 study sites' },
-  kibuyePoissonBins: { label: 'Kibuye Poisson Arrival Fit', formula: 'Observed versus Poisson-expected hourly tricycle arrival distributions (lambda = site hourly mean) at Kibuye.', source: 'hourlyAggregates', n: 'Kibuye Roundabout' },
-  incidentChiSquare: { label: 'Incident Type x Severity Chi-Square', formula: 'Chi-square test of independence between incident type and severity.', source: 'incidentLog', n: 'Kampala network' },
-  compositionBySite: { label: 'Fleet Composition by Site', formula: 'Vehicle-class totals (Motorcycles, Passenger Tricycles, Cargo Tricycles, Cars/Taxis, Other Motorised) as a percentage of site motorised flow.', source: 'hourlyAggregates', n: '5 study sites' },
-  hourlyProfile24: { label: '24-Hour Traffic Volume Profile', formula: '07:00 to 19:00: observed mean hourly volume per surveyed junction. 19:00 to 07:00: disclosed mathematical overnight connector interpolating between 18:00 and 07:00 with a cosine trough (15% default), toggleable in the UI.', source: 'hourlyAggregates', n: '07:00 to 19:00 observed; overnight modelled' },
-  vision2040: { label: 'Vision 2040 Horizon Projection', formula: 'Vision 2040 compounding projection: V(year) = V(2026) x (1 + r)^(year - 2026), with default annual corridor growth rate r = 4.5% from 2026 to 2040.', source: 'hourlyAggregates', n: '2026 to 2040 horizon' },
+  staticPCU: { formula: 'Speed-area equivalency: PCU_i = (Speed_car / Speed_i) x (Area_i / Area_car), Area = Length x Width. Literature-based length/width/speed assumptions (editable) used because no measured tricycle dimensions or speeds exist in the raw counts.', source: 'Assumptions_References', n: 'n/a (formula, not sampled)' },
+  resultsBySite: { formula: 'Motorized-vehicle and tricycle totals summed directly from the reconciled raw movement records, per site', source: 'rawMovements', n: '984 records, 4 sites' },
+  dynamicPcuBySite: { formula: 'Dynamic PCU = Static PCU x [1 + beta x (Demand Pressure - 0.5)], beta = 0.4; Demand Pressure = hourly motorized flow / that site\'s own maximum recorded hourly flow. Site figures are the tricycle-count-weighted mean of the 24 real hourly rows per site.', source: 'siteHour', n: '96 site-hour rows (24/site)' },
+  dynamicPcuByTimePeriod: { formula: 'Same dynamic-PCU model, rows grouped by the three real recorded time periods (Morning Peak 07-09h, Midday/Off-Peak 10-15h, Evening Peak 16-18h)', source: 'siteHour', n: '96 site-hour rows' },
+  dynamicPcuByJunctionType: { formula: 'Same dynamic-PCU model, rows grouped by junction type. Kibuye is the only roundabout in the study -- this comparison is descriptive only and is not a statistically valid intersection-type test (n=1 roundabout site).', source: 'siteHour', n: '96 site-hour rows' },
+  weatherAvailability: { formula: 'Record counts and mean dynamic PCU by the weather label actually recorded on the source count sheets. Zero wet/rain hours were recorded, so no empirical wet-vs-dry comparison exists; the wet-pavement figure shown elsewhere is an explicit sensitivity scenario, not a measured result.', source: 'siteHour', n: '96 site-hour rows' },
+  wetPavementScenario: { formula: 'Dry/observed dynamic PCU x 1.10 (an editable scenario multiplier). Zero wet-pavement observations exist in the source data -- this is a disclosed sensitivity scenario, never presented as a measured finding.', source: 'siteHour (dry baseline) + scenario assumption', n: '96 site-hour rows' },
+  speedSensitivity: { formula: 'Static PCU recomputed at the lower and upper bounds of the literature tricycle operating-speed range (20-35 km/h) instead of the 27.5 km/h base assumption, holding length/width fixed', source: 'Assumptions_References (formula)', n: 'n/a' },
+  regionalBenchmark: { formula: 'This study\'s base passenger-tricycle static PCU compared against two regional PCU ranges cited in the original study proposal (p.12), as a sanity check -- not a calibration target', source: 'original study proposal, p.12', n: 'n/a' },
+  allDataSensitivity: { formula: 'Primary all-data totals vs. the same totals with the 7 flagged high-concentration Kibuye passenger-tricycle records removed -- diagnostic only; the primary results above always use the all-data column, no observation is deleted', source: 'rawMovements', n: '984 records (7 flagged)' },
+  tricycleSiteAnova: { formula: 'One-way ANOVA, Tricycle Total per real movement record across the 4 real sites: F = MS_between / MS_within', source: 'rawMovements', n: '984 records, 4 sites' },
+  tricycleSiteKruskalWallis: { formula: 'Kruskal-Wallis H test (non-parametric one-way ANOVA on ranks) -- distribution-free robustness check on the site ANOVA above', source: 'rawMovements', n: '984 records, 4 sites' },
+  tricyclePeriodAnova: { formula: 'One-way ANOVA, Tricycle Total per real movement record across the 3 real recorded time periods', source: 'rawMovements', n: '984 records, 3 periods' },
+  tricyclePeriodKruskalWallis: { formula: 'Kruskal-Wallis H test -- distribution-free robustness check on the time-period ANOVA above', source: 'rawMovements', n: '984 records, 3 periods' },
+  flowTricycleCorrelation: { formula: 'Pearson correlation, real hourly all-data motorized flow vs. real hourly tricycle total, across every site-hour row: r = cov(x,y) / (sigma_x . sigma_y). Two independently observed quantities -- not the demand-pressure/PCU relationship, which is definitional by formula and is never reported as a statistical finding.', source: 'siteHour', n: '96 site-hour rows' },
+  kibuyePoissonBins: { formula: 'Observed vs. Poisson-expected hourly tricycle-arrival counts (exact log-space pmf, lambda = the site\'s own real hourly mean), Kibuye, the site with the most tricycle activity. Disclosed small-sample limitation: only 24 real hourly observations exist for this site.', source: 'siteHour (Kibuye)', n: '24 real hourly rows' },
+  incidentChiSquare: { formula: 'Chi-square test of independence, IncidentType x Severity, on the real crosstab', source: 'incidents', n: '841' },
+  compositionBySite: { formula: 'Vehicle-class totals (Motorcycles, Passenger Tricycle, Cargo Tricycle, Cars/Taxi, all other motorized classes combined) summed from the real site-hour aggregates, as a % of that site\'s total motorized flow', source: 'siteHour', n: '96 site-hour rows' },
+  hourlyProfile24: { formula: '07:00-18:00: real mean hourly value per surveyed junction, averaged across the 2 survey days (and across sites for the "All Sites" series). 19:00-06:00: no vehicle was ever counted in this window; these hours are a disclosed, purely mathematical connector -- a straight trend line between the real 18:00 and 07:00 values, multiplied by a cosine-shaped dip that reaches an editable trough ratio (default 15% of the trend line) at its midpoint. This is a visual/contextual construction only, never a measured or literature-sourced result, and is rendered as a distinct, toggleable segment.', source: 'siteHour (measured hours) + disclosed overnight connector (unmeasured hours)', n: '96 real site-hour rows (measured segment); 12 modeled hours (unmeasured segment)' },
 };
 
 // ---------------------------------------------------------------------------

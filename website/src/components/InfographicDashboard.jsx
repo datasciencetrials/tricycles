@@ -8,18 +8,18 @@ import PageControls, { downloadTextFile, downloadJsonFile, downloadChartsAsZip }
 import MethodologyPanel from './MethodologyPanel';
 import SearchableSelect, { searchableSelectCss } from './SearchableSelect';
 import useTrafficStats from '../lib/useTrafficStats';
-import { REAL_SITES, ASSUMPTIONS, VISION_2040_YEARS, projectToYear } from '../lib/trafficStats';
+import { REAL_SITES, ASSUMPTIONS } from '../lib/trafficStats';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, LineController, BarElement, ArcElement, Filler, Tooltip, Legend);
 
 // ---------------------------------------------------------------------------
-// True Apple HIG Light Theme tokens (vibrant non-neon, high WCAG AA contrast)
+// Apple-style design tokens (bright, light, system-color palette)
 // ---------------------------------------------------------------------------
 const C = {
-  blue: '#0071E3', blue2: '#0071E3', green: '#16A34A', orange: '#D97706',
-  red: '#DC2626', purple: '#7C3AED', pink: '#7C3AED', teal: '#0D9488',
-  yellow: '#D97706', indigo: '#0071E3',
-  ink: '#0F172A', sub: '#475569', faint: '#64748B', canvas: '#F5F5F7', card: '#FFFFFF',
+  blue: '#0071e3', blue2: '#0a84ff', green: '#30d158', orange: '#ff9f0a',
+  red: '#ff453a', purple: '#bf5af2', pink: '#ff375f', teal: '#40c8e0',
+  yellow: '#ffd60a', indigo: '#5e5ce6',
+  ink: '#1d1d1f', sub: '#6e6e73', faint: '#707074', canvas: '#f5f5f7', card: '#ffffff',
 };
 
 const hex2rgba = (hex, a) => {
@@ -27,19 +27,18 @@ const hex2rgba = (hex, a) => {
   return `rgba(${r},${g},${b},${a})`;
 };
 
-const chartSub = C.sub;
-const chartGrid = 'rgba(15,23,42,0.08)';
+const chartSub = C.faint;
+const chartGrid = 'rgba(0,0,0,0.06)';
 const animConfig = { duration: 800, easing: 'easeOutQuart' };
 const tooltipTheme = {
-  backgroundColor: '#FFFFFF', titleColor: '#0F172A', bodyColor: '#475569',
-  borderColor: '#E2E8F0', borderWidth: 1,
-  padding: 10, cornerRadius: 10, titleFont: { weight: '700' }, displayColors: true, boxPadding: 4,
+  backgroundColor: '#1d1d1f', titleColor: '#ffffff', bodyColor: '#f5f5f7',
+  padding: 10, cornerRadius: 10, titleFont: { weight: '600' }, displayColors: true, boxPadding: 4,
 };
 const legendTheme = { labels: { color: chartSub, boxWidth: 10, boxHeight: 10, padding: 14, font: { size: 11, weight: '600' }, usePointStyle: true, pointStyle: 'circle' } };
 const INCIDENT_COLORS = [C.red, C.orange, C.blue, C.indigo, C.teal, C.purple, C.pink, C.green, C.yellow, '#8e8e93'];
-const SITE_COLORS = { Kibuye: C.blue, Wandegeya: C.indigo, Bakuli: C.teal, Bwaise: C.orange, Natete: C.purple };
+const SITE_COLORS = { Kibuye: C.blue, Wandegeya: C.indigo, Bakuli: C.teal, Bwaise: C.orange };
 const COMP_CLASSES = ['Motorcycles', 'PassengerTricycle', 'CargoTricycle', 'CarsTaxi', 'OtherMotorized'];
-const COMP_LABELS = { Motorcycles: 'Motorcycles', PassengerTricycle: 'Passenger Tricycles', CargoTricycle: 'Cargo Tricycles', CarsTaxi: 'Cars / Taxis', OtherMotorized: 'Other Motorised' };
+const COMP_LABELS = { Motorcycles: 'Motorcycles', PassengerTricycle: 'Passenger Tricycles', CargoTricycle: 'Cargo Tricycles', CarsTaxi: 'Cars / Taxis', OtherMotorized: 'Other Motorized' };
 const COMP_COLORS = { Motorcycles: C.indigo, PassengerTricycle: C.green, CargoTricycle: C.orange, CarsTaxi: C.blue, OtherMotorized: C.faint };
 const PERIOD_COLORS = { 'Morning Peak': C.blue, 'Midday / Off-Peak': C.orange, 'Evening Peak': C.indigo };
 
@@ -47,9 +46,9 @@ const PERIOD_COLORS = { 'Morning Peak': C.blue, 'Midday / Off-Peak': C.orange, '
 // these before it reaches the DOM, so a null/undefined/NaN renders as an
 // em dash instead of leaking "undefined"/"NaN" text.
 const isBad = (v) => v === null || v === undefined || Number.isNaN(v);
-const fmt = (v, d = 1) => (isBad(v) ? '-' : Number(v).toFixed(d));
-const fmtN = (v) => (isBad(v) ? '-' : Number(v).toLocaleString());
-const pFmt = (p) => (isBad(p) ? '-' : (p < 0.001 ? 'p < .001' : `p = ${p.toFixed(3)}`));
+const fmt = (v, d = 1) => (isBad(v) ? '—' : Number(v).toFixed(d));
+const fmtN = (v) => (isBad(v) ? '—' : Number(v).toLocaleString());
+const pFmt = (p) => (isBad(p) ? '—' : (p < 0.001 ? 'p < .001' : `p = ${p.toFixed(3)}`));
 
 // Equation text for a correlation's OLS line of best fit (slope/intercept
 // come straight from trafficStats.js's pearson(), fit on the same real
@@ -108,12 +107,12 @@ const DescribeCard = ({ color, span = 's-4', eyebrow, title, sub, d, unit }) => 
       <SectionHeader eyebrow={eyebrow} title={title} color={color} sub={sub} />
       <div style={{ marginTop: '4px' }}>
         <StatRow label="Sample size (n)" value={fmtN(d?.n)} />
-        <StatRow label="Mean" value={d ? `${fmt(d.mean, 2)}${u}` : '-'} />
-        <StatRow label="Median" value={d ? `${fmt(d.median, 2)}${u}` : '-'} />
-        <StatRow label="Std. deviation" value={d ? `${fmt(d.std, 2)}${u}` : '-'} />
-        <StatRow label="Q1 - Q3 (IQR)" value={d ? `${fmt(d.q1, 2)} - ${fmt(d.q3, 2)} (${fmt(d.iqr, 2)})${u}` : '-'} />
-        <StatRow label="Min - Max" value={d ? `${fmt(d.min, 2)} - ${fmt(d.max, 2)}${u}` : '-'} />
-        <StatRow label="Coeff. of variation" value={d && !isBad(d.cv) ? `${fmt(d.cv)}%` : '-'} />
+        <StatRow label="Mean" value={d ? `${fmt(d.mean, 2)}${u}` : '—'} />
+        <StatRow label="Median" value={d ? `${fmt(d.median, 2)}${u}` : '—'} />
+        <StatRow label="Std. deviation" value={d ? `${fmt(d.std, 2)}${u}` : '—'} />
+        <StatRow label="Q1 – Q3 (IQR)" value={d ? `${fmt(d.q1, 2)} – ${fmt(d.q3, 2)} (${fmt(d.iqr, 2)})${u}` : '—'} />
+        <StatRow label="Min – Max" value={d ? `${fmt(d.min, 2)} – ${fmt(d.max, 2)}${u}` : '—'} />
+        <StatRow label="Coeff. of variation" value={d && !isBad(d.cv) ? `${fmt(d.cv)}%` : '—'} />
       </div>
     </div>
   );
@@ -246,7 +245,7 @@ const InfographicDashboard = ({ goBack, canGoBack } = {}) => {
   // to show only the 12 real surveyed hours (07:00-18:00).
   const [showOvernightModel, setShowOvernightModel] = useState(true);
 
-  // Which site's 24-hour profile to chart -- 'All Sites' (mean across the 5
+  // Which site's 24-hour profile to chart -- 'All Sites' (mean across the 4
   // real junctions) or one real site, using the matching precomputed profile
   // from trafficStats.js (both grains use the same real-hours + disclosed-
   // overnight-model construction).
@@ -303,42 +302,42 @@ const InfographicDashboard = ({ goBack, canGoBack } = {}) => {
         .a-chart-box { flex: 1; min-height: 280px; position: relative; width: 100%; margin-top: 10px; }
 
         .a-toggle-row { display: flex; gap: 8px; flex-wrap: wrap; }
-        .a-toggle-btn { border: 1px solid #E2E8F0; background: #FFFFFF; color: ${C.sub}; font-weight: 600; font-size: 0.82rem; padding: 8px 14px; border-radius: 10px; cursor: pointer; transition: all .15s ease; }
-        .a-toggle-btn.active { background: ${C.blue}; color: #FFFFFF; border-color: ${C.blue}; }
-        .a-toggle-btn:hover:not(.active) { background: #F5F5F7; }
-        .a-stat-box { background: ${C.canvas}; border: 1px solid #E2E8F0; border-radius: 14px; padding: 14px 16px; }
-        .a-stat-label { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; color: ${C.sub}; margin-bottom: 4px; }
+        .a-toggle-btn { border: 1px solid rgba(0,0,0,0.08); background: #fff; color: ${C.sub}; font-weight: 600; font-size: 0.82rem; padding: 8px 14px; border-radius: 10px; cursor: pointer; transition: all .15s ease; }
+        .a-toggle-btn.active { background: ${C.ink}; color: #fff; border-color: ${C.ink}; }
+        .a-toggle-btn:hover:not(.active) { background: #f5f5f7; }
+        .a-stat-box { background: ${C.canvas}; border-radius: 14px; padding: 14px 16px; }
+        .a-stat-label { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; color: ${C.faint}; margin-bottom: 4px; }
         .a-stat-value { font-size: 1.3rem; font-weight: 800; color: ${C.ink}; font-feature-settings: "tnum" 1; }
         .a-stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-top: 8px; }
 
-        .a-illustrative-badge { display: inline-block; font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; color: ${C.sub}; background: #F1F5F9; padding: 2px 7px; border-radius: 5px; margin-left: 8px; vertical-align: middle; }
-        .a-nodata-badge { display: inline-block; font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; color: #64748B; background: #F1F5F9; padding: 2px 7px; border-radius: 5px; margin-left: 8px; vertical-align: middle; }
-        .a-caveat-box { font-size: 0.78rem; color: ${C.ink}; line-height: 1.6; background: ${hex2rgba(C.orange, 0.08)}; border: 1px solid ${hex2rgba(C.orange, 0.25)}; border-radius: 12px; padding: 12px 14px; margin-top: 14px; }
+        .a-illustrative-badge { display: inline-block; font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; color: ${C.sub}; background: rgba(0,0,0,0.05); padding: 2px 7px; border-radius: 5px; margin-left: 8px; vertical-align: middle; }
+        .a-nodata-badge { display: inline-block; font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; color: #9a9a9e; background: rgba(154,154,158,0.14); padding: 2px 7px; border-radius: 5px; margin-left: 8px; vertical-align: middle; }
+        .a-caveat-box { font-size: 0.78rem; color: ${C.sub}; line-height: 1.6; background: ${hex2rgba(C.orange, 0.07)}; border: 1px solid ${hex2rgba(C.orange, 0.22)}; border-radius: 12px; padding: 12px 14px; margin-top: 14px; }
 
         .a-photo { padding: 0; position: relative; overflow: hidden; min-height: 300px; }
-        .a-photo-overlay { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; padding: 20px 26px; background: rgba(255,255,255,0.92); backdrop-filter: blur(14px); border-top: 1px solid #E2E8F0; }
-        .a-photo-title { margin: 2px 0 6px; font-size: 1.15rem; font-weight: 800; color: ${C.ink}; letter-spacing: -0.01em; }
-        .a-photo-text { margin: 0; font-size: 0.85rem; color: ${C.sub}; line-height: 1.5; }
+        .a-photo-overlay { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; padding: 26px; background: linear-gradient(to top, rgba(10,10,12,0.94) 0%, rgba(10,10,12,0.6) 65%, transparent 100%); }
+        .a-photo-title { margin: 2px 0 8px; font-size: 1.2rem; font-weight: 800; color: #ffffff; letter-spacing: -0.01em; }
+        .a-photo-text { margin: 0; font-size: 0.86rem; color: rgba(255,255,255,0.88); line-height: 1.55; }
 
         .a-carousel-card { padding: 26px; max-width: 980px; margin: 0 auto; }
         .a-carousel { position: relative; }
-        .a-carousel-viewport { position: relative; width: 100%; aspect-ratio: 3 / 2; min-height: 320px; max-height: 520px; border-radius: 18px; overflow: hidden; background: #F5F5F7; border: 1px solid #E2E8F0; }
+        .a-carousel-viewport { position: relative; width: 100%; aspect-ratio: 3 / 2; min-height: 320px; max-height: 520px; border-radius: 18px; overflow: hidden; background: #0b0b0c; }
         @media (max-width: 720px) {
           .a-carousel-viewport { aspect-ratio: 4 / 3; min-height: 280px; max-height: 420px; }
-          .a-carousel-slide .a-photo-overlay { padding: 16px 18px 20px; }
+          .a-carousel-slide .a-photo-overlay { padding: 20px 20px 24px; }
         }
         .a-carousel-track { display: flex; height: 100%; width: 100%; transition: transform .55s cubic-bezier(.4,0,.2,1); }
         @media (prefers-reduced-motion: reduce) { .a-carousel-track { transition: none; } }
         .a-carousel-slide { position: relative; flex: 0 0 100%; height: 100%; }
         .a-carousel-slide img { width: 100%; height: 100%; object-fit: cover; display: block; }
-        .a-carousel-slide .a-photo-overlay { padding: 20px 28px; }
+        .a-carousel-slide .a-photo-overlay { padding: 30px 34px; }
 
         .a-carousel-controls { position: absolute; top: 14px; right: 14px; display: flex; gap: 8px; z-index: 3; }
-        .a-carousel-arrow, .a-carousel-playpause { width: 36px; height: 36px; border-radius: 50%; border: 1px solid #E2E8F0;
-          background: rgba(255,255,255,0.92); color: ${C.ink}; font-size: 13px; display: flex; align-items: center; justify-content: center;
-          cursor: pointer; backdrop-filter: blur(6px); box-shadow: 0 4px 12px rgba(15,23,42,0.12); transition: background .2s ease, transform .2s ease; }
-        .a-carousel-arrow:hover, .a-carousel-playpause:hover { background: #FFFFFF; transform: scale(1.06); }
-        .a-carousel-arrow:focus-visible, .a-carousel-playpause:focus-visible { outline: 2px solid ${C.blue}; outline-offset: 2px; }
+        .a-carousel-arrow, .a-carousel-playpause { width: 36px; height: 36px; border-radius: 50%; border: none;
+          background: rgba(0,0,0,0.45); color: #ffffff; font-size: 13px; display: flex; align-items: center; justify-content: center;
+          cursor: pointer; backdrop-filter: blur(6px); box-shadow: 0 4px 14px rgba(0,0,0,0.22); transition: background .2s ease, transform .2s ease; }
+        .a-carousel-arrow:hover, .a-carousel-playpause:hover { background: rgba(0,0,0,0.68); transform: scale(1.06); }
+        .a-carousel-arrow:focus-visible, .a-carousel-playpause:focus-visible { outline: 2px solid #ffffff; outline-offset: 2px; }
 
         .a-carousel-dots { display: flex; justify-content: center; gap: 2px; margin-top: 14px; }
         .a-carousel-dot { width: 26px; height: 26px; border-radius: 50%; border: none; background: transparent; cursor: pointer; padding: 0;
@@ -372,7 +371,7 @@ const InfographicDashboard = ({ goBack, canGoBack } = {}) => {
         <div className="a-hero">
           <p className="a-hero-eyebrow">Statistical Diagnostics</p>
           <h1 className="a-hero-title">Tricycle PCU Analytics</h1>
-          <p className="a-hero-sub">Every figure below is computed live in your browser from the source-reconciled traffic counts at five Kampala junctions; nothing here is hand-typed.</p>
+          <p className="a-hero-sub">Every figure below is computed live in your browser from the source-reconciled traffic counts at four Kampala junctions — nothing here is hand-typed.</p>
         </div>
 
         {!stats ? (
@@ -381,14 +380,14 @@ const InfographicDashboard = ({ goBack, canGoBack } = {}) => {
         <>
         {/* KPI STRIP */}
         <div className="a-kpi-grid">
-          <KpiCard icon="fa-car-side" color={C.blue} label="Total Motorised Flow" value={stats.allSitesMotorized.toLocaleString('en-GB')} sub={`${REAL_SITES.length} sites (07:00-19:00)`} />
+          <KpiCard icon="fa-database" color={C.blue} label="Real Movement Records" value={stats.rawMovementCount.toLocaleString()} sub={`4 sites · ${stats.siteHourCount} site-hour aggregates`} />
           <KpiCard icon="fa-gauge-high" color={C.teal} label="Combined Dynamic PCU" value={stats.combinedDynamicPCUOverall.toFixed(3)} sub="Static x demand-pressure model" />
-          <KpiCard icon="fa-route" color={C.purple} label="Combined Tricycle Share" value={`${((stats.allSitesTotalTri / stats.allSitesMotorized) * 100).toFixed(2)}%`} sub="of surveyed motorised flow" />
-          <KpiCard icon="fa-chart-simple" color={C.indigo} label="Tricycle Volume by Site" value={`F = ${stats.tricycleSiteAnova.F.toFixed(2)}`} sub={`One-way ANOVA, ${pFmt(stats.tricycleSiteAnova.p)}`} />
-          <KpiCard icon="fa-clock" color={C.orange} label="Tricycle Volume by Period" value={`F = ${stats.tricyclePeriodAnova.F.toFixed(2)}`} sub={`One-way ANOVA, ${pFmt(stats.tricyclePeriodAnova.p)}`} />
-          <KpiCard icon="fa-chart-line" color={C.green} label="Flow vs Tricycle Correlation" value={`r = ${stats.flowTricycleCorrelation.r.toFixed(2)}`} sub={`${stats.flowTricycleCorrelation.r2Pct.toFixed(0)}% of variance`} />
-          <KpiCard icon="fa-square-poll-vertical" color={C.pink} label="Kibuye Poisson Fit" value={`chi² = ${stats.kibuyePoissonChiSq.toFixed(2)}`} sub={`lambda = ${stats.kibuyeLambda.toFixed(1)} veh/hr`} />
-          <KpiCard icon="fa-arrow-trend-up" color={C.red} label="2040 Projected Flow" value={Math.round(projectToYear(stats.allSitesMotorized, 2040)).toLocaleString('en-GB')} sub="Vision 2040 (4.5% p.a.)" />
+          <KpiCard icon="fa-route" color={C.purple} label="Combined Tricycle Share" value={`${((stats.allSitesTotalTri / stats.allSitesMotorized) * 100).toFixed(1)}%`} sub="of surveyed motorized flow" />
+          <KpiCard icon="fa-chart-simple" color={C.indigo} label="Tricycle Volume by Site" value={`F = ${stats.tricycleSiteAnova.F.toFixed(2)}`} sub={`One-way ANOVA · ${pFmt(stats.tricycleSiteAnova.p)}`} />
+          <KpiCard icon="fa-clock" color={C.orange} label="Tricycle Volume by Period" value={`F = ${stats.tricyclePeriodAnova.F.toFixed(2)}`} sub={`One-way ANOVA · ${pFmt(stats.tricyclePeriodAnova.p)}`} />
+          <KpiCard icon="fa-chart-line" color={C.green} label="Flow ↔ Tricycle Correlation" value={`r = ${stats.flowTricycleCorrelation.r.toFixed(2)}`} sub={`${stats.flowTricycleCorrelation.r2Pct.toFixed(0)}% of variance · n = ${stats.flowTricycleCorrelation.n}`} />
+          <KpiCard icon="fa-square-poll-vertical" color={C.pink} label="Kibuye Poisson Fit" value={`χ² = ${stats.kibuyePoissonChiSq.toFixed(2)}`} sub={`λ = ${stats.kibuyeLambda.toFixed(1)} · n = ${stats.kibuyeN}`} />
+          <KpiCard icon="fa-triangle-exclamation" color={C.red} label="Recorded Incidents" value={stats.incidentN.toLocaleString()} sub={`χ²(${stats.incidentChiSquare.df}) = ${stats.incidentChiSquare.chi2.toFixed(1)}, ${pFmt(stats.incidentChiSquare.p)}`} />
         </div>
 
         {/* ROW: 24-hour traffic profile -- real 07:00-18:00 measured means,
@@ -397,8 +396,8 @@ const InfographicDashboard = ({ goBack, canGoBack } = {}) => {
         <div className="a-grid">
           <div className="a-card s-12">
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '12px' }}>
-              <SectionHeader eyebrow="24-Hour Traffic Volume Profile" title={`Hourly Traffic Pattern - ${hourlyProfileSite === 'All Sites' ? 'All Sites (Mean)' : hourlyProfileSite}`} color={hourlyProfileSite === 'All Sites' ? C.blue : SITE_COLORS[hourlyProfileSite]}
-                sub={hourlyProfileSite === 'All Sites' ? `Mean hourly value per surveyed junction across ${REAL_SITES.length} sites and the available survey dates` : `Mean hourly value at ${hourlyProfileSite} across the available survey dates`} />
+              <SectionHeader eyebrow="24-Hour Traffic Volume Profile" title={`Hourly Traffic Pattern — ${hourlyProfileSite === 'All Sites' ? 'All Sites (Mean)' : hourlyProfileSite}`} color={hourlyProfileSite === 'All Sites' ? C.blue : SITE_COLORS[hourlyProfileSite]}
+                sub={hourlyProfileSite === 'All Sites' ? 'Mean hourly value per surveyed junction, averaged across the 2 survey days and across the 4 sites' : `Mean hourly value at ${hourlyProfileSite}, averaged across the 2 survey days`} />
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'flex-end' }}>
                 <div className="a-toggle-row" role="group" aria-label="Study site">
                   {['All Sites', ...REAL_SITES].map((s) => (
@@ -407,10 +406,10 @@ const InfographicDashboard = ({ goBack, canGoBack } = {}) => {
                 </div>
                 <div className="a-toggle-row" role="group" aria-label="Overnight hours display">
                   <button type="button" className={`a-toggle-btn ${!showOvernightModel ? 'active' : ''}`} aria-pressed={!showOvernightModel} onClick={() => setShowOvernightModel(false)}>
-                    <i className="fa-solid fa-sun" style={{ marginRight: '6px' }}></i>Survey Window (07:00-19:00)
+                    <i className="fa-solid fa-sun" style={{ marginRight: '6px' }}></i>Measured only (07:00–18:00)
                   </button>
                   <button type="button" className={`a-toggle-btn ${showOvernightModel ? 'active' : ''}`} aria-pressed={showOvernightModel} onClick={() => setShowOvernightModel(true)}>
-                    <i className="fa-solid fa-moon" style={{ marginRight: '6px' }}></i>Full 24h (incl. modelled overnight)
+                    <i className="fa-solid fa-moon" style={{ marginRight: '6px' }}></i>Full 24h (incl. modeled overnight)
                   </button>
                 </div>
               </div>
@@ -424,7 +423,7 @@ const InfographicDashboard = ({ goBack, canGoBack } = {}) => {
                     labels: profile.motorizedFlow.map((h) => `${String(h.hour).padStart(2, '0')}:00`),
                     datasets: [
                       {
-                        label: 'Motorised flow (mean, veh/hr)',
+                        label: 'Motorized flow (mean, veh/hr)',
                         data: profile.motorizedFlow.map((h) => (showOvernightModel || h.isReal ? h.value : null)),
                         borderColor: lineColor, backgroundColor: hex2rgba(lineColor, 0.12), fill: true, tension: 0.35,
                         pointRadius: profile.motorizedFlow.map((h) => (h.isReal ? 4 : 3)),
@@ -459,23 +458,23 @@ const InfographicDashboard = ({ goBack, canGoBack } = {}) => {
                       callbacks: {
                         label: (ctx) => {
                           const profile = hourlyProfileSite === 'All Sites' ? stats.hourlyProfile24 : stats.hourlyProfile24BySite[hourlyProfileSite];
-                          const arr = ctx.dataset.label.startsWith('Motorised') ? profile.motorizedFlow : profile.tricycleTotal;
+                          const arr = ctx.dataset.label.startsWith('Motorized') ? profile.motorizedFlow : profile.tricycleTotal;
                           const isReal = arr[ctx.dataIndex]?.isReal;
-                          return `${ctx.dataset.label}: ${ctx.parsed.y === null ? '-' : Math.round(ctx.parsed.y).toLocaleString()}${isReal ? '' : ' (modelled)'}`;
+                          return `${ctx.dataset.label}: ${ctx.parsed.y === null ? '—' : Math.round(ctx.parsed.y).toLocaleString()}${isReal ? '' : ' (modeled)'}`;
                         },
                       },
                     },
                   },
                   scales: {
                     x: { grid: { display: false }, ticks: { color: chartSub, font: { size: 10 } } },
-                    y: { title: { display: true, text: 'Motorised flow (veh/hr)', color: chartSub, font: { size: 11 } }, ticks: { color: chartSub }, grid: { color: chartGrid } },
+                    y: { title: { display: true, text: 'Motorized flow (veh/hr)', color: chartSub, font: { size: 11 } }, ticks: { color: chartSub }, grid: { color: chartGrid } },
                     y1: { position: 'right', title: { display: true, text: 'Tricycle total (veh/hr)', color: chartSub, font: { size: 11 } }, ticks: { color: chartSub }, grid: { display: false } },
                   },
                 }}
               />
             </div>
             <p className="a-footnote">
-              Solid markers and solid line indicate observed hourly means across the 07:00 to 19:00 survey window (02/08/2026 to 03/08/2026). Dashed, lighter line indicates the toggleable overnight mathematical connector between 18:00 and 07:00 (cosine dip reaching {(ASSUMPTIONS.overnightTroughRatio * 100).toFixed(0)}% at its midpoint).
+              Solid markers and solid line = real measured hourly means, 07:00–18:00 ({hourlyProfileSite === 'All Sites' ? '96 real site-hour rows across all 4 sites' : '24 real hourly rows at this site'}). Dashed, lighter line = 19:00–06:00, when no vehicle was ever counted{hourlyProfileSite === 'All Sites' ? ' at any of the 4 sites' : ' at this site'}: a disclosed, purely mathematical connector between the real 18:00 and 07:00 values (a cosine-shaped dip reaching {(ASSUMPTIONS.overnightTroughRatio * 100).toFixed(0)}% of the straight trend line at its midpoint, an editable assumption) -- never a measured or literature-sourced result. Toggle above to switch site or view the measured window alone.
             </p>
           </div>
         </div>
@@ -484,7 +483,7 @@ const InfographicDashboard = ({ goBack, canGoBack } = {}) => {
         <div className="a-grid">
           <div className="a-card s-6">
             <SectionHeader eyebrow="Real Vehicle-Class Counts" title="Fleet Composition by Junction" color={C.blue}
-              sub={`Share of surveyed motorized flow, from ${stats.siteHourCount} real site-hour aggregates`} />
+              sub="Share of surveyed motorized flow, from the 96 real site-hour aggregates" />
             <div className="a-chart-box">
               <Bar
                 data={{
@@ -553,7 +552,7 @@ const InfographicDashboard = ({ goBack, canGoBack } = {}) => {
                 }}
               />
             </div>
-            <p className="a-footnote">Tricycle-count-weighted mean across surveyed hours at each site. Dynamic PCU = Static PCU x [1 + 0.4 x (Demand Pressure - 0.5)].</p>
+            <p className="a-footnote">Tricycle-count-weighted mean of 24 real hourly rows per site. Dynamic PCU = Static PCU x [1 + 0.4 x (Demand Pressure − 0.5)].</p>
           </div>
 
           <div className="a-card s-4">
@@ -610,7 +609,7 @@ const InfographicDashboard = ({ goBack, canGoBack } = {}) => {
                 data={{
                   labels: stats.regionalBenchmark.map((b) => b.benchmark),
                   datasets: [
-                    { label: 'Published range (lower-upper)', data: stats.regionalBenchmark.map((b) => [b.lower, b.upper]), backgroundColor: hex2rgba(C.faint, 0.4), borderRadius: 6 },
+                    { label: 'Published range (lower–upper)', data: stats.regionalBenchmark.map((b) => [b.lower, b.upper]), backgroundColor: hex2rgba(C.faint, 0.4), borderRadius: 6 },
                     { label: 'This study (base static PCU)', data: stats.regionalBenchmark.map((b) => b.basePassengerStaticPCU), backgroundColor: C.green, borderRadius: 6, type: 'bar', barThickness: 10 },
                   ],
                 }}
@@ -630,7 +629,7 @@ const InfographicDashboard = ({ goBack, canGoBack } = {}) => {
             <div className="a-chart-box">
               <Bar
                 data={{
-                  labels: ['Motorised Vehicles', 'Passenger Tricycles', 'Cargo Tricycles', 'Total Tricycles'],
+                  labels: ['Motorized Vehicles', 'Passenger Tricycles', 'Cargo Tricycles', 'Total Tricycles'],
                   datasets: [
                     { label: 'All data (primary)', data: [stats.allDataSensitivity.motorizedVehicles.allData, stats.allDataSensitivity.passengerTri.allData, stats.allDataSensitivity.cargoTri.allData, stats.allDataSensitivity.totalTri.allData], backgroundColor: C.blue, borderRadius: 5 },
                     { label: 'Flags removed', data: [stats.allDataSensitivity.motorizedVehicles.flagsRemoved, stats.allDataSensitivity.passengerTri.flagsRemoved, stats.allDataSensitivity.cargoTri.flagsRemoved, stats.allDataSensitivity.totalTri.flagsRemoved], backgroundColor: hex2rgba(C.red, 0.55), borderRadius: 5 },
@@ -647,79 +646,47 @@ const InfographicDashboard = ({ goBack, canGoBack } = {}) => {
           </div>
         </div>
 
-        {/* ROW: Vision 2040 Projection Trajectory */}
-        <div className="a-grid">
-          <div className="a-card s-12">
-            <SectionHeader eyebrow="Vision 2040 Horizon (2026 to 2040)" title="Projected Motorised Flow and Tricycle Demand by Study Site" color={C.teal}
-              sub="Compounded urban corridor growth projection (4.5% p.a. baseline scenario) from 02/08/2026-03/08/2026 observed levels to 2040" />
-            <div className="a-chart-box" style={{ minHeight: '280px' }}>
-              <Line
-                data={{
-                  labels: VISION_2040_YEARS.map(String),
-                  datasets: REAL_SITES.map((s) => ({
-                    label: s,
-                    data: VISION_2040_YEARS.map((yr) => Math.round(projectToYear(stats.resultsBySite[s].motorizedVehicles, yr))),
-                    borderColor: SITE_COLORS[s],
-                    backgroundColor: hex2rgba(SITE_COLORS[s], 0.10),
-                    borderWidth: 2.5,
-                    tension: 0.25,
-                    pointRadius: 3.5,
-                  })),
-                }}
-                options={{
-                  responsive: true, maintainAspectRatio: false, animation: animConfig,
-                  plugins: { legend: { ...legendTheme, position: 'bottom' }, tooltip: tooltipTheme },
-                  scales: {
-                    x: { grid: { display: false }, ticks: { color: chartSub, font: { weight: '600' } } },
-                    y: { title: { display: true, text: 'Projected Motorised Vehicles', color: chartSub, font: { size: 11 } }, grid: { color: chartGrid }, ticks: { color: chartSub } },
-                  },
-                }}
-              />
-            </div>
-          </div>
-        </div>
-
         {/* ROW: Tricycle volume by site -- ANOVA + Kruskal-Wallis */}
         <div className="a-grid">
           <div className="a-card s-12">
-            <SectionHeader eyebrow="Statistical Comparison" title="Tricycle Volume Distribution by Site" color={C.indigo}
-              sub={`Tricycle Total (passenger and cargo) across all ${REAL_SITES.length} study sites`} />
+            <SectionHeader eyebrow="Section E · Real Movement Records (n = 984)" title="Tricycle Volume per Record, by Site" color={C.indigo}
+              sub="Tricycle Total (passenger + cargo) per raw classified hourly movement record, across the 4 real sites" />
             <div className="a-stat-grid">
               <div className="a-stat-box"><div className="a-stat-label">One-way ANOVA</div><div className="a-stat-value">F({stats.tricycleSiteAnova.df1},{stats.tricycleSiteAnova.df2}) = {stats.tricycleSiteAnova.F.toFixed(3)}</div><div className="a-footnote">{pFmt(stats.tricycleSiteAnova.p)}</div></div>
               <div className="a-stat-box"><div className="a-stat-label">Kruskal-Wallis (robustness check)</div><div className="a-stat-value">H({stats.tricycleSiteKruskalWallis.df}) = {stats.tricycleSiteKruskalWallis.H.toFixed(3)}</div><div className="a-footnote">{pFmt(stats.tricycleSiteKruskalWallis.p)}</div></div>
-              <div className="a-stat-box"><div className="a-stat-label">Interpretation</div><div className="a-sub" style={{ margin: 0, fontWeight: 600, color: C.ink }}>{stats.tricycleSiteAnova.p < 0.05 ? 'Tricycle volume differs significantly by site.' : 'No statistically significant difference in tricycle volume by site at alpha = 0.05.'}</div></div>
+              <div className="a-stat-box"><div className="a-stat-label">Interpretation</div><div className="a-sub" style={{ margin: 0, fontWeight: 600, color: C.ink }}>{stats.tricycleSiteAnova.p < 0.05 ? 'Tricycle volume per record differs significantly by site.' : 'No statistically significant difference in tricycle volume by site at α = 0.05.'}</div></div>
             </div>
           </div>
         </div>
         <div className="a-grid">
           {REAL_SITES.map((s) => (
-            <DescribeCard key={s} span="s-3" color={SITE_COLORS[s]} eyebrow={s} title="Tricycle Volume Summary" d={stats.tricycleDescribeBySite[s]} />
+            <DescribeCard key={s} span="s-3" color={SITE_COLORS[s]} eyebrow={s} title="Tricycle Total / Record" d={stats.tricycleDescribeBySite[s]} />
           ))}
         </div>
 
         {/* ROW: Tricycle volume by period -- ANOVA + Kruskal-Wallis */}
         <div className="a-grid">
           <div className="a-card s-12">
-            <SectionHeader eyebrow="Temporal Comparison" title="Tricycle Volume Distribution by Time Period" color={C.orange}
-              sub="Three surveyed time periods within the 07:00 to 19:00 survey window" />
+            <SectionHeader eyebrow="Section E · Real Movement Records (n = 984)" title="Tricycle Volume per Record, by Time Period" color={C.orange}
+              sub="The 3 real recorded time periods -- the honest replacement for a 2-group peak/off-peak split" />
             <div className="a-stat-grid">
               <div className="a-stat-box"><div className="a-stat-label">One-way ANOVA</div><div className="a-stat-value">F({stats.tricyclePeriodAnova.df1},{stats.tricyclePeriodAnova.df2}) = {stats.tricyclePeriodAnova.F.toFixed(3)}</div><div className="a-footnote">{pFmt(stats.tricyclePeriodAnova.p)}</div></div>
               <div className="a-stat-box"><div className="a-stat-label">Kruskal-Wallis (robustness check)</div><div className="a-stat-value">H({stats.tricyclePeriodKruskalWallis.df}) = {stats.tricyclePeriodKruskalWallis.H.toFixed(3)}</div><div className="a-footnote">{pFmt(stats.tricyclePeriodKruskalWallis.p)}</div></div>
-              <div className="a-stat-box"><div className="a-stat-label">Interpretation</div><div className="a-sub" style={{ margin: 0, fontWeight: 600, color: C.ink }}>{stats.tricyclePeriodAnova.p < 0.05 ? 'Tricycle volume differs significantly by time period.' : 'No statistically significant difference in tricycle volume by time period at alpha = 0.05.'}</div></div>
+              <div className="a-stat-box"><div className="a-stat-label">Interpretation</div><div className="a-sub" style={{ margin: 0, fontWeight: 600, color: C.ink }}>{stats.tricyclePeriodAnova.p < 0.05 ? 'Tricycle volume per record differs significantly by time period.' : 'No statistically significant difference in tricycle volume by time period at α = 0.05.'}</div></div>
             </div>
           </div>
         </div>
         <div className="a-grid">
           {stats.timePeriods.map((p) => (
-            <DescribeCard key={p} span="s-4" color={PERIOD_COLORS[p]} eyebrow={p} title="Tricycle Volume Summary" d={stats.tricycleDescribeByPeriod[p]} />
+            <DescribeCard key={p} span="s-4" color={PERIOD_COLORS[p]} eyebrow={p} title="Tricycle Total / Record" d={stats.tricycleDescribeByPeriod[p]} />
           ))}
         </div>
 
         {/* ROW: Flow<->Tricycle correlation + Kibuye Poisson fit */}
         <div className="a-grid">
           <div className="a-card s-6">
-            <SectionHeader eyebrow="Pearson Correlation" title="Motorised Flow vs. Tricycle Total" color={C.green}
-              sub={`r = ${stats.flowTricycleCorrelation.r.toFixed(3)} (${stats.flowTricycleCorrelation.r2Pct.toFixed(1)}% of variance), ${pFmt(stats.flowTricycleCorrelation.p)} | ${eqFmt(stats.flowTricycleCorrelation.slope, stats.flowTricycleCorrelation.intercept)}`} />
+            <SectionHeader eyebrow="Pearson Correlation · 96 real site-hour rows" title="Motorized Flow vs. Tricycle Total" color={C.green}
+              sub={`r = ${stats.flowTricycleCorrelation.r.toFixed(3)} (${stats.flowTricycleCorrelation.r2Pct.toFixed(1)}% of variance), ${pFmt(stats.flowTricycleCorrelation.p)}, n = ${stats.flowTricycleCorrelation.n} · ${eqFmt(stats.flowTricycleCorrelation.slope, stats.flowTricycleCorrelation.intercept)}`} />
             <div className="a-chart-box">
               <Scatter
                 data={{
@@ -732,18 +699,18 @@ const InfographicDashboard = ({ goBack, canGoBack } = {}) => {
                   responsive: true, maintainAspectRatio: false, animation: animConfig,
                   plugins: { legend: { ...legendTheme, position: 'bottom' }, tooltip: { ...tooltipTheme, callbacks: { label: (ctx) => ctx.dataset.label === 'Site-hour observations' ? `${ctx.raw.site}: flow ${ctx.raw.x}, tricycles ${ctx.raw.y}` : ctx.dataset.label } } },
                   scales: {
-                    x: { title: { display: true, text: 'Motorised flow (veh/hr)', color: chartSub, font: { size: 11 } }, ticks: { color: chartSub }, grid: { color: chartGrid } },
+                    x: { title: { display: true, text: 'Motorized flow (veh/hr)', color: chartSub, font: { size: 11 } }, ticks: { color: chartSub }, grid: { color: chartGrid } },
                     y: { title: { display: true, text: 'Tricycle total (veh/hr)', color: chartSub, font: { size: 11 } }, ticks: { color: chartSub }, grid: { color: chartGrid } },
                   },
                 }}
               />
             </div>
-            <p className="a-footnote">Two independently observed quantities (not the definitional demand-pressure PCU relationship).</p>
+            <p className="a-footnote">Two independently observed quantities -- not the demand-pressure/PCU relationship, which is definitional by formula and is never reported as a statistical finding on this site.</p>
           </div>
 
           <div className="a-card s-6">
-            <SectionHeader eyebrow="Goodness-of-Fit (Kibuye Roundabout)" title="Poisson Fit: Hourly Tricycle Arrivals" color={C.teal}
-              sub={`lambda (observed hourly mean) = ${stats.kibuyeLambda.toFixed(2)} | chi² = ${stats.kibuyePoissonChiSq.toFixed(2)}`} />
+            <SectionHeader eyebrow="Goodness-of-Fit · Kibuye, n = 24 real hourly rows" title="Poisson Fit: Hourly Tricycle Arrivals" color={C.teal}
+              sub={`λ (real hourly mean) = ${stats.kibuyeLambda.toFixed(2)} · χ² = ${stats.kibuyePoissonChiSq.toFixed(2)}`} />
             <div className="a-chart-box">
               <Bar
                 data={{
@@ -760,14 +727,14 @@ const InfographicDashboard = ({ goBack, canGoBack } = {}) => {
                 }}
               />
             </div>
-            <p className="a-footnote">Evaluated across the 07:00 to 19:00 survey window on 02/08/2026 and 03/08/2026.</p>
+            <p className="a-footnote">Disclosed small-sample limitation: only 24 real hourly observations exist for this site.</p>
           </div>
         </div>
 
         {/* ROW: Incidents */}
         <div className="a-grid">
           <div className="a-card s-6">
-            <SectionHeader eyebrow="Kampala Incident Distribution" title="Incident Type by Severity" color={C.red} />
+            <SectionHeader eyebrow="Real Incident Log · n = 841" title="Incident Type by Severity" color={C.red} />
             <SearchableSelect
               label="Filter to one incident type"
               color={C.red}
@@ -798,7 +765,7 @@ const InfographicDashboard = ({ goBack, canGoBack } = {}) => {
 
           <div className="a-card s-6">
             <SectionHeader eyebrow="Chi-Square Test of Independence" title="Observed vs. Independence-Expected" color={C.purple}
-              sub={`χ²(${stats.incidentChiSquare.df}) = ${stats.incidentChiSquare.chi2.toFixed(1)}, ${pFmt(stats.incidentChiSquare.p)} - full crosstab in Summary Tables`} />
+              sub={`χ²(${stats.incidentChiSquare.df}) = ${stats.incidentChiSquare.chi2.toFixed(1)}, ${pFmt(stats.incidentChiSquare.p)} — full crosstab in Summary Tables`} />
             <div className="a-chart-box">
               <Bar
                 data={{
@@ -852,19 +819,19 @@ const InfographicDashboard = ({ goBack, canGoBack } = {}) => {
           <MethodologyPanel color={C.indigo} keys={['staticPCU', 'resultsBySite', 'dynamicPcuBySite', 'dynamicPcuByTimePeriod', 'dynamicPcuByJunctionType', 'weatherAvailability', 'wetPavementScenario', 'speedSensitivity', 'regionalBenchmark', 'allDataSensitivity', 'tricycleSiteAnova', 'tricycleSiteKruskalWallis', 'tricyclePeriodAnova', 'tricyclePeriodKruskalWallis', 'flowTricycleCorrelation', 'kibuyePoissonBins', 'incidentChiSquare', 'compositionBySite', 'hourlyProfile24']} />
         </div>
 
-        {/* PHOTO CAROUSEL - all 24 original geotagged field photographs from
+        {/* PHOTO CAROUSEL — all 24 original geotagged field photographs from
             this study's own count sessions (no stock or illustrative images). */}
         <div className="a-card a-carousel-card s-12">
           <SectionHeader eyebrow="Field Documentation" title="Traffic & Site Conditions" color={C.teal}
             sub="All 24 original photographs taken during this study's own traffic data collection at the case-study corridors in Kampala." />
           <PhotoCarousel photos={[
-            { src: `${baseUrl}assets/field/field-01.jpg`, eyebrow: 'Kibuye - Natete Road', title: 'Logging Counts Roadside', color: C.blue,
-              text: 'Two enumerators seated on the paved shoulder with clipboards, logging vehicle counts opposite an electronics shopfront as motorcycles and a tricycle move through the Kibuye-Natete Road junction.' },
-            { src: `${baseUrl}assets/field/field-02.jpg`, eyebrow: 'Kibuye - Natete Road', title: 'Pedestrians Near the Mosque', color: C.blue2,
-              text: 'A pedestrian crosses near a combo-meal billboard and a neighbourhood mosque, while two people rest at the roadside during a count interval at the Kibuye-Natete Road site.' },
-            { src: `${baseUrl}assets/field/field-03.jpg`, eyebrow: 'Kibuye - Natete Road', title: 'Recording a Count Interval', color: C.teal,
+            { src: `${baseUrl}assets/field/field-01.jpg`, eyebrow: 'Kibuye – Natete Road', title: 'Logging Counts Roadside', color: C.blue,
+              text: 'Two enumerators seated on the paved shoulder with clipboards, logging vehicle counts opposite an electronics shopfront as motorcycles and a tricycle move through the Kibuye–Natete Road junction.' },
+            { src: `${baseUrl}assets/field/field-02.jpg`, eyebrow: 'Kibuye – Natete Road', title: 'Pedestrians Near the Mosque', color: C.blue2,
+              text: 'A pedestrian crosses near a combo-meal billboard and a neighbourhood mosque, while two people rest at the roadside during a count interval at the Kibuye–Natete Road site.' },
+            { src: `${baseUrl}assets/field/field-03.jpg`, eyebrow: 'Kibuye – Natete Road', title: 'Recording a Count Interval', color: C.teal,
               text: 'An enumerator in an orange hard hat and hi-vis vest records counts on a clipboard at a roadside table, with a pickup truck and passing motorcycles part of the stream being logged.' },
-            { src: `${baseUrl}assets/field/field-04.jpg`, eyebrow: 'Kibuye - Natete Road', title: 'Passing Commercial Traffic', color: C.indigo,
+            { src: `${baseUrl}assets/field/field-04.jpg`, eyebrow: 'Kibuye – Natete Road', title: 'Passing Commercial Traffic', color: C.indigo,
               text: 'A branded delivery truck passes close to the count point, with motorcycles, an SUV, and roadside advertising boards forming the junction backdrop under an overcast sky.' },
             { src: `${baseUrl}assets/field/field-05.jpg`, eyebrow: 'Wandegeya', title: 'The Junction at Sunrise', color: C.green,
               text: 'An early-morning view of the signalized Wandegeya junction, with motorcycles and cars crossing beneath the traffic-signal gantries as the sun rises behind the intersection.' },
@@ -898,7 +865,7 @@ const InfographicDashboard = ({ goBack, canGoBack } = {}) => {
               text: 'Enumerators seated at a shopfront table log counts as pedestrians, including a man carrying market bags, pass by on Bombo Road.' },
             { src: `${baseUrl}assets/field/field-20.jpg`, eyebrow: 'Entebbe Road', title: 'Beside the Clock Tower', color: C.indigo,
               text: 'An enumerator records counts near the Airtel-branded Clock Tower on Entebbe Road, as a man carries sacks past the roundabout.' },
-            { src: `${baseUrl}assets/field/field-21.jpg`, eyebrow: 'Kibuye - Natete Road', title: 'The Junction Being Counted', color: C.green,
+            { src: `${baseUrl}assets/field/field-21.jpg`, eyebrow: 'Kibuye – Natete Road', title: 'The Junction Being Counted', color: C.green,
               text: 'A wide view of an unpaved roundabout lined with shop signage as enumerators seated on a brick wall log motorcycles and cars crossing the junction.' },
             { src: `${baseUrl}assets/field/field-22.jpg`, eyebrow: 'Bombo Road', title: 'Comparing Notes at the Corner', color: C.orange,
               text: 'The enumerator team gathers at a Bombo Road street corner, comparing tally sheets between count intervals near the roadside shopfronts.' },

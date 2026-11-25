@@ -68,7 +68,7 @@ To test if Kampala's tricycle traffic adheres to standard random arrival probabi
 The test powerfully rejects the null hypothesis. The tricycle arrival distribution significantly deviates from a pure Poisson model, proving that tricycles arrive in "platoons" due to aggressive overtaking, fundamentally violating standard Western capacity modeling assumptions.
 
 ## 4.6 Secondary Data Analysis: MoWT Historical Baseline Comparison
-To prove the exponential growth of tricycle interference, we cross-referenced our 2026 Primary Data with Secondary Data sourced from the 2021 National Transport Enterprise (MoWT) traffic logs for Kibuye Roundabout.
+To prove the exponential growth of tricycle interference, we cross-referenced our 2026 Primary Data with Secondary Data sourced from the 2021 Ministry of Works and Transport (MoWT) traffic logs for Kibuye Roundabout.
 
 **Table 4.3: Longitudinal Growth of Tricycle Volumes (Secondary vs Primary)**
 | Metric | MoWT Secondary Data (2021) | Primary Field Data (2026) | Growth Rate |

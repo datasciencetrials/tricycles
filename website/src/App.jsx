@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
 import Layout from './components/Layout';
 import OverviewTab from './components/OverviewTab';
-import DigitalTwinTab from './components/DigitalTwinTab';
-import SourceVerifiedTables from './components/SourceVerifiedTables';
 import InfographicDashboard from './components/InfographicDashboard';
-import DocumentationMindMapTab from './components/DocumentationMindMapTab';
+import SummaryTables from './components/SummaryTables';
+import ThesisTab from './components/ThesisTab';
 import './index.css';
 
 function App() {
   const [activeTab, setActiveTab] = useState('overview');
+
+  // In-app "Back" needs its own tab-visit history, not the browser's: this is
+  // a single-page app with no routing, so a literal window.history.back()
+  // would just carry the visitor off the site entirely rather than to their
+  // previously viewed tab.
   const [tabHistory, setTabHistory] = useState(['overview']);
 
   const navigateTo = (tab) => {
@@ -34,14 +38,12 @@ function App() {
     switch (activeTab) {
       case 'overview':
         return <OverviewTab goBack={goBack} canGoBack={canGoBack} />;
-      case 'digital-twin':
-        return <DigitalTwinTab goBack={goBack} canGoBack={canGoBack} />;
       case 'summary':
-        return <SourceVerifiedTables goBack={goBack} canGoBack={canGoBack} />;
+        return <SummaryTables goBack={goBack} canGoBack={canGoBack} />;
       case 'analytics':
         return <InfographicDashboard goBack={goBack} canGoBack={canGoBack} />;
-      case 'documentation':
-        return <DocumentationMindMapTab goBack={goBack} canGoBack={canGoBack} />;
+      case 'thesis':
+        return <ThesisTab goBack={goBack} canGoBack={canGoBack} />;
       default:
         return <OverviewTab goBack={goBack} canGoBack={canGoBack} />;
     }

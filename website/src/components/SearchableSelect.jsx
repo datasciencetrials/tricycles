@@ -94,29 +94,32 @@ const SearchableSelect = ({ label, options, value, onChange, placeholder = 'Sear
 
 export default SearchableSelect;
 
-// Shared CSS injected once - every tab that renders a SearchableSelect
+// Shared CSS injected once — every tab that renders a SearchableSelect
 // includes this same stylesheet string in its own <style> block, so no
 // separate import wiring is needed. Kept here so the rules travel with
 // the component.
 export const searchableSelectCss = `
   .a-ssel { position: relative; width: 100%; }
-  .a-ssel-label { display: block; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; color: #475569; margin-bottom: 6px; }
-  .a-ssel-box { display: flex; align-items: center; gap: 8px; background: #FFFFFF; border: 1.5px solid #E2E8F0; border-radius: 12px; padding: 9px 12px; transition: border-color .15s ease, box-shadow .15s ease; }
+  .a-ssel-label { display: block; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; color: #6e6e73; margin-bottom: 6px; }
+  .a-ssel-box { display: flex; align-items: center; gap: 8px; background: #fff; border: 1.5px solid rgba(0,0,0,0.1); border-radius: 12px; padding: 9px 12px; transition: border-color .15s ease, box-shadow .15s ease; }
   .a-ssel-box.open { box-shadow: 0 0 0 4px rgba(0,113,227,0.12); }
-  .a-ssel-icon { color: #64748B; font-size: 12px; flex-shrink: 0; }
-  .a-ssel-input { flex: 1; border: none; outline: none; font: inherit; font-size: 0.85rem; font-weight: 600; color: #0F172A; background: transparent; min-width: 0; }
-  .a-ssel-input::placeholder { color: #0F172A; font-weight: 600; opacity: 1; }
-  .a-ssel-clear, .a-ssel-chev { background: none; border: none; color: #64748B; font-size: 11px; cursor: pointer; flex-shrink: 0; padding: 2px; }
+  .a-ssel-icon { color: #9a9a9e; font-size: 12px; flex-shrink: 0; }
+  .a-ssel-input { flex: 1; border: none; outline: none; font: inherit; font-size: 0.85rem; font-weight: 600; color: #1d1d1f; background: transparent; min-width: 0; }
+  .a-ssel-input::placeholder { color: #1d1d1f; font-weight: 600; opacity: 1; }
+  .a-ssel-clear, .a-ssel-chev { background: none; border: none; color: #9a9a9e; font-size: 11px; cursor: pointer; flex-shrink: 0; padding: 2px; }
   .a-ssel-chev { transition: transform .15s ease; pointer-events: none; }
   .a-ssel-chev.up { transform: rotate(180deg); }
-  .a-ssel-list { position: absolute; z-index: 40; top: calc(100% + 6px); left: 0; right: 0; max-height: 260px; overflow-y: auto; background: #FFFFFF; border-radius: 14px; box-shadow: 0 4px 10px rgba(15,23,42,0.06), 0 16px 36px -10px rgba(15,23,42,0.18); border: 1px solid #E2E8F0; padding: 6px; margin: 0; list-style: none; scrollbar-width: thin; scrollbar-color: #CBD5E1 transparent; }
+  .a-ssel-list { position: absolute; z-index: 40; top: calc(100% + 6px); left: 0; right: 0; max-height: 260px; overflow-y: auto; background: #fff; border-radius: 14px; box-shadow: 0 4px 10px rgba(0,0,0,0.06), 0 16px 36px -10px rgba(0,0,0,0.22); border: 1px solid rgba(0,0,0,0.06); padding: 6px; margin: 0; list-style: none; scrollbar-width: thin; scrollbar-color: rgba(0,0,0,0.3) transparent; }
+  /* Dark thumb override -- this dropdown is a white panel, but the sitewide
+     native scrollbar (in index.css) is tuned for the dark app background
+     (a light/white thumb), which renders invisible on this white list. */
   .a-ssel-list::-webkit-scrollbar { width: 8px; }
   .a-ssel-list::-webkit-scrollbar-track { background: transparent; }
-  .a-ssel-list::-webkit-scrollbar-thumb { background-color: #CBD5E1; border-radius: 6px; }
-  .a-ssel-list::-webkit-scrollbar-thumb:hover { background-color: #94A3B8; }
-  .a-ssel-opt { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 9px 10px; border-radius: 9px; font-size: 0.84rem; font-weight: 600; color: #0F172A; cursor: pointer; }
-  .a-ssel-opt.active { background: #F5F5F7; }
+  .a-ssel-list::-webkit-scrollbar-thumb { background-color: rgba(0,0,0,0.3); border-radius: 6px; }
+  .a-ssel-list::-webkit-scrollbar-thumb:hover { background-color: rgba(0,0,0,0.45); }
+  .a-ssel-opt { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 9px 10px; border-radius: 9px; font-size: 0.84rem; font-weight: 600; color: #1d1d1f; cursor: pointer; }
+  .a-ssel-opt.active { background: #f5f5f7; }
   .a-ssel-opt.selected { background: rgba(0,113,227,0.08); }
-  .a-ssel-meta { font-size: 0.72rem; color: #64748B; font-weight: 600; }
-  .a-ssel-empty { padding: 10px; font-size: 0.8rem; color: #64748B; text-align: center; }
+  .a-ssel-meta { font-size: 0.72rem; color: #9a9a9e; font-weight: 600; }
+  .a-ssel-empty { padding: 10px; font-size: 0.8rem; color: #9a9a9e; text-align: center; }
 `;
